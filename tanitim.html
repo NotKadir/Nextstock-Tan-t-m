@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexStock — Akıllı Envanter Sistemi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #22c55e;
+    --green2: #4ade80;
+    --bg: #050805;
+    --panel: #0a0f0b;
+    --border: #1a3d24;
+    --text: #d1fae5;
+    --muted: #2d5a3d;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--green);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s;
+    mix-blend-mode: difference;
+  }
+  .cursor-trail {
+    width: 36px; height: 36px;
+    border: 1px solid var(--green);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.15s ease;
+    opacity: 0.5;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(5,8,5,0.95) 0%, transparent 100%);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+    color: var(--text);
+  }
+  .nav-logo span { color: var(--green); }
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: .85rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--green); }
+  .nav-cta {
+    background: var(--green) !important;
+    color: #050805 !important;
+    padding: 10px 24px;
+    border-radius: 4px;
+    font-weight: 700 !important;
+  }
+  .nav-cta:hover { background: var(--green2) !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(34,197,94,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34,197,94,0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+    animation: gridMove 20s linear infinite;
+  }
+  @keyframes gridMove {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(80px); }
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(34,197,94,0.12) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    animation: pulse 4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+  }
+
+  .hero-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .78rem;
+    color: var(--green);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.3s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 14vw, 14rem);
+    line-height: 0.9;
+    letter-spacing: -2px;
+    color: var(--text);
+    opacity: 0;
+    animation: fadeUp 0.8s 0.5s forwards;
+  }
+  .hero-title .green { color: var(--green); }
+  .hero-title .outline {
+    -webkit-text-stroke: 2px var(--green);
+    color: transparent;
+  }
+
+  .hero-sub {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 40px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.7s forwards;
+  }
+  .hero-desc {
+    max-width: 420px;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #6ee7b7;
+    font-weight: 300;
+  }
+  .hero-btns { display: flex; gap: 12px; }
+  .btn-primary {
+    background: var(--green);
+    color: #050805;
+    padding: 16px 36px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: .95rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: none;
+    cursor: none;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  }
+  .btn-primary:hover { background: var(--green2); transform: translateY(-2px); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    padding: 16px 36px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: .95rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    cursor: none;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--green); color: var(--green); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* TICKER */
+  .ticker {
+    background: var(--green);
+    color: #050805;
+    padding: 14px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .ticker-inner {
+    display: inline-flex;
+    gap: 0;
+    animation: ticker 20s linear infinite;
+  }
+  .ticker-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    padding: 0 40px;
+  }
+  .ticker-sep { opacity: 0.4; }
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* SECTION BASE */
+  section { padding: 120px 48px; }
+  .section-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem;
+    color: var(--green);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 6rem);
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+
+  /* ABOUT DFC */
+  .dfc-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .dfc-left { }
+  .dfc-right {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .dfc-right::before {
+    content: 'DFC';
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12rem;
+    color: rgba(34,197,94,0.03);
+    right: -20px;
+    bottom: -20px;
+    line-height: 1;
+  }
+  .dfc-quote {
+    font-size: 1.4rem;
+    line-height: 1.6;
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 24px;
+  }
+  .dfc-quote strong { color: var(--green); font-weight: 700; }
+  .dfc-attr {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .8rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+  .dfc-body {
+    color: #6ee7b7;
+    font-size: 1rem;
+    line-height: 1.8;
+    font-weight: 300;
+    margin-top: 24px;
+  }
+
+  /* FIDS */
+  .fids-section { background: var(--panel); }
+  .fids-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    margin-top: 60px;
+    background: var(--border);
+  }
+  .fids-card {
+    background: var(--bg);
+    padding: 48px 32px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .fids-card:hover { background: #0d1a0f; }
+  .fids-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    line-height: 1;
+    color: rgba(34,197,94,0.08);
+    position: absolute;
+    top: 16px; right: 20px;
+    transition: color 0.3s;
+  }
+  .fids-card:hover .fids-num { color: rgba(34,197,94,0.15); }
+  .fids-letter {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    color: var(--green);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .fids-word {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .fids-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .fids-desc {
+    font-size: .88rem;
+    color: #6ee7b7;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+  .fids-badge {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 4px 12px;
+    border: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+    color: var(--green);
+    letter-spacing: 1px;
+  }
+
+  /* PROJE */
+  .proje-section { }
+  .proje-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 60px;
+  }
+  .proje-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+  .proje-card {
+    background: var(--bg);
+    padding: 40px 32px;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .proje-card:hover { background: var(--panel); }
+  .proje-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--green);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+  }
+  .proje-card:hover::after { transform: scaleX(1); }
+  .proje-icon {
+    font-size: 2.5rem;
+    margin-bottom: 24px;
+  }
+  .proje-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+  .proje-desc {
+    font-size: .9rem;
+    color: #6ee7b7;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* STATS */
+  .stats-section {
+    background: var(--green);
+    color: #050805;
+    padding: 80px 48px;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 48px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    line-height: 1;
+    letter-spacing: -2px;
+  }
+  .stat-label {
+    font-size: .85rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 8px;
+    opacity: 0.7;
+  }
+
+  /* TECH STACK */
+  .tech-section { }
+  .tech-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 48px;
+  }
+  .tech-tag {
+    border: 1px solid var(--border);
+    padding: 12px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .85rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+    transition: all 0.2s;
+  }
+  .tech-tag:hover {
+    border-color: var(--green);
+    color: var(--green);
+    background: rgba(34,197,94,0.05);
+  }
+  .tech-tag.active {
+    background: var(--green);
+    color: #050805;
+    border-color: var(--green);
+    font-weight: 700;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 3px;
+  }
+  .footer-logo span { color: var(--green); }
+  .footer-info {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.8;
+  }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: .85rem;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--green); }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s, transform 0.8s;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 0 24px 60px; }
+    section { padding: 80px 24px; }
+    .dfc-section { grid-template-columns: 1fr; gap: 40px; }
+    .fids-grid { grid-template-columns: 1fr 1fr; }
+    .proje-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    footer { flex-direction: column; gap: 24px; text-align: center; }
+    body { cursor: auto; }
+    .cursor, .cursor-trail { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursorTrail"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Nex<span>Stock</span></div>
+  <div class="nav-links">
+    <a href="#dfc">DFC Nedir?</a>
+    <a href="#fids">FIDS Modeli</a>
+    <a href="#proje">Proje</a>
+    <a href="#tech">Teknoloji</a>
+    <a href="https://barkod-pro-production.up.railway.app" class="nav-cta">Uygulamayı Aç →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-tag">// DFC Türkiye Yarışması — 2025</div>
+
+  <div class="hero-title">
+    NEX<span class="green">STOCK</span><br>
+    <span class="outline">ENVANTERİN</span><br>
+    GELECEĞİ
+  </div>
+
+  <div class="hero-sub">
+    <div class="hero-desc">
+      DFC FIDS metodolojisi ile geliştirilen akıllı barkod ve envanter yönetim sistemi.
+      Gerçek sorunlara, gerçek çözümler.
+    </div>
+    <div class="hero-btns">
+      <a href="https://barkod-pro-production.up.railway.app" class="btn-primary">Uygulamayı Dene</a>
+      <a href="#dfc" class="btn-secondary">Daha Fazla</a>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item">FEEL</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">IMAGINE</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">DO</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">SHARE</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">DESIGN FOR CHANGE</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">NEXSTOCK</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">FEEL</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">IMAGINE</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">DO</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">SHARE</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">DESIGN FOR CHANGE</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">NEXSTOCK</span>
+    <span class="ticker-item ticker-sep">✦</span>
+  </div>
+</div>
+
+<!-- DFC HAKKINDA -->
+<section id="dfc">
+  <div class="dfc-section reveal">
+    <div class="dfc-left">
+      <div class="section-tag">// 01 — DFC Nedir?</div>
+      <div class="section-title">DEĞIŞIM<br>İÇİN<br><span style="color:var(--green)">TASARIM</span></div>
+      <div class="dfc-body">
+        Design for Change (DFC), 2009 yılında Kiran Bir Sethi tarafından kurulan dünyanın en büyük
+        çocuk hareketidir. Bugün <strong style="color:var(--text)">70'ten fazla ülkede</strong>,
+        <strong style="color:var(--text)">30.000+ okulda</strong> ve
+        <strong style="color:var(--text)">2 milyondan fazla çocukla</strong> hayata geçirilmektedir.
+        <br><br>
+        DFC Türkiye, 2023 yılında Yarın İçin Bugün Derneği temsilciliğiyle Türkiye'de başladı.
+        Amacı, "YAPABİLİRİM" zihniyetini tüm Türkiye'ye yaymak.
+        <br><br>
+        Yarışmada 9–17 yaş arası öğrenciler kendi çevrelerindeki gerçek sorunlara FIDS modeli
+        ile çözümler geliştiriyor. En iyi projeler Japonya, Yunanistan gibi uluslararası Be the Change
+        Zirvelerine katılım hakkı kazanıyor.
+      </div>
+    </div>
+    <div class="dfc-right">
+      <div class="dfc-quote">
+        "Zamanımızın en zorlayıcı problemlerine çözüm üretebilir, geçmişin sana dayattığı sınırlamalar yerine, <strong>kendi geleceğini inşa edebilirsin.</strong>"
+      </div>
+      <div class="dfc-attr">— Andreas Schleicher, OECD Eğitim Direktörü</div>
+    </div>
+  </div>
+</section>
+
+<!-- FIDS -->
+<section id="fids" class="fids-section">
+  <div class="reveal">
+    <div class="section-tag">// 02 — FIDS Modeli</div>
+    <div class="section-title" style="max-width:600px">4 ADIMDA<br><span style="color:var(--green)">DEĞİŞİM</span></div>
+  </div>
+
+  <div class="fids-grid reveal">
+    <div class="fids-card">
+      <div class="fids-num">01</div>
+      <div class="fids-letter">F</div>
+      <div class="fids-word">Feel — Hisset</div>
+      <div class="fids-title">Empati Kur</div>
+      <div class="fids-desc">
+        Bir sorunu çözmeye başlamadan önce yavaşla, gözlemle ve iyice anla.
+        Varsayımlara değil, gözleme dayalı içgörülerle yaklaş.
+      </div>
+      <div class="fids-badge">EMPATİ BECERİSİ</div>
+    </div>
+
+    <div class="fids-card">
+      <div class="fids-num">02</div>
+      <div class="fids-letter">I</div>
+      <div class="fids-word">Imagine — Hayal Et</div>
+      <div class="fids-title">Çözüm Tasarla</div>
+      <div class="fids-desc">
+        Topluluğun yaratıcılığına ve ortak akla başvur.
+        Durumu iyileştirmek için birlikte fikir üret.
+      </div>
+      <div class="fids-badge">YARATICI DÜŞÜNCE</div>
+    </div>
+
+    <div class="fids-card">
+      <div class="fids-num">03</div>
+      <div class="fids-letter">D</div>
+      <div class="fids-word">Do — Yap</div>
+      <div class="fids-title">Harekete Geç</div>
+      <div class="fids-desc">
+        Arzu edilen etkiye ulaşmak için pratiklik, yaratıcılık ve azimle
+        çalış. Ayrıntılara odaklan, eyleme geç.
+      </div>
+      <div class="fids-badge">POTANSİYELİ ORTAYA ÇIKAR</div>
+    </div>
+
+    <div class="fids-card">
+      <div class="fids-num">04</div>
+      <div class="fids-letter">S</div>
+      <div class="fids-word">Share — Paylaş</div>
+      <div class="fids-title">İlham Ver</div>
+      <div class="fids-desc">
+        "YAPABİLİRİM" bilincini yay. Başkalarıyla rekabet etmek yerine
+        başkalarını tamamla ve birlikte yüksel.
+      </div>
+      <div class="fids-badge">BİRLİKTE YÜKSELİŞ</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJE ÖZELLİKLERİ -->
+<section id="proje">
+  <div class="proje-header reveal">
+    <div>
+      <div class="section-tag">// 03 — Proje</div>
+      <div class="section-title">NEXSTOCK<br><span style="color:var(--green)">ÖZELLİKLERİ</span></div>
+    </div>
+    <a href="https://barkod-pro-production.up.railway.app" class="btn-primary">Canlı Dene →</a>
+  </div>
+
+  <div class="proje-grid reveal">
+    <div class="proje-card">
+      <div class="proje-icon">📷</div>
+      <div class="proje-name">Kamera Tarama</div>
+      <div class="proje-desc">
+        Tarayıcı kamerası ile EAN-13 dahil tüm barkod formatlarını gerçek zamanlı okuma.
+        3 tutarlı okuma algoritması ile doğruluk maksimize edildi.
+      </div>
+    </div>
+    <div class="proje-card">
+      <div class="proje-icon">🗓️</div>
+      <div class="proje-name">SKT Takibi</div>
+      <div class="proje-desc">
+        Son kullanma tarihi geçmiş ürünler için sesli ve görsel alarmlar.
+        7 günlük önceden uyarı sistemi ile israf önlenir.
+      </div>
+    </div>
+    <div class="proje-card">
+      <div class="proje-icon">🌍</div>
+      <div class="proje-name">Open Food Facts</div>
+      <div class="proje-desc">
+        Bilinmeyen barkodlar otomatik olarak Open Food Facts API'sinden sorgulanır,
+        ürün bilgileri anında sisteme eklenir.
+      </div>
+    </div>
+    <div class="proje-card">
+      <div class="proje-icon">👥</div>
+      <div class="proje-name">Rol Sistemi</div>
+      <div class="proje-desc">
+        Admin, müdür, kasiyer ve görüntüleyici rolleri. Her rol kendi yetki
+        seviyesine göre sisteme erişir.
+      </div>
+    </div>
+    <div class="proje-card">
+      <div class="proje-icon">📊</div>
+      <div class="proje-name">Dashboard</div>
+      <div class="proje-desc">
+        Gerçek zamanlı envanter istatistikleri, kritik stok uyarıları,
+        hareket geçmişi ve raporlar tek ekranda.
+      </div>
+    </div>
+    <div class="proje-card">
+      <div class="proje-icon">🔊</div>
+      <div class="proje-name">Ses Sistemi</div>
+      <div class="proje-desc">
+        Web Audio API ile başarılı okuma, hata ve SKT uyarı sesleri.
+        Her durum için farklı ses tonu ile anlık geri bildirim.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-section reveal">
+  <div class="stats-grid">
+    <div>
+      <div class="stat-num">70+</div>
+      <div class="stat-label">Ülkede DFC</div>
+    </div>
+    <div>
+      <div class="stat-num">2M+</div>
+      <div class="stat-label">Çocuk Katılımcı</div>
+    </div>
+    <div>
+      <div class="stat-num">4</div>
+      <div class="stat-label">FIDS Adımı</div>
+    </div>
+    <div>
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Değişim Potansiyeli</div>
+    </div>
+  </div>
+</div>
+
+<!-- TECH -->
+<section id="tech">
+  <div class="reveal">
+    <div class="section-tag">// 04 — Teknoloji</div>
+    <div class="section-title">NASIL<br><span style="color:var(--green)">YAPILDI?</span></div>
+    <div class="tech-list">
+      <div class="tech-tag active">Python</div>
+      <div class="tech-tag active">Flask</div>
+      <div class="tech-tag active">SQLite</div>
+      <div class="tech-tag active">Tkinter</div>
+      <div class="tech-tag">QuaggaJS</div>
+      <div class="tech-tag">OpenCV</div>
+      <div class="tech-tag">zxing-cpp</div>
+      <div class="tech-tag">Web Audio API</div>
+      <div class="tech-tag">Open Food Facts API</div>
+      <div class="tech-tag">Railway</div>
+      <div class="tech-tag">GitHub</div>
+      <div class="tech-tag">pygame</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Nex<span>Stock</span></div>
+  <div class="footer-info">
+    DFC Türkiye Yarışması — 2025<br>
+    FIDS Modeli ile Geliştirildi
+  </div>
+  <div class="footer-links">
+    <a href="https://dfcturkiye.org" target="_blank">DFC Türkiye</a>
+    <a href="https://barkod-pro-production.up.railway.app" target="_blank">Uygulama</a>
+  </div>
+</footer>
+
+<script>
+// CURSOR
+const cursor = document.getElementById('cursor');
+const trail = document.getElementById('cursorTrail');
+let mx = 0, my = 0, tx = 0, ty = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx - 6 + 'px';
+  cursor.style.top  = my - 6 + 'px';
+});
+
+function animTrail() {
+  tx += (mx - tx) * 0.12;
+  ty += (my - ty) * 0.12;
+  trail.style.left = tx - 18 + 'px';
+  trail.style.top  = ty - 18 + 'px';
+  requestAnimationFrame(animTrail);
+}
+animTrail();
+
+document.querySelectorAll('a, button, .fids-card, .proje-card').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.style.transform = 'scale(2.5)');
+  el.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
+});
+
+// SCROLL REVEAL
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
