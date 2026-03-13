@@ -1,2 +1,2 @@
-# Nextstock-Tan-t-m
+# Nextstock-Tanıtım
 Nexstock tanıtımı için website
