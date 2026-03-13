@@ -5,547 +5,250 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NexStock — Akıllı Envanter Sistemi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --green: #22c55e;
-    --green2: #4ade80;
-    --bg: #050805;
-    --panel: #0a0f0b;
-    --border: #1a3d24;
-    --text: #d1fae5;
-    --muted: #2d5a3d;
-  }
+:root{--g:#22c55e;--g2:#4ade80;--bg:#050805;--panel:#0a0f0b;--border:#1a3d24;--text:#d1fae5;--sub:#6ee7b7;--muted:#2d5a3d;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;cursor:none;}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+/* CURSOR */
+#cur{width:8px;height:8px;background:var(--g);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference;transition:transform .1s,width .2s,height .2s;}
+#cur-ring{width:44px;height:44px;border:1px solid rgba(34,197,94,.4);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s,opacity .3s;}
+body:has(a:hover) #cur,body:has(button:hover) #cur{transform:translate(-50%,-50%) scale(3);}
+body:has(a:hover) #cur-ring,body:has(button:hover) #cur-ring{width:80px;height:80px;opacity:.3;}
 
-  html { scroll-behavior: smooth; }
+/* NOISE */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:8888;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.45;}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Space Grotesk', sans-serif;
-    overflow-x: hidden;
-    cursor: none;
-  }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:22px 52px;display:flex;justify-content:space-between;align-items:center;transition:all .5s;}
+nav.scrolled{background:rgba(5,8,5,.88);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:14px 52px;}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:4px;color:var(--text);cursor:none;}
+.nav-logo span{color:var(--g);}
+.nav-links{display:flex;gap:36px;align-items:center;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.82rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:color .2s;position:relative;overflow:hidden;padding-bottom:2px;}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:1px;background:var(--g);transform:translateX(-101%);transition:transform .35s cubic-bezier(.16,1,.3,1);}
+.nav-links a:hover{color:var(--text);}
+.nav-links a:hover::after{transform:translateX(0);}
+.nav-cta{background:var(--g)!important;color:#050805!important;padding:10px 26px;font-weight:700!important;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));transition:background .2s,transform .2s,box-shadow .2s;}
+.nav-cta:hover{background:var(--g2)!important;transform:translateY(-2px)!important;box-shadow:0 12px 30px rgba(34,197,94,.25)!important;}
+.nav-cta::after{display:none!important;}
 
-  /* CUSTOM CURSOR */
-  .cursor {
-    width: 12px; height: 12px;
-    background: var(--green);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.1s;
-    mix-blend-mode: difference;
-  }
-  .cursor-trail {
-    width: 36px; height: 36px;
-    border: 1px solid var(--green);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9998;
-    transition: all 0.15s ease;
-    opacity: 0.5;
-  }
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 52px 90px;position:relative;overflow:hidden;}
 
-  /* NOISE OVERLAY */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1000;
-    opacity: 0.4;
-  }
+/* ANIMATED MESH BACKGROUND */
+.mesh{position:absolute;inset:0;overflow:hidden;}
+.mesh-grid{position:absolute;inset:-50%;background-image:linear-gradient(rgba(34,197,94,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(34,197,94,.04) 1px,transparent 1px);background-size:70px 70px;animation:meshMove 30s linear infinite;}
+@keyframes meshMove{0%{transform:translate(0,0) rotate(0deg)}100%{transform:translate(70px,70px) rotate(0deg)}}
 
-  /* NAV */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 20px 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: linear-gradient(to bottom, rgba(5,8,5,0.95) 0%, transparent 100%);
-  }
-  .nav-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem;
-    letter-spacing: 3px;
-    color: var(--text);
-  }
-  .nav-logo span { color: var(--green); }
-  .nav-links { display: flex; gap: 32px; align-items: center; }
-  .nav-links a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: .85rem;
-    font-weight: 500;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--green); }
-  .nav-cta {
-    background: var(--green) !important;
-    color: #050805 !important;
-    padding: 10px 24px;
-    border-radius: 4px;
-    font-weight: 700 !important;
-  }
-  .nav-cta:hover { background: var(--green2) !important; }
+/* PARTICLES */
+.particles{position:absolute;inset:0;overflow:hidden;}
+.p{position:absolute;border-radius:50%;animation:pFloat linear infinite;opacity:0;}
+@keyframes pFloat{0%{transform:translateY(110vh) scale(0);opacity:0}5%{opacity:1}90%{opacity:.4}100%{transform:translateY(-5vh) scale(1.5);opacity:0}}
 
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 0 48px 80px;
-    position: relative;
-    overflow: hidden;
-  }
+/* GLOWING ORBS */
+.orb{position:absolute;border-radius:50%;filter:blur(80px);animation:orbPulse ease-in-out infinite;pointer-events:none;}
+.orb1{width:800px;height:800px;background:radial-gradient(circle,rgba(34,197,94,.09) 0%,transparent 70%);top:-200px;right:-200px;animation-duration:9s;}
+.orb2{width:500px;height:500px;background:radial-gradient(circle,rgba(34,197,94,.06) 0%,transparent 70%);bottom:50px;left:-100px;animation-duration:7s;animation-delay:-3s;}
+.orb3{width:300px;height:300px;background:radial-gradient(circle,rgba(74,222,128,.05) 0%,transparent 70%);top:40%;left:40%;animation-duration:11s;animation-delay:-5s;}
+@keyframes orbPulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.12);opacity:1}}
 
-  .hero-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(34,197,94,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(34,197,94,0.04) 1px, transparent 1px);
-    background-size: 80px 80px;
-    animation: gridMove 20s linear infinite;
-  }
-  @keyframes gridMove {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(80px); }
-  }
+/* SCANNING LINE */
+.scan-line{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,197,94,.4),transparent);animation:scanLine 5s ease-in-out infinite;pointer-events:none;}
+@keyframes scanLine{0%{top:0;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
 
-  .hero-glow {
-    position: absolute;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(34,197,94,0.12) 0%, transparent 70%);
-    top: -100px; right: -100px;
-    animation: pulse 4s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 0.8; }
-    50% { transform: scale(1.1); opacity: 1; }
-  }
+/* HERO TEXT */
+.hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--g);letter-spacing:4px;text-transform:uppercase;margin-bottom:28px;display:flex;align-items:center;gap:14px;opacity:0;animation:fadeUp .7s .2s forwards;}
+.hero-eyebrow::before{content:'';display:block;width:50px;height:1px;background:var(--g);transform-origin:left;animation:scaleIn .6s .4s both;}
+@keyframes scaleIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.blink{animation:blink 1.2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
-  .hero-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .78rem;
-    color: var(--green);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 24px;
-    opacity: 0;
-    animation: fadeUp 0.8s 0.3s forwards;
-  }
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,13vw,13rem);line-height:.88;letter-spacing:-1px;}
+.title-line{display:block;overflow:hidden;}
+.title-word{display:inline-block;transform:translateY(110%);animation:wordUp .9s cubic-bezier(.16,1,.3,1) forwards;}
+.title-line:nth-child(1) .title-word{animation-delay:.25s;}
+.title-line:nth-child(2) .title-word{animation-delay:.4s;}
+.title-line:nth-child(3) .title-word{animation-delay:.55s;}
+@keyframes wordUp{to{transform:translateY(0)}}
+.t-green{color:var(--g);}
+.t-outline{-webkit-text-stroke:2px var(--g);color:transparent;}
 
-  .hero-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(5rem, 14vw, 14rem);
-    line-height: 0.9;
-    letter-spacing: -2px;
-    color: var(--text);
-    opacity: 0;
-    animation: fadeUp 0.8s 0.5s forwards;
-  }
-  .hero-title .green { color: var(--green); }
-  .hero-title .outline {
-    -webkit-text-stroke: 2px var(--green);
-    color: transparent;
-  }
+/* GLITCH */
+.glitch{position:relative;}
+.glitch::before,.glitch::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;overflow:hidden;}
+.glitch::before{color:rgba(34,197,94,.7);animation:glitch1 4s infinite;clip-path:polygon(0 0,100% 0,100% 35%,0 35%);}
+.glitch::after{color:rgba(74,222,128,.5);animation:glitch2 4s infinite;clip-path:polygon(0 65%,100% 65%,100% 100%,0 100%);}
+@keyframes glitch1{0%,90%,100%{transform:none;opacity:0}92%{transform:translate(-2px,1px);opacity:1}94%{transform:translate(2px,-1px);opacity:1}96%{transform:translate(-1px,2px);opacity:1}98%{transform:none;opacity:0}}
+@keyframes glitch2{0%,91%,100%{transform:none;opacity:0}93%{transform:translate(2px,-2px);opacity:1}95%{transform:translate(-2px,1px);opacity:1}97%{transform:translate(1px,-1px);opacity:1}99%{transform:none;opacity:0}}
 
-  .hero-sub {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-top: 40px;
-    opacity: 0;
-    animation: fadeUp 0.8s 0.7s forwards;
-  }
-  .hero-desc {
-    max-width: 420px;
-    font-size: 1rem;
-    line-height: 1.7;
-    color: #6ee7b7;
-    font-weight: 300;
-  }
-  .hero-btns { display: flex; gap: 12px; }
-  .btn-primary {
-    background: var(--green);
-    color: #050805;
-    padding: 16px 36px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: .95rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    border: none;
-    cursor: none;
-    text-decoration: none;
-    display: inline-block;
-    transition: all 0.2s;
-    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
-  }
-  .btn-primary:hover { background: var(--green2); transform: translateY(-2px); }
-  .btn-secondary {
-    background: transparent;
-    color: var(--text);
-    padding: 16px 36px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    font-size: .95rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    border: 1px solid var(--border);
-    cursor: none;
-    text-decoration: none;
-    display: inline-block;
-    transition: all 0.2s;
-  }
-  .btn-secondary:hover { border-color: var(--green); color: var(--green); }
+.hero-bottom{display:flex;justify-content:space-between;align-items:flex-end;margin-top:48px;opacity:0;animation:fadeUp .8s .9s forwards;}
+.hero-desc{max-width:420px;font-size:1rem;line-height:1.75;color:var(--sub);font-weight:300;}
+.hero-btns{display:flex;gap:14px;}
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(40px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+/* MAGNETIC BUTTONS */
+.btn-mag{position:relative;display:inline-block;padding:18px 42px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:1px;text-transform:uppercase;text-decoration:none;cursor:none;transition:transform .2s;}
+.btn-prim{background:var(--g);color:#050805;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));overflow:hidden;}
+.btn-prim::before{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 25%,rgba(255,255,255,.15) 50%,transparent 75%);transform:translateX(-100%);transition:transform .5s;}
+.btn-prim:hover{background:var(--g2);}
+.btn-prim:hover::before{transform:translateX(100%);}
+.btn-sec{background:transparent;color:var(--text);border:1px solid var(--border);}
+.btn-sec:hover{border-color:var(--g);color:var(--g);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
 
-  /* TICKER */
-  .ticker {
-    background: var(--green);
-    color: #050805;
-    padding: 14px 0;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-  .ticker-inner {
-    display: inline-flex;
-    gap: 0;
-    animation: ticker 20s linear infinite;
-  }
-  .ticker-item {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.1rem;
-    letter-spacing: 3px;
-    padding: 0 40px;
-  }
-  .ticker-sep { opacity: 0.4; }
-  @keyframes ticker {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
+/* SCROLL HINT */
+.scroll-hint{position:absolute;bottom:36px;left:52px;display:flex;align-items:center;gap:14px;opacity:0;animation:fadeUp .6s 1.3s forwards;}
+.scroll-bar{width:1px;height:70px;background:linear-gradient(to bottom,var(--g),transparent);position:relative;overflow:hidden;}
+.scroll-bar::after{content:'';position:absolute;top:0;left:0;width:100%;height:40%;background:var(--bg);animation:scrollDrop 2s ease-in-out infinite;}
+@keyframes scrollDrop{0%{transform:translateY(-100%)}100%{transform:translateY(300%)}}
+.scroll-label{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;writing-mode:vertical-rl;}
 
-  /* SECTION BASE */
-  section { padding: 120px 48px; }
-  .section-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .75rem;
-    color: var(--green);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(3rem, 6vw, 6rem);
-    line-height: 1;
-    letter-spacing: 1px;
-  }
+/* TICKER */
+.ticker{background:var(--g);color:#050805;padding:15px 0;overflow:hidden;white-space:nowrap;position:relative;}
+.ticker::before{content:'';position:absolute;left:0;top:0;bottom:0;width:80px;background:linear-gradient(to right,var(--g),transparent);z-index:1;}
+.ticker::after{content:'';position:absolute;right:0;top:0;bottom:0;width:80px;background:linear-gradient(to left,var(--g),transparent);z-index:1;}
+.ticker-track{display:inline-flex;animation:tick 22s linear infinite;}
+.ticker:hover .ticker-track{animation-play-state:paused;}
+.tick-item{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:4px;padding:0 40px;}
+.tick-dot{opacity:.4;}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
-  /* ABOUT DFC */
-  .dfc-section {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
-  }
-  .dfc-left { }
-  .dfc-right {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    padding: 48px;
-    position: relative;
-    overflow: hidden;
-  }
-  .dfc-right::before {
-    content: 'DFC';
-    position: absolute;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 12rem;
-    color: rgba(34,197,94,0.03);
-    right: -20px;
-    bottom: -20px;
-    line-height: 1;
-  }
-  .dfc-quote {
-    font-size: 1.4rem;
-    line-height: 1.6;
-    font-weight: 300;
-    color: var(--text);
-    margin-bottom: 24px;
-  }
-  .dfc-quote strong { color: var(--green); font-weight: 700; }
-  .dfc-attr {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .8rem;
-    color: var(--muted);
-    letter-spacing: 1px;
-  }
-  .dfc-body {
-    color: #6ee7b7;
-    font-size: 1rem;
-    line-height: 1.8;
-    font-weight: 300;
-    margin-top: 24px;
-  }
+/* SECTIONS */
+section{padding:130px 52px;}
+.s-tag{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--g);letter-spacing:4px;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:12px;}
+.s-tag::before{content:'';display:block;width:36px;height:1px;background:var(--g);}
+.s-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,5.5vw,5.5rem);line-height:1;letter-spacing:1px;}
 
-  /* FIDS */
-  .fids-section { background: var(--panel); }
-  .fids-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    margin-top: 60px;
-    background: var(--border);
-  }
-  .fids-card {
-    background: var(--bg);
-    padding: 48px 32px;
-    position: relative;
-    overflow: hidden;
-    transition: background 0.3s;
-  }
-  .fids-card:hover { background: #0d1a0f; }
-  .fids-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 5rem;
-    line-height: 1;
-    color: rgba(34,197,94,0.08);
-    position: absolute;
-    top: 16px; right: 20px;
-    transition: color 0.3s;
-  }
-  .fids-card:hover .fids-num { color: rgba(34,197,94,0.15); }
-  .fids-letter {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 3.5rem;
-    color: var(--green);
-    line-height: 1;
-    margin-bottom: 8px;
-  }
-  .fids-word {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .75rem;
-    letter-spacing: 3px;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-  .fids-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 12px;
-  }
-  .fids-desc {
-    font-size: .88rem;
-    color: #6ee7b7;
-    line-height: 1.7;
-    font-weight: 300;
-  }
-  .fids-badge {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 4px 12px;
-    border: 1px solid var(--border);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .72rem;
-    color: var(--green);
-    letter-spacing: 1px;
-  }
+/* REVEAL SYSTEM */
+[data-reveal]{opacity:0;transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
+[data-reveal="up"]{transform:translateY(60px);}
+[data-reveal="left"]{transform:translateX(-60px);}
+[data-reveal="right"]{transform:translateX(60px);}
+[data-reveal="scale"]{transform:scale(.88);}
+[data-reveal="rotate"]{transform:rotate(-4deg) translateY(40px);}
+[data-reveal].visible{opacity:1;transform:none;}
 
-  /* PROJE */
-  .proje-section { }
-  .proje-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 60px;
-  }
-  .proje-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--border);
-  }
-  .proje-card {
-    background: var(--bg);
-    padding: 40px 32px;
-    transition: background 0.3s;
-    position: relative;
-    overflow: hidden;
-  }
-  .proje-card:hover { background: var(--panel); }
-  .proje-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--green);
-    transform: scaleX(0);
-    transition: transform 0.3s;
-  }
-  .proje-card:hover::after { transform: scaleX(1); }
-  .proje-icon {
-    font-size: 2.5rem;
-    margin-bottom: 24px;
-  }
-  .proje-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem;
-    letter-spacing: 2px;
-    margin-bottom: 12px;
-  }
-  .proje-desc {
-    font-size: .9rem;
-    color: #6ee7b7;
-    line-height: 1.7;
-    font-weight: 300;
-  }
+/* DFC */
+.dfc-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.dfc-card{background:var(--panel);border:1px solid var(--border);padding:52px;position:relative;overflow:hidden;}
+.dfc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,var(--g) 50%,transparent 100%);animation:shimmer 3s ease-in-out infinite;}
+.dfc-card::after{content:'NEX';position:absolute;font-family:'Bebas Neue',sans-serif;font-size:11rem;color:rgba(34,197,94,.03);right:-15px;bottom:-25px;line-height:1;}
+@keyframes shimmer{0%,100%{background-position:200% 0}50%{background-position:-200% 0}}
+.dfc-quote{font-size:1.25rem;line-height:1.7;font-weight:300;margin-bottom:28px;color:var(--text);}
+.dfc-quote em{color:var(--g);font-style:normal;font-weight:700;}
+.dfc-attr{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--muted);letter-spacing:1px;}
+.dfc-body{color:var(--sub);font-size:1rem;line-height:1.85;font-weight:300;margin-top:28px;}
+.dfc-body strong{color:var(--text);}
 
-  /* STATS */
-  .stats-section {
-    background: var(--green);
-    color: #050805;
-    padding: 80px 48px;
-  }
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 48px;
-    text-align: center;
-  }
-  .stat-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 5rem;
-    line-height: 1;
-    letter-spacing: -2px;
-  }
-  .stat-label {
-    font-size: .85rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-top: 8px;
-    opacity: 0.7;
-  }
+/* COUNTERS */
+.counters{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:52px;background:var(--border);}
+.counter-item{background:var(--bg);padding:24px 20px;position:relative;overflow:hidden;transition:background .3s;}
+.counter-item:hover{background:var(--panel);}
+.counter-item::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--g);transform:scaleX(0);transition:transform .4s cubic-bezier(.16,1,.3,1);transform-origin:left;}
+.counter-item:hover::after{transform:scaleX(1);}
+.cnum{font-family:'Bebas Neue',sans-serif;font-size:3.2rem;color:var(--g);line-height:1;display:block;}
+.clbl{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px;display:block;}
 
-  /* TECH STACK */
-  .tech-section { }
-  .tech-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 48px;
-  }
-  .tech-tag {
-    border: 1px solid var(--border);
-    padding: 12px 24px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .85rem;
-    color: var(--muted);
-    letter-spacing: 1px;
-    transition: all 0.2s;
-  }
-  .tech-tag:hover {
-    border-color: var(--green);
-    color: var(--green);
-    background: rgba(34,197,94,0.05);
-  }
-  .tech-tag.active {
-    background: var(--green);
-    color: #050805;
-    border-color: var(--green);
-    font-weight: 700;
-  }
+/* FIDS */
+.fids-bg{background:var(--panel);}
+.fids-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:64px;background:var(--border);}
+.fids-card{background:var(--bg);padding:52px 36px;position:relative;overflow:hidden;cursor:none;transition:background .3s;}
+.fids-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--g),var(--g2));transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.16,1,.3,1);}
+.fids-card:hover{background:#0c1710;}
+.fids-card:hover::after{transform:scaleX(1);}
+.fids-num-bg{font-family:'Bebas Neue',sans-serif;font-size:6rem;line-height:1;color:rgba(34,197,94,.05);position:absolute;top:12px;right:16px;transition:color .4s,transform .4s;}
+.fids-card:hover .fids-num-bg{color:rgba(34,197,94,.1);transform:scale(1.1);}
+.fids-letter{font-family:'Bebas Neue',sans-serif;font-size:4rem;color:var(--g);line-height:1;margin-bottom:6px;transition:transform .3s;}
+.fids-card:hover .fids-letter{transform:translateX(4px);}
+.fids-word{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:22px;}
+.fids-ttl{font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:12px;}
+.fids-body{font-size:.87rem;color:var(--sub);line-height:1.75;font-weight:300;}
+.fids-tag{display:inline-block;margin-top:22px;padding:5px 13px;border:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--g);letter-spacing:1px;transition:all .3s;}
+.fids-card:hover .fids-tag{background:var(--g);color:#050805;border-color:var(--g);}
 
-  /* FOOTER */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .footer-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.5rem;
-    letter-spacing: 3px;
-  }
-  .footer-logo span { color: var(--green); }
-  .footer-info {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .75rem;
-    color: var(--muted);
-    text-align: center;
-    line-height: 1.8;
-  }
-  .footer-links { display: flex; gap: 24px; }
-  .footer-links a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: .85rem;
-    transition: color 0.2s;
-  }
-  .footer-links a:hover { color: var(--green); }
+/* FEATURES */
+.feat-hdr{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:64px;}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
+.feat-card{background:var(--bg);padding:44px 36px;position:relative;overflow:hidden;cursor:none;transition:background .3s;}
+.feat-card:hover{background:var(--panel);}
+.feat-glow{position:absolute;width:200px;height:200px;background:radial-gradient(circle,rgba(34,197,94,.06),transparent);border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);opacity:0;transition:opacity .3s;}
+.feat-card:hover .feat-glow{opacity:1;}
+.feat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--g),var(--g2));transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.16,1,.3,1);}
+.feat-card:hover::after{transform:scaleX(1);}
+.feat-icon{font-size:2.8rem;display:block;margin-bottom:26px;transition:transform .35s cubic-bezier(.16,1,.3,1);}
+.feat-card:hover .feat-icon{transform:scale(1.25) rotate(8deg);}
+.feat-name{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:2px;margin-bottom:14px;}
+.feat-desc{font-size:.88rem;color:var(--sub);line-height:1.75;font-weight:300;}
 
-  /* SCROLL REVEAL */
-  .reveal {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s, transform 0.8s;
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* STATS BAND */
+.stats-band{background:var(--g);color:#050805;padding:90px 52px;position:relative;overflow:hidden;}
+.stats-band::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,0,0,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.06) 1px,transparent 1px);background-size:44px 44px;}
+.stats-band::after{content:'NEXSTOCK';position:absolute;font-family:'Bebas Neue',sans-serif;font-size:20rem;color:rgba(0,0,0,.04);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:48px;text-align:center;position:relative;}
+.snum{font-family:'Bebas Neue',sans-serif;font-size:5.5rem;line-height:1;letter-spacing:-2px;}
+.slbl{font-size:.82rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;margin-top:8px;opacity:.65;}
 
-  /* RESPONSIVE */
-  @media (max-width: 900px) {
-    nav { padding: 16px 24px; }
-    .nav-links { display: none; }
-    .hero { padding: 0 24px 60px; }
-    section { padding: 80px 24px; }
-    .dfc-section { grid-template-columns: 1fr; gap: 40px; }
-    .fids-grid { grid-template-columns: 1fr 1fr; }
-    .proje-grid { grid-template-columns: 1fr; }
-    .stats-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
-    footer { flex-direction: column; gap: 24px; text-align: center; }
-    body { cursor: auto; }
-    .cursor, .cursor-trail { display: none; }
-  }
+/* TECH */
+.tech-list{display:flex;flex-wrap:wrap;gap:10px;margin-top:52px;}
+.tech-pill{border:1px solid var(--border);padding:11px 24px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--muted);letter-spacing:1px;cursor:none;position:relative;overflow:hidden;transition:color .3s,border-color .3s;}
+.tech-pill::before{content:'';position:absolute;inset:0;background:var(--g);transform:translateY(101%);transition:transform .35s cubic-bezier(.16,1,.3,1);}
+.tech-pill span{position:relative;z-index:1;}
+.tech-pill:hover{color:#050805;border-color:var(--g);}
+.tech-pill:hover::before{transform:translateY(0);}
+.tech-pill.hot{background:var(--g);color:#050805;border-color:var(--g);font-weight:700;}
+.tech-pill.hot::before{display:none;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:52px;display:flex;justify-content:space-between;align-items:center;}
+.f-logo{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:4px;}
+.f-logo span{color:var(--g);}
+.f-info{font-family:'JetBrains Mono',monospace;font-size:.73rem;color:var(--muted);text-align:center;line-height:2;}
+.f-links{display:flex;gap:28px;}
+.f-links a{color:var(--muted);text-decoration:none;font-size:.85rem;transition:color .2s;}
+.f-links a:hover{color:var(--g);}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav,section,.stats-band,footer{padding-left:24px;padding-right:24px;}
+  nav.scrolled{padding-left:24px;padding-right:24px;}
+  .nav-links{display:none;}
+  .hero{padding:0 24px 80px;}
+  .hero-bottom{flex-direction:column;align-items:flex-start;gap:28px;}
+  .hero-desc{max-width:100%;font-size:.92rem;}
+  .hero-btns{width:100%;}
+  .hero-btns a{flex:1;text-align:center;padding:14px 16px;font-size:.85rem;}
+  .dfc-grid{grid-template-columns:1fr;gap:48px;}
+  .fids-grid{grid-template-columns:1fr 1fr;}
+  .feat-grid{grid-template-columns:1fr;}
+  .stats-grid{grid-template-columns:1fr 1fr;gap:36px;}
+  footer{flex-direction:column;gap:28px;text-align:center;}
+  body{cursor:auto;}
+  #cur,#cur-ring{display:none;}
+  .scroll-hint{display:none;}
+}
+@media(max-width:520px){
+  .hero-title{font-size:clamp(3.5rem,17vw,5.5rem);}
+  .fids-grid{grid-template-columns:1fr;}
+  .hero-btns{flex-direction:column;}
+  .counters{grid-template-columns:1fr 1fr 1fr;}
+}
 </style>
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-trail" id="cursorTrail"></div>
+<div id="cur"></div>
+<div id="cur-ring"></div>
 
 <!-- NAV -->
-<nav>
+<nav id="nav">
   <div class="nav-logo">Nex<span>Stock</span></div>
   <div class="nav-links">
     <a href="#dfc">DFC Nedir?</a>
     <a href="#fids">FIDS Modeli</a>
-    <a href="#proje">Proje</a>
+    <a href="#features">Proje</a>
     <a href="#tech">Teknoloji</a>
     <a href="https://barkod-pro-production.up.railway.app" class="nav-cta">Uygulamayı Aç →</a>
   </div>
@@ -553,301 +256,338 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-grid"></div>
-  <div class="hero-glow"></div>
+  <div class="mesh"><div class="mesh-grid"></div></div>
+  <div class="particles" id="pts"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="scan-line"></div>
 
-  <div class="hero-tag">// DFC Türkiye Yarışması — 2025</div>
-
-  <div class="hero-title">
-    NEX<span class="green">STOCK</span><br>
-    <span class="outline">ENVANTERİN</span><br>
-    GELECEĞİ
+  <div class="hero-eyebrow">
+    <span class="blink">▶</span>
+    DFC Türkiye Yarışması — 2025
   </div>
 
-  <div class="hero-sub">
+  <div class="hero-title">
+    <span class="title-line"><span class="title-word glitch t-green" data-text="NEXSTOCK">NEXSTOCK</span></span>
+    <span class="title-line"><span class="title-word t-outline">ENVANTERİN</span></span>
+    <span class="title-line"><span class="title-word">GELECEĞİ</span></span>
+  </div>
+
+  <div class="hero-bottom">
     <div class="hero-desc">
       DFC FIDS metodolojisi ile geliştirilen akıllı barkod ve envanter yönetim sistemi.
       Gerçek sorunlara, gerçek çözümler.
     </div>
     <div class="hero-btns">
-      <a href="https://barkod-pro-production.up.railway.app" class="btn-primary">Uygulamayı Dene</a>
-      <a href="#dfc" class="btn-secondary">Daha Fazla</a>
+      <a href="https://barkod-pro-production.up.railway.app" class="btn-mag btn-prim" id="btn1">Uygulamayı Dene</a>
+      <a href="#dfc" class="btn-mag btn-sec">Daha Fazla</a>
     </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-bar"></div>
+    <div class="scroll-label">Kaydır</div>
   </div>
 </section>
 
 <!-- TICKER -->
 <div class="ticker">
-  <div class="ticker-inner">
-    <span class="ticker-item">FEEL</span>
-    <span class="ticker-item ticker-sep">✦</span>
-    <span class="ticker-item">IMAGINE</span>
-    <span class="ticker-item ticker-sep">✦</span>
-    <span class="ticker-item">DO</span>
-    <span class="ticker-item ticker-sep">✦</span>
-    <span class="ticker-item">SHARE</span>
-    <span class="ticker-item ticker-sep">✦</span>
-    <span class="ticker-item">DESIGN FOR CHANGE</span>
-    <span class="ticker-item ticker-sep">✦</span>
-    <span class="ticker-item">NEXSTOCK</span>
-    <span class="ticker-item ticker-sep">✦</span>
-    <span class="ticker-item">FEEL</span>
-    <span class="ticker-item ticker-sep">✦</span>
-    <span class="ticker-item">IMAGINE</span>
-    <span class="ticker-item ticker-sep">✦</span>
-    <span class="ticker-item">DO</span>
-    <span class="ticker-item ticker-sep">✦</span>
-    <span class="ticker-item">SHARE</span>
-    <span class="ticker-item ticker-sep">✦</span>
-    <span class="ticker-item">DESIGN FOR CHANGE</span>
-    <span class="ticker-item ticker-sep">✦</span>
-    <span class="ticker-item">NEXSTOCK</span>
-    <span class="ticker-item ticker-sep">✦</span>
+  <div class="ticker-track">
+    <span class="tick-item">FEEL</span><span class="tick-item tick-dot">✦</span>
+    <span class="tick-item">IMAGINE</span><span class="tick-item tick-dot">✦</span>
+    <span class="tick-item">DO</span><span class="tick-item tick-dot">✦</span>
+    <span class="tick-item">SHARE</span><span class="tick-item tick-dot">✦</span>
+    <span class="tick-item">DESIGN FOR CHANGE</span><span class="tick-item tick-dot">✦</span>
+    <span class="tick-item">NEXSTOCK</span><span class="tick-item tick-dot">✦</span>
+    <span class="tick-item">FEEL</span><span class="tick-item tick-dot">✦</span>
+    <span class="tick-item">IMAGINE</span><span class="tick-item tick-dot">✦</span>
+    <span class="tick-item">DO</span><span class="tick-item tick-dot">✦</span>
+    <span class="tick-item">SHARE</span><span class="tick-item tick-dot">✦</span>
+    <span class="tick-item">DESIGN FOR CHANGE</span><span class="tick-item tick-dot">✦</span>
+    <span class="tick-item">NEXSTOCK</span><span class="tick-item tick-dot">✦</span>
   </div>
 </div>
 
-<!-- DFC HAKKINDA -->
+<!-- DFC -->
 <section id="dfc">
-  <div class="dfc-section reveal">
-    <div class="dfc-left">
-      <div class="section-tag">// 01 — DFC Nedir?</div>
-      <div class="section-title">DEĞIŞIM<br>İÇİN<br><span style="color:var(--green)">TASARIM</span></div>
+  <div class="dfc-grid">
+    <div data-reveal="left">
+      <div class="s-tag">// 01 — DFC Nedir?</div>
+      <div class="s-title">DEĞIŞIM<br>İÇİN<br><span style="color:var(--g)">TASARIM</span></div>
       <div class="dfc-body">
         Design for Change (DFC), 2009 yılında Kiran Bir Sethi tarafından kurulan dünyanın en büyük
-        çocuk hareketidir. Bugün <strong style="color:var(--text)">70'ten fazla ülkede</strong>,
-        <strong style="color:var(--text)">30.000+ okulda</strong> ve
-        <strong style="color:var(--text)">2 milyondan fazla çocukla</strong> hayata geçirilmektedir.
+        çocuk hareketidir. Bugün <strong>70'ten fazla ülkede</strong>, <strong>30.000+ okulda</strong>
+        ve <strong>2 milyondan fazla çocukla</strong> hayata geçirilmektedir.
         <br><br>
-        DFC Türkiye, 2023 yılında Yarın İçin Bugün Derneği temsilciliğiyle Türkiye'de başladı.
-        Amacı, "YAPABİLİRİM" zihniyetini tüm Türkiye'ye yaymak.
-        <br><br>
-        Yarışmada 9–17 yaş arası öğrenciler kendi çevrelerindeki gerçek sorunlara FIDS modeli
-        ile çözümler geliştiriyor. En iyi projeler Japonya, Yunanistan gibi uluslararası Be the Change
-        Zirvelerine katılım hakkı kazanıyor.
+        DFC Türkiye, 2023 yılında başladı. Amacı, <strong style="color:var(--g)">"YAPABİLİRİM"</strong>
+        zihniyetini tüm Türkiye'ye yaymak. 9–17 yaş arası öğrenciler FIDS modeli ile gerçek sorunlara
+        çözümler geliştiriyor.
+      </div>
+      <div class="counters" data-reveal="up">
+        <div class="counter-item"><span class="cnum" data-count="70">0</span><span class="clbl">+ Ülke</span></div>
+        <div class="counter-item"><span class="cnum" data-count="30">0</span><span class="clbl">K+ Okul</span></div>
+        <div class="counter-item"><span class="cnum" data-count="2">0</span><span class="clbl">M+ Çocuk</span></div>
       </div>
     </div>
-    <div class="dfc-right">
-      <div class="dfc-quote">
-        "Zamanımızın en zorlayıcı problemlerine çözüm üretebilir, geçmişin sana dayattığı sınırlamalar yerine, <strong>kendi geleceğini inşa edebilirsin.</strong>"
+    <div data-reveal="right">
+      <div class="dfc-card">
+        <div class="dfc-quote">
+          "Zamanımızın en zorlayıcı problemlerine çözüm üretebilir, geçmişin sana dayattığı
+          sınırlamalar yerine <em>kendi geleceğini inşa edebilirsin.</em>"
+        </div>
+        <div class="dfc-attr">— Andreas Schleicher, OECD Eğitim Direktörü</div>
       </div>
-      <div class="dfc-attr">— Andreas Schleicher, OECD Eğitim Direktörü</div>
     </div>
   </div>
 </section>
 
 <!-- FIDS -->
-<section id="fids" class="fids-section">
-  <div class="reveal">
-    <div class="section-tag">// 02 — FIDS Modeli</div>
-    <div class="section-title" style="max-width:600px">4 ADIMDA<br><span style="color:var(--green)">DEĞİŞİM</span></div>
+<section id="fids" class="fids-bg">
+  <div style="text-align:center" data-reveal="up">
+    <div class="s-tag" style="justify-content:center">// 02 — FIDS Modeli</div>
+    <div class="s-title">4 ADIMDA <span style="color:var(--g)">DEĞİŞİM</span></div>
   </div>
-
-  <div class="fids-grid reveal">
-    <div class="fids-card">
-      <div class="fids-num">01</div>
+  <div class="fids-grid">
+    <div class="fids-card" data-reveal="up" style="transition-delay:.0s">
+      <div class="fids-num-bg">01</div>
       <div class="fids-letter">F</div>
       <div class="fids-word">Feel — Hisset</div>
-      <div class="fids-title">Empati Kur</div>
-      <div class="fids-desc">
-        Bir sorunu çözmeye başlamadan önce yavaşla, gözlemle ve iyice anla.
-        Varsayımlara değil, gözleme dayalı içgörülerle yaklaş.
-      </div>
-      <div class="fids-badge">EMPATİ BECERİSİ</div>
+      <div class="fids-ttl">Empati Kur</div>
+      <div class="fids-body">Bir sorunu çözmeye başlamadan önce yavaşla, gözlemle ve iyice anla. Varsayımlara değil, içgörülere dayalı yaklaş.</div>
+      <div class="fids-tag">EMPATİ BECERİSİ</div>
     </div>
-
-    <div class="fids-card">
-      <div class="fids-num">02</div>
+    <div class="fids-card" data-reveal="up" style="transition-delay:.1s">
+      <div class="fids-num-bg">02</div>
       <div class="fids-letter">I</div>
       <div class="fids-word">Imagine — Hayal Et</div>
-      <div class="fids-title">Çözüm Tasarla</div>
-      <div class="fids-desc">
-        Topluluğun yaratıcılığına ve ortak akla başvur.
-        Durumu iyileştirmek için birlikte fikir üret.
-      </div>
-      <div class="fids-badge">YARATICI DÜŞÜNCE</div>
+      <div class="fids-ttl">Çözüm Tasarla</div>
+      <div class="fids-body">Topluluğun yaratıcılığına ve ortak akla başvur. Durumu iyileştirmek için birlikte fikir üret.</div>
+      <div class="fids-tag">YARATICI DÜŞÜNCE</div>
     </div>
-
-    <div class="fids-card">
-      <div class="fids-num">03</div>
+    <div class="fids-card" data-reveal="up" style="transition-delay:.2s">
+      <div class="fids-num-bg">03</div>
       <div class="fids-letter">D</div>
       <div class="fids-word">Do — Yap</div>
-      <div class="fids-title">Harekete Geç</div>
-      <div class="fids-desc">
-        Arzu edilen etkiye ulaşmak için pratiklik, yaratıcılık ve azimle
-        çalış. Ayrıntılara odaklan, eyleme geç.
-      </div>
-      <div class="fids-badge">POTANSİYELİ ORTAYA ÇIKAR</div>
+      <div class="fids-ttl">Harekete Geç</div>
+      <div class="fids-body">Arzu edilen etkiye ulaşmak için pratiklik, yaratıcılık ve azimle çalış. Eyleme geç, ayrıntılara odaklan.</div>
+      <div class="fids-tag">POTANSİYELİ ORTAYA ÇIKAR</div>
     </div>
-
-    <div class="fids-card">
-      <div class="fids-num">04</div>
+    <div class="fids-card" data-reveal="up" style="transition-delay:.3s">
+      <div class="fids-num-bg">04</div>
       <div class="fids-letter">S</div>
       <div class="fids-word">Share — Paylaş</div>
-      <div class="fids-title">İlham Ver</div>
-      <div class="fids-desc">
-        "YAPABİLİRİM" bilincini yay. Başkalarıyla rekabet etmek yerine
-        başkalarını tamamla ve birlikte yüksel.
-      </div>
-      <div class="fids-badge">BİRLİKTE YÜKSELİŞ</div>
+      <div class="fids-ttl">İlham Ver</div>
+      <div class="fids-body">"YAPABİLİRİM" bilincini yay. Başkalarıyla rekabet etmek yerine başkalarını tamamla, birlikte yüksel.</div>
+      <div class="fids-tag">BİRLİKTE YÜKSELİŞ</div>
     </div>
   </div>
 </section>
 
-<!-- PROJE ÖZELLİKLERİ -->
-<section id="proje">
-  <div class="proje-header reveal">
+<!-- FEATURES -->
+<section id="features">
+  <div class="feat-hdr" data-reveal="up">
     <div>
-      <div class="section-tag">// 03 — Proje</div>
-      <div class="section-title">NEXSTOCK<br><span style="color:var(--green)">ÖZELLİKLERİ</span></div>
+      <div class="s-tag">// 03 — Proje</div>
+      <div class="s-title">NEXSTOCK<br><span style="color:var(--g)">ÖZELLİKLERİ</span></div>
     </div>
-    <a href="https://barkod-pro-production.up.railway.app" class="btn-primary">Canlı Dene →</a>
+    <a href="https://barkod-pro-production.up.railway.app" class="btn-mag btn-prim">Canlı Dene →</a>
   </div>
-
-  <div class="proje-grid reveal">
-    <div class="proje-card">
-      <div class="proje-icon">📷</div>
-      <div class="proje-name">Kamera Tarama</div>
-      <div class="proje-desc">
-        Tarayıcı kamerası ile EAN-13 dahil tüm barkod formatlarını gerçek zamanlı okuma.
-        3 tutarlı okuma algoritması ile doğruluk maksimize edildi.
-      </div>
+  <div class="feat-grid">
+    <div class="feat-card" data-reveal="up" style="transition-delay:.0s">
+      <div class="feat-glow"></div>
+      <span class="feat-icon">📷</span>
+      <div class="feat-name">Kamera Tarama</div>
+      <div class="feat-desc">Tarayıcı kamerası ile EAN-13 dahil tüm barkod formatlarını gerçek zamanlı okuma. 3 tutarlı okuma algoritması ile maksimum doğruluk.</div>
     </div>
-    <div class="proje-card">
-      <div class="proje-icon">🗓️</div>
-      <div class="proje-name">SKT Takibi</div>
-      <div class="proje-desc">
-        Son kullanma tarihi geçmiş ürünler için sesli ve görsel alarmlar.
-        7 günlük önceden uyarı sistemi ile israf önlenir.
-      </div>
+    <div class="feat-card" data-reveal="up" style="transition-delay:.08s">
+      <div class="feat-glow"></div>
+      <span class="feat-icon">🗓️</span>
+      <div class="feat-name">SKT Takibi</div>
+      <div class="feat-desc">Son kullanma tarihi geçmiş ürünler için sesli ve görsel alarmlar. 7 günlük önceden uyarı sistemi ile gıda israfı önlenir.</div>
     </div>
-    <div class="proje-card">
-      <div class="proje-icon">🌍</div>
-      <div class="proje-name">Open Food Facts</div>
-      <div class="proje-desc">
-        Bilinmeyen barkodlar otomatik olarak Open Food Facts API'sinden sorgulanır,
-        ürün bilgileri anında sisteme eklenir.
-      </div>
+    <div class="feat-card" data-reveal="up" style="transition-delay:.16s">
+      <div class="feat-glow"></div>
+      <span class="feat-icon">🌍</span>
+      <div class="feat-name">Open Food Facts</div>
+      <div class="feat-desc">Bilinmeyen barkodlar Open Food Facts API'sinden otomatik sorgulanır, ürün bilgileri anında sisteme eklenir.</div>
     </div>
-    <div class="proje-card">
-      <div class="proje-icon">👥</div>
-      <div class="proje-name">Rol Sistemi</div>
-      <div class="proje-desc">
-        Admin, müdür, kasiyer ve görüntüleyici rolleri. Her rol kendi yetki
-        seviyesine göre sisteme erişir.
-      </div>
+    <div class="feat-card" data-reveal="up" style="transition-delay:.0s">
+      <div class="feat-glow"></div>
+      <span class="feat-icon">👥</span>
+      <div class="feat-name">Rol Sistemi</div>
+      <div class="feat-desc">Admin, müdür, kasiyer ve görüntüleyici rolleri. Her rol kendi yetki seviyesine göre erişim sağlar.</div>
     </div>
-    <div class="proje-card">
-      <div class="proje-icon">📊</div>
-      <div class="proje-name">Dashboard</div>
-      <div class="proje-desc">
-        Gerçek zamanlı envanter istatistikleri, kritik stok uyarıları,
-        hareket geçmişi ve raporlar tek ekranda.
-      </div>
+    <div class="feat-card" data-reveal="up" style="transition-delay:.08s">
+      <div class="feat-glow"></div>
+      <span class="feat-icon">📊</span>
+      <div class="feat-name">Canlı Dashboard</div>
+      <div class="feat-desc">Gerçek zamanlı envanter istatistikleri, kritik stok uyarıları, hareket geçmişi ve raporlar tek ekranda.</div>
     </div>
-    <div class="proje-card">
-      <div class="proje-icon">🔊</div>
-      <div class="proje-name">Ses Sistemi</div>
-      <div class="proje-desc">
-        Web Audio API ile başarılı okuma, hata ve SKT uyarı sesleri.
-        Her durum için farklı ses tonu ile anlık geri bildirim.
-      </div>
+    <div class="feat-card" data-reveal="up" style="transition-delay:.16s">
+      <div class="feat-glow"></div>
+      <span class="feat-icon">🔊</span>
+      <div class="feat-name">Ses Sistemi</div>
+      <div class="feat-desc">Web Audio API ile başarılı okuma, hata ve SKT uyarı sesleri. Her durum için farklı ses tonu ile anlık geri bildirim.</div>
     </div>
   </div>
 </section>
 
 <!-- STATS -->
-<div class="stats-section reveal">
+<div class="stats-band" data-reveal="scale">
   <div class="stats-grid">
-    <div>
-      <div class="stat-num">70+</div>
-      <div class="stat-label">Ülkede DFC</div>
-    </div>
-    <div>
-      <div class="stat-num">2M+</div>
-      <div class="stat-label">Çocuk Katılımcı</div>
-    </div>
-    <div>
-      <div class="stat-num">4</div>
-      <div class="stat-label">FIDS Adımı</div>
-    </div>
-    <div>
-      <div class="stat-num">∞</div>
-      <div class="stat-label">Değişim Potansiyeli</div>
-    </div>
+    <div><div class="snum" data-count="70">0</div><div class="slbl">Ülkede DFC</div></div>
+    <div><div class="snum" data-count="2">0</div><div class="slbl">Milyon+ Katılımcı</div></div>
+    <div><div class="snum" data-count="4">0</div><div class="slbl">FIDS Adımı</div></div>
+    <div><div class="snum">∞</div><div class="slbl">Değişim Potansiyeli</div></div>
   </div>
 </div>
 
 <!-- TECH -->
 <section id="tech">
-  <div class="reveal">
-    <div class="section-tag">// 04 — Teknoloji</div>
-    <div class="section-title">NASIL<br><span style="color:var(--green)">YAPILDI?</span></div>
+  <div data-reveal="up">
+    <div class="s-tag">// 04 — Teknoloji</div>
+    <div class="s-title">NASIL<br><span style="color:var(--g)">YAPILDI?</span></div>
     <div class="tech-list">
-      <div class="tech-tag active">Python</div>
-      <div class="tech-tag active">Flask</div>
-      <div class="tech-tag active">SQLite</div>
-      <div class="tech-tag active">Tkinter</div>
-      <div class="tech-tag">QuaggaJS</div>
-      <div class="tech-tag">OpenCV</div>
-      <div class="tech-tag">zxing-cpp</div>
-      <div class="tech-tag">Web Audio API</div>
-      <div class="tech-tag">Open Food Facts API</div>
-      <div class="tech-tag">Railway</div>
-      <div class="tech-tag">GitHub</div>
-      <div class="tech-tag">pygame</div>
+      <div class="tech-pill hot"><span>Python</span></div>
+      <div class="tech-pill hot"><span>Flask</span></div>
+      <div class="tech-pill hot"><span>SQLite</span></div>
+      <div class="tech-pill hot"><span>Tkinter</span></div>
+      <div class="tech-pill"><span>QuaggaJS</span></div>
+      <div class="tech-pill"><span>OpenCV</span></div>
+      <div class="tech-pill"><span>zxing-cpp</span></div>
+      <div class="tech-pill"><span>Web Audio API</span></div>
+      <div class="tech-pill"><span>Open Food Facts API</span></div>
+      <div class="tech-pill"><span>Railway</span></div>
+      <div class="tech-pill"><span>Vercel</span></div>
+      <div class="tech-pill"><span>GitHub</span></div>
+      <div class="tech-pill"><span>pygame</span></div>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">Nex<span>Stock</span></div>
-  <div class="footer-info">
-    DFC Türkiye Yarışması — 2025<br>
-    FIDS Modeli ile Geliştirildi
-  </div>
-  <div class="footer-links">
+  <div class="f-logo">Nex<span>Stock</span></div>
+  <div class="f-info">DFC Türkiye Yarışması — 2025<br>FIDS Modeli ile Geliştirildi</div>
+  <div class="f-links">
     <a href="https://dfcturkiye.org" target="_blank">DFC Türkiye</a>
     <a href="https://barkod-pro-production.up.railway.app" target="_blank">Uygulama</a>
   </div>
 </footer>
 
 <script>
-// CURSOR
-const cursor = document.getElementById('cursor');
-const trail = document.getElementById('cursorTrail');
-let mx = 0, my = 0, tx = 0, ty = 0;
-
+// ─── CURSOR ────────────────────────────────────────────
+const cur = document.getElementById('cur');
+const ring = document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cursor.style.left = mx - 6 + 'px';
-  cursor.style.top  = my - 6 + 'px';
+  mx=e.clientX; my=e.clientY;
+  cur.style.left=mx+'px'; cur.style.top=my+'px';
+});
+(function loop(){
+  rx+=(mx-rx)*.1; ry+=(my-ry)*.1;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(loop);
+})();
+
+// ─── NAV ────────────────────────────────────────────
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60);
 });
 
-function animTrail() {
-  tx += (mx - tx) * 0.12;
-  ty += (my - ty) * 0.12;
-  trail.style.left = tx - 18 + 'px';
-  trail.style.top  = ty - 18 + 'px';
-  requestAnimationFrame(animTrail);
+// ─── PARTICLES ─────────────────────────────────────
+const ptContainer = document.getElementById('pts');
+for(let i=0;i<55;i++){
+  const p=document.createElement('div');
+  p.className='p';
+  const s=Math.random()*3+1;
+  p.style.cssText=`left:${Math.random()*100}%;width:${s}px;height:${s}px;background:${Math.random()>.7?'#4ade80':'#22c55e'};animation-duration:${Math.random()*18+10}s;animation-delay:${Math.random()*12}s;`;
+  ptContainer.appendChild(p);
 }
-animTrail();
 
-document.querySelectorAll('a, button, .fids-card, .proje-card').forEach(el => {
-  el.addEventListener('mouseenter', () => cursor.style.transform = 'scale(2.5)');
-  el.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
+// ─── MAGNETIC BUTTONS ──────────────────────────────
+document.querySelectorAll('.btn-mag').forEach(btn=>{
+  btn.addEventListener('mousemove',e=>{
+    const r=btn.getBoundingClientRect();
+    const x=(e.clientX-r.left-r.width/2)*.2;
+    const y=(e.clientY-r.top-r.height/2)*.2;
+    btn.style.transform=`translate(${x}px,${y}px)`;
+  });
+  btn.addEventListener('mouseleave',()=>{ btn.style.transform=''; });
 });
 
-// SCROLL REVEAL
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('visible');
+// ─── FEAT CARD GLOW FOLLOW ─────────────────────────
+document.querySelectorAll('.feat-card').forEach(card=>{
+  const glow=card.querySelector('.feat-glow');
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    glow.style.left=(e.clientX-r.left)+'px';
+    glow.style.top=(e.clientY-r.top)+'px';
+  });
+});
+
+// ─── SCROLL REVEAL ─────────────────────────────────
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      en.target.classList.add('visible');
+      en.target.querySelectorAll('[data-count]').forEach(animCount);
     }
   });
-}, { threshold: 0.1 });
+},{threshold:.12});
+document.querySelectorAll('[data-reveal]').forEach(el=>io.observe(el));
 
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+// ─── COUNTER ANIMATION ─────────────────────────────
+function animCount(el){
+  if(el.dataset.counted) return;
+  el.dataset.counted='1';
+  const target=+el.dataset.count;
+  const dur=1600;
+  const t0=performance.now();
+  (function tick(now){
+    const prog=Math.min((now-t0)/dur,1);
+    const ease=1-Math.pow(1-prog,4);
+    el.textContent=Math.floor(ease*target);
+    if(prog<1) requestAnimationFrame(tick);
+    else el.textContent=target;
+  })(t0);
+}
+
+// ─── TEXT SCRAMBLE on HERO EYEBROW ─────────────────
+const chars='!@#$%^&*ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+function scramble(el, final, dur=1200){
+  let frame=0, total=Math.ceil(dur/40);
+  const id=setInterval(()=>{
+    el.textContent=final.split('').map((c,i)=>{
+      if(c===' ') return ' ';
+      return frame/total > i/final.length ? c : chars[Math.floor(Math.random()*chars.length)];
+    }).join('');
+    if(++frame>=total){ el.textContent=final; clearInterval(id); }
+  },40);
+}
+setTimeout(()=>{
+  const ey=document.querySelector('.hero-eyebrow');
+  if(ey){ const txt=ey.textContent.trim(); scramble(ey,txt); }
+},400);
+
+// ─── PARALLAX on ORBs ──────────────────────────────
+window.addEventListener('mousemove',e=>{
+  const ox=(e.clientX/window.innerWidth-.5)*30;
+  const oy=(e.clientY/window.innerHeight-.5)*30;
+  document.querySelector('.orb1').style.transform=`translate(${ox*.5}px,${oy*.5}px)`;
+  document.querySelector('.orb2').style.transform=`translate(${-ox*.3}px,${-oy*.3}px)`;
+  document.querySelector('.orb3').style.transform=`translate(${ox*.7}px,${oy*.4}px)`;
+});
+
+// ─── HERO TITLE HOVER GLITCH TRIGGER ───────────────
+document.querySelectorAll('.glitch').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    el.style.animation='none';
+    void el.offsetWidth;
+    el.style.animation='';
+  });
+});
 </script>
 </body>
 </html>
