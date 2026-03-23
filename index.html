@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NexStock — Akilli Envanter Sistemi</title>
+<title>NexStock — Akıllı Envanter Sistemi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -198,25 +198,32 @@ nav.stuck{background:rgba(6,6,6,.98);border-bottom:1px solid var(--border)}
 .nav-right{display:flex;align-items:center;gap:0}
 .nav-cta-wrap{display:flex;align-items:stretch}
 .nav-demo{
-  display:flex;align-items:center;gap:8px;
-  padding:0 28px;
+  display:flex;align-items:center;gap:10px;
+  padding:0 24px;
   background:var(--a);color:#080808;
+  font-family:'Syne',sans-serif;
   font-size:.75rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;
   text-decoration:none;cursor:none;
-  transition:background .2s;
-  border-left:1px solid rgba(255,255,255,.1);
+  transition:background .2s,transform .2s,box-shadow .2s;
   white-space:nowrap;
+  position:relative;overflow:hidden;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+  margin:10px 0 10px 24px;
+  height:44px;
 }
-.nav-demo:hover{background:#e5e5e5}
+.nav-demo::before{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 20%,rgba(255,255,255,.2) 50%,transparent 80%);transform:translateX(-100%);transition:transform .5s}
+.nav-demo:hover{background:#e5e5e5;transform:translateY(-2px);box-shadow:0 12px 30px rgba(255,255,255,.25)}
+.nav-demo:hover::before{transform:translateX(100%)}
 .nav-demo-arr{
   display:flex;align-items:center;justify-content:center;
-  padding:0 18px;
-  background:rgba(255,255,255,.12);color:var(--text);
-  border-left:1px solid rgba(255,255,255,.08);
-  font-size:1.1rem;cursor:none;
-  transition:background .2s;
+  width:44px;height:44px;
+  background:rgba(255,255,255,.1);color:var(--text);
+  border:1px solid rgba(255,255,255,.15);
+  font-size:1rem;cursor:none;
+  transition:background .2s,border-color .2s;
+  margin:10px 0;
 }
-.nav-demo-arr:hover{background:rgba(255,255,255,.2)}
+.nav-demo-arr:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3)}
 
 /* ═══ HERO ═══ */
 .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 52px 90px;position:relative;overflow:hidden;z-index:1;opacity:0;transform:translateY(20px);transition:opacity .9s,transform .9s}
@@ -424,7 +431,7 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
       <div class="ld-msg" id="ld-msg">INITIALIZING</div>
     </div>
   </div>
-  <div class="ld-tag">DFC TURKIYE 2026 &mdash; HORTOR</div>
+  <div class="ld-tag">DFC TÜRKİYE 2026 &mdash; HORTOR</div>
 </div>
 
 <div id="dot"></div>
@@ -436,24 +443,24 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
     <a href="#hero-section" class="logo">Nex<em>Stock</em></a>
     <div class="nav-items">
 
-      <!-- COZUMLER -->
+      <!-- ÇÖZÜMLER -->
       <div class="nav-item">
-        <span>Cozumler <span class="arrow">&#9660;</span></span>
+        <span>Çözümler <span class="arrow">&#9660;</span></span>
         <div class="dropdown">
           <a href="#fids"><span class="dd-icon">&#9670;</span> FIDS Metodolojisi <span class="dd-arrow">&#8594;</span></a>
-          <a href="#features"><span class="dd-icon">&#9670;</span> SKT Zekasi <span class="dd-arrow">&#8594;</span></a>
-          <a href="#features"><span class="dd-icon">&#9670;</span> Envanter Yonetimi <span class="dd-arrow">&#8594;</span></a>
+          <a href="#features"><span class="dd-icon">&#9670;</span> SKT Zekası <span class="dd-arrow">&#8594;</span></a>
+          <a href="#features"><span class="dd-icon">&#9670;</span> Envanter Yönetimi <span class="dd-arrow">&#8594;</span></a>
           <a href="#features"><span class="dd-icon">&#9670;</span> Rol Sistemi <span class="dd-arrow">&#8594;</span></a>
         </div>
       </div>
 
-      <!-- URUNLER -->
+      <!-- ÜRÜNLER -->
       <div class="nav-item">
-        <span>Urunler <span class="arrow">&#9660;</span></span>
+        <span>Ürünler <span class="arrow">&#9660;</span></span>
         <div class="dropdown">
           <a href="#features"><span class="dd-icon">&#128247;</span> Kamera Tarama <span class="dd-arrow">&#8594;</span></a>
           <a href="#features"><span class="dd-icon">&#128197;</span> SKT Takibi <span class="dd-arrow">&#8594;</span></a>
-          <a href="#features"><span class="dd-icon">&#128202;</span> Canli Dashboard <span class="dd-arrow">&#8594;</span></a>
+          <a href="#features"><span class="dd-icon">&#128202;</span> Canlı Dashboard <span class="dd-arrow">&#8594;</span></a>
           <a href="#features"><span class="dd-icon">&#128266;</span> Ses Sistemi <span class="dd-arrow">&#8594;</span></a>
         </div>
       </div>
@@ -465,9 +472,9 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
 
       <!-- HAKKINDA -->
       <div class="nav-item">
-        <span>Hakkinda <span class="arrow">&#9660;</span></span>
+        <span>Hakkında <span class="arrow">&#9660;</span></span>
         <div class="dropdown">
-          <a href="#dfc"><span class="dd-icon">&#127760;</span> DFC Nedir? <span class="dd-arrow">&#8594;</span></a>
+          <a href="#dfc"><span class="dd-icon">&#127760;</span> DFC Nedir?? <span class="dd-arrow">&#8594;</span></a>
           <a href="#fids"><span class="dd-icon">&#9733;</span> FIDS Modeli <span class="dd-arrow">&#8594;</span></a>
           <a href="#tech"><span class="dd-icon">&#128736;</span> Teknoloji <span class="dd-arrow">&#8594;</span></a>
         </div>
@@ -478,7 +485,7 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
 
   <div class="nav-right">
     <div class="nav-cta-wrap">
-      <a href="https://barkod-pro-production.up.railway.app" class="nav-demo">Uygulamayi Ac</a>
+      <a href="https://barkod-pro-production.up.railway.app" class="nav-demo">Uygulamayı Aç</a>
       <a href="https://barkod-pro-production.up.railway.app" class="nav-demo-arr">&#8594;</a>
     </div>
   </div>
@@ -491,20 +498,20 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
   <div class="corner bl"></div><div class="corner br"></div>
   <div class="h-eyebrow">
     <span class="cursor-blink"></span>
-    DFC Turkiye Yarismas&imath; &mdash; 2026
+    DFC Türkiye Yarışması&imath; &mdash; 2026
   </div>
   <div class="h-title">
     <span class="tl-wrap"><span class="tl-inner glitch t-amber" data-g="NEXSTOCK">NEXSTOCK</span></span>
-    <span class="tl-wrap"><span class="tl-inner t-out">ENVANTERIN</span></span>
-    <span class="tl-wrap"><span class="tl-inner t-dim">GELECEGI.</span></span>
+    <span class="tl-wrap"><span class="tl-inner t-out">ENVANTERİN</span></span>
+    <span class="tl-wrap"><span class="tl-inner t-dim">GELECEĞİ.</span></span>
   </div>
   <div class="h-bottom">
     <div class="h-desc">
-      DFC FIDS metodolojisi ile gelistirilen <strong>akilli barkod ve envanter</strong> yonetim sistemi.
-      Gercek sorunlara, gercek cozumler.
+      DFC FIDS metodolojisi ile gelistirilen <strong>akıllı barkod ve envanter</strong> yonetim sistemi.
+      Gerçek sorunlara, gerçek çözümler.
     </div>
     <div class="h-btns">
-      <a href="https://barkod-pro-production.up.railway.app" class="btn btn-a" id="mainBtn">Uygulamayi Dene <span class="btn-arr">&rarr;</span></a>
+      <a href="https://barkod-pro-production.up.railway.app" class="btn btn-a" id="mainBtn">Uygulamayı Dene <span class="btn-arr">&rarr;</span></a>
       <a href="#dfc" class="btn btn-o">Daha Fazla</a>
     </div>
   </div>
@@ -534,27 +541,27 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
 <section id="dfc">
   <div class="dfc-wrap">
     <div data-r="left">
-      <div class="s-eyebrow">// 01 &mdash; DFC Nedir?</div>
-      <div class="s-title">DEGISIM<br>ICIN<br><span style="color:var(--a)">TASARIM</span></div>
+      <div class="s-eyebrow">// 01 &mdash; DFC Nedir??</div>
+      <div class="s-title">DEĞİŞİM<br>İÇİN<br><span style="color:var(--a)">TASARIM</span></div>
       <div class="dfc-body">
         Design for Change (DFC), 2009 yilinda Kiran Bir Sethi tarafindan kurulan dunyanin en buyuk
-        cocuk hareketidir. Bugun <strong>70'ten fazla ulkede</strong>, <strong>30.000+ okulda</strong>
-        ve <strong>2 milyondan fazla cocukla</strong> hayata gecirilmektedir.
+        çocuk hareketidir. Bugun <strong>70'ten fazla ülkede</strong>, <strong>30.000+ okulda</strong>
+        ve <strong>2 milyondan fazla çocukla</strong> hayata gecirilmektedir.
         <br><br>
-        DFC Turkiye, 2023 yilinda basladi. Amaci, <strong style="color:var(--a)">"YAPABILIRIM"</strong>
-        zihniyetini tum Turkiye'ye yaymak. 9-17 yas arasi ogrenciler FIDS modeli ile gercek
-        sorunlara cozumler gelistiriyor.
+        DFC Türkiye, 2023 yilinda basladi. Amaci, <strong style="color:var(--a)">"YAPABİLİRİM"</strong>
+        zihniyetini tüm Türkiye'ye yaymak. 9-17 yaş arası öğrenciler FIDS modeli ile gerçek
+        sorunlara çözümler geliştiriyor.
       </div>
       <div class="ctrs" data-r="up">
-        <div class="ctr"><span class="c-n" data-c="70">0</span><span class="c-l">+ Ulke</span></div>
+        <div class="ctr"><span class="c-n" data-c="70">0</span><span class="c-l">+ Ülke</span></div>
         <div class="ctr"><span class="c-n" data-c="30">0</span><span class="c-l">K+ Okul</span></div>
-        <div class="ctr"><span class="c-n" data-c="2">0</span><span class="c-l">M+ Cocuk</span></div>
+        <div class="ctr"><span class="c-n" data-c="2">0</span><span class="c-l">M+ Çocuk</span></div>
       </div>
     </div>
     <div data-r="right">
       <div class="dfc-card">
-        <div class="dfc-q">"Zamanımızın en zorlayici problemlerine cozum uretebilir, gecmisin sana dayattigi sinirlamalar yerine <em>kendi gelecegini insa edebilirsin.</em>"</div>
-        <div class="dfc-attr">&mdash; Andreas Schleicher, OECD Egitim Direktoru</div>
+        <div class="dfc-q">"Zamanımızın en zorlayıcı problemlerine cozum uretebilir, geçmişin sana dayattığı sınırlamalar yerine <em>kendi geleceğini inşa edebilirsin.</em>"</div>
+        <div class="dfc-attr">&mdash; Andreas Schleicher, OECD Eğitim Direktörü</div>
       </div>
     </div>
   </div>
@@ -563,30 +570,30 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
 <section id="fids" class="fids-bg">
   <div style="text-align:center" data-r="up">
     <div class="s-eyebrow" style="justify-content:center">// 02 &mdash; FIDS Modeli</div>
-    <div class="s-title">4 ADIMDA <span style="color:var(--a)">DEGISIM</span></div>
+    <div class="s-title">4 ADIMDA <span style="color:var(--a)">DEĞİŞİM</span></div>
   </div>
   <div class="fids-grid">
-    <div class="f-card" data-r="up" style="transition-delay:.00s"><div class="f-bg-num">01</div><div class="f-letter">F</div><div class="f-word">Feel &mdash; Hisset</div><div class="f-ttl">Empati Kur</div><div class="f-body">Bir sorunu cozmeye baslamadan once yavaşla, gozlemle ve iyice anla. Varsayimlara degil, gozleme dayali icgorülerle yaklas.</div><div class="f-tag">EMPATi BECERISI</div></div>
-    <div class="f-card" data-r="up" style="transition-delay:.10s"><div class="f-bg-num">02</div><div class="f-letter">I</div><div class="f-word">Imagine &mdash; Hayal Et</div><div class="f-ttl">Cozum Tasarla</div><div class="f-body">Toplulugun yaraticilgina ve ortak akla basvur. Durumu iyilestirmek icin birlikte fikir uret.</div><div class="f-tag">YARATICI DUSUNCE</div></div>
-    <div class="f-card" data-r="up" style="transition-delay:.20s"><div class="f-bg-num">03</div><div class="f-letter">D</div><div class="f-word">Do &mdash; Yap</div><div class="f-ttl">Harekete Gec</div><div class="f-body">Arzu edilen etkiye ulasmak icin pratiklik, yaraticilik ve azimle calis. Ayrintilar odaklan, eyleme gec.</div><div class="f-tag">POTANSIYELi ORTAYA CIKAR</div></div>
-    <div class="f-card" data-r="up" style="transition-delay:.30s"><div class="f-bg-num">04</div><div class="f-letter">S</div><div class="f-word">Share &mdash; Paylas</div><div class="f-ttl">Ilham Ver</div><div class="f-body">"YAPABILIRIM" bilincini yay. Baskalariyla rekabet etmek yerine baskalari tamamla ve birlikte yuksel.</div><div class="f-tag">BIRLIKTE YUKSELIS</div></div>
+    <div class="f-card" data-r="up" style="transition-delay:.00s"><div class="f-bg-num">01</div><div class="f-letter">F</div><div class="f-word">Feel &mdash; Hisset</div><div class="f-ttl">Empati Kur</div><div class="f-body">Bir sorunu çözmeye başlamadan önce yavaşla, gözlemle ve iyice anla. Varsayımlara değil, gözleme dayalı içgörülerle yaklas.</div><div class="f-tag">EMPATİ BECERİSİ</div></div>
+    <div class="f-card" data-r="up" style="transition-delay:.10s"><div class="f-bg-num">02</div><div class="f-letter">I</div><div class="f-word">Imagine &mdash; Hayal Et</div><div class="f-ttl">Çözüm Tasarla</div><div class="f-body">Topluluğun yaratıcılığına ve ortak akla başvur. Durumu iyileştirmek için birlikte fikir uret.</div><div class="f-tag">YARATICI DÜŞÜNCE</div></div>
+    <div class="f-card" data-r="up" style="transition-delay:.20s"><div class="f-bg-num">03</div><div class="f-letter">D</div><div class="f-word">Do &mdash; Yap</div><div class="f-ttl">Harekete Geç</div><div class="f-body">Arzu edilen etkiye ulaşmak için pratiklik, yaratıcılık ve azimle calis. Ayrıntılara odaklan, eyleme geç.</div><div class="f-tag">POTANSİYELİ ORTAYA ÇIKAR</div></div>
+    <div class="f-card" data-r="up" style="transition-delay:.30s"><div class="f-bg-num">04</div><div class="f-letter">S</div><div class="f-word">Share &mdash; Paylas</div><div class="f-ttl">İlham Ver</div><div class="f-body">"YAPABİLİRİM" bilincini yay. Başkalarıyla rekabet etmek yerine başkaları tamamla ve birlikte yüksel.</div><div class="f-tag">BİRLİKTE YÜKSELİŞ</div></div>
   </div>
 </section>
 
 <div class="strip">
   <div class="strip-t">
     <span class="si">NexStock</span><span class="sd">&#9670;</span>
-    <span class="si">Akilli Envanter</span><span class="sd">&#9670;</span>
+    <span class="si">Akıllı Envanter</span><span class="sd">&#9670;</span>
     <span class="si">Barkod Tarama</span><span class="sd">&#9670;</span>
     <span class="si">SKT Takibi</span><span class="sd">&#9670;</span>
-    <span class="si">DFC Turkiye</span><span class="sd">&#9670;</span>
+    <span class="si">DFC Türkiye</span><span class="sd">&#9670;</span>
     <span class="si">FIDS Modeli</span><span class="sd">&#9670;</span>
     <span class="si">Open Food Facts</span><span class="sd">&#9670;</span>
     <span class="si">NexStock</span><span class="sd">&#9670;</span>
-    <span class="si">Akilli Envanter</span><span class="sd">&#9670;</span>
+    <span class="si">Akıllı Envanter</span><span class="sd">&#9670;</span>
     <span class="si">Barkod Tarama</span><span class="sd">&#9670;</span>
     <span class="si">SKT Takibi</span><span class="sd">&#9670;</span>
-    <span class="si">DFC Turkiye</span><span class="sd">&#9670;</span>
+    <span class="si">DFC Türkiye</span><span class="sd">&#9670;</span>
     <span class="si">FIDS Modeli</span><span class="sd">&#9670;</span>
     <span class="si">Open Food Facts</span><span class="sd">&#9670;</span>
   </div>
@@ -598,24 +605,24 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
       <div class="s-eyebrow">// 03 &mdash; Proje</div>
       <div class="s-title">NEXSTOCK<br><span style="color:var(--a)">OZELLiKLERi</span></div>
     </div>
-    <a href="https://barkod-pro-production.up.railway.app" class="btn btn-a">Canli Dene <span class="btn-arr">&rarr;</span></a>
+    <a href="https://barkod-pro-production.up.railway.app" class="btn btn-a">Canlı Dene <span class="btn-arr">&rarr;</span></a>
   </div>
   <div class="feat-grid">
-    <div class="fc" data-r="up" style="transition-delay:.00s"><div class="fc-glow"></div><div class="fc-num">01/06</div><span class="fc-icon">&#128247;</span><div class="fc-name">Kamera Tarama</div><div class="fc-desc">Tarayici kamerasi ile EAN-13 dahil tum barkod formatlarini gercek zamanli okuma. 3 tutarli okuma algoritmasi ile maksimum dogruluk.</div></div>
-    <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">02/06</div><span class="fc-icon">&#128197;</span><div class="fc-name">SKT Takibi</div><div class="fc-desc">Son kullanma tarihi gecmis urunler icin sesli ve gorsel alarmlar. 7 gunluk onceden uyari sistemi ile gida israfi onlenir.</div></div>
-    <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">03/06</div><span class="fc-icon">&#127758;</span><div class="fc-name">Open Food Facts</div><div class="fc-desc">Bilinmeyen barkodlar Open Food Facts API'sinden otomatik sorgulanir, urun bilgileri aninda sisteme eklenir.</div></div>
-    <div class="fc" data-r="up" style="transition-delay:.00s"><div class="fc-glow"></div><div class="fc-num">04/06</div><span class="fc-icon">&#128101;</span><div class="fc-name">Rol Sistemi</div><div class="fc-desc">Admin, mudur, kasiyer ve goruntuleyici rolleri. Her rol kendi yetki seviyesine gore erisim saglar.</div></div>
-    <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">05/06</div><span class="fc-icon">&#128202;</span><div class="fc-name">Canli Dashboard</div><div class="fc-desc">Gercek zamanli envanter istatistikleri, kritik stok uyarilari, hareket gecmisi ve raporlar tek ekranda.</div></div>
-    <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">06/06</div><span class="fc-icon">&#128266;</span><div class="fc-name">Ses Sistemi</div><div class="fc-desc">Web Audio API ile basarili okuma, hata ve SKT uyari sesleri. Her durum icin farkli ses tonu ile anlik geri bildirim.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.00s"><div class="fc-glow"></div><div class="fc-num">01/06</div><span class="fc-icon">&#128247;</span><div class="fc-name">Kamera Tarama</div><div class="fc-desc">Tarayıcı kamerası ile EAN-13 dahil tum barkod formatlarını gerçek zamanlı okuma. 3 tutarlı okuma algoritması ile maksimum doğruluk.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">02/06</div><span class="fc-icon">&#128197;</span><div class="fc-name">SKT Takibi</div><div class="fc-desc">Son kullanma tarihi geçmiş urunler icin sesli ve görsel alarmlar. 7 günlük önceden uyarı sistemi ile gıda israfı önlenir.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">03/06</div><span class="fc-icon">&#127758;</span><div class="fc-name">Open Food Facts</div><div class="fc-desc">Bilinmeyen barkodlar Open Food Facts API'sinden otomatik sorgulanır, ürün bilgileri anında sisteme eklenir.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.00s"><div class="fc-glow"></div><div class="fc-num">04/06</div><span class="fc-icon">&#128101;</span><div class="fc-name">Rol Sistemi</div><div class="fc-desc">Admin, mudur, kasiyer ve goruntuleyici rolleri. Her rol kendi yetki seviyesine göre erişim sağlar.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">05/06</div><span class="fc-icon">&#128202;</span><div class="fc-name">Canlı Dashboard</div><div class="fc-desc">Gerçek zamanlı envanter istatistikleri, kritik stok uyarıları, hareket geçmişi ve raporlar tek ekranda.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">06/06</div><span class="fc-icon">&#128266;</span><div class="fc-name">Ses Sistemi</div><div class="fc-desc">Web Audio API ile başarılı okuma, hata ve SKT uyari sesleri. Her durum icin farklı ses tonu ile anlık geri bildirim.</div></div>
   </div>
 </section>
 
 <div class="stats-s" data-r="scale">
   <div class="stats-g">
-    <div><div class="stn" data-c="70">0</div><div class="stl">Ulkede DFC</div></div>
-    <div><div class="stn" data-c="2">0</div><div class="stl">Milyon+ Katilimci</div></div>
-    <div><div class="stn" data-c="4">0</div><div class="stl">FIDS Adimi</div></div>
-    <div><div class="stn">&#8734;</div><div class="stl">Degisim Potansiyeli</div></div>
+    <div><div class="stn" data-c="70">0</div><div class="stl">Ülkede DFC</div></div>
+    <div><div class="stn" data-c="2">0</div><div class="stl">Milyon+ Katılımcı</div></div>
+    <div><div class="stn" data-c="4">0</div><div class="stl">FIDS Adımı</div></div>
+    <div><div class="stn">&#8734;</div><div class="stl">Değişim Potansiyeli</div></div>
   </div>
 </div>
 
@@ -636,9 +643,9 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
 
 <footer>
   <div class="fl">Nex<em>Stock</em></div>
-  <div class="fi">DFC Turkiye Yarışması &mdash; 2026<br>ODTÜ Öğrencileri tarafından geliştirildi.</div>
+  <div class="fi">DFC Türkiye Yarışmasıı &mdash; 2026<br>FIDS Modeli ile Geliştirildi</div>
   <div class="flinks">
-    <a href="https://dfcturkiye.org" target="_blank">DFC Turkiye</a>
+    <a href="https://dfcturkiye.org" target="_blank">DFC Türkiye</a>
     <a href="https://barkod-pro-production.up.railway.app" target="_blank">Uygulama</a>
   </div>
 </footer>
