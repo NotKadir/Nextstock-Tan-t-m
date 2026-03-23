@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="NexStock - DFC FIDS metodolojisi ile geliştirilen akıllı barkod ve envanter yönetim sistemi.">
+<meta name="keywords" content="NexStock, envanter yönetimi, barkod tarama, SKT takibi, DFC Türkiye, FIDS">
+<meta property="og:title" content="NexStock — Akıllı Envanter Sistemi">
+<meta property="og:description" content="DFC FIDS metodolojisi ile geliştirilen akıllı barkod ve envanter yönetim sistemi.">
+<meta property="og:type" content="website">
 <title>NexStock — Akıllı Envanter Sistemi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -408,6 +413,25 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
   #dot,#ring{display:none}
   .scroll-h{display:none}
 }
+
+/* ═══ SCROLL TO TOP ═══ */
+#scrollToTop{
+  position:fixed;bottom:40px;right:40px;
+  width:50px;height:50px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  color:var(--text);
+  font-size:1.5rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:none;z-index:9000;
+  opacity:0;pointer-events:none;
+  transition:all .4s cubic-bezier(.16,1,.3,1);
+  backdrop-filter:blur(10px);
+  clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
+}
+#scrollToTop.visible{opacity:1;pointer-events:all;transform:translateY(0)}
+#scrollToTop:hover{background:var(--a);color:#080808;border-color:var(--a);transform:translateY(-5px);box-shadow:0 10px 30px rgba(255,255,255,.2)}
+
 @media(max-width:520px){
   .h-title{font-size:clamp(4rem,17vw,6rem)}
   .fids-grid{grid-template-columns:1fr}
@@ -437,6 +461,9 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
 <div id="dot"></div>
 <div id="ring"></div>
 <canvas id="bgCanvas"></canvas>
+
+<!-- SCROLL TO TOP -->
+<button id="scrollToTop" aria-label="Yukarı Çık">&#8593;</button>
 
 <nav id="nav">
   <div class="nav-left">
@@ -474,7 +501,7 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
       <div class="nav-item">
         <span>Hakkında <span class="arrow">&#9660;</span></span>
         <div class="dropdown">
-          <a href="#dfc"><span class="dd-icon">&#127760;</span> DFC Nedir?? <span class="dd-arrow">&#8594;</span></a>
+          <a href="#dfc"><span class="dd-icon">&#127760;</span> DFC Nedir? <span class="dd-arrow">&#8594;</span></a>
           <a href="#fids"><span class="dd-icon">&#9733;</span> FIDS Modeli <span class="dd-arrow">&#8594;</span></a>
           <a href="#tech"><span class="dd-icon">&#128736;</span> Teknoloji <span class="dd-arrow">&#8594;</span></a>
         </div>
@@ -485,8 +512,8 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
 
   <div class="nav-right">
     <div class="nav-cta-wrap">
-      <a href="https://barkod-pro-production.up.railway.app" class="nav-demo">Uygulamayı Aç</a>
-      <a href="https://barkod-pro-production.up.railway.app" class="nav-demo-arr">&#8594;</a>
+      <a href="https://barkod-pro-production.up.railway.app" class="nav-demo" aria-label="NexStock Uygulamasını Aç">Uygulamayı Aç</a>
+      <a href="https://barkod-pro-production.up.railway.app" class="nav-demo-arr" aria-label="Uygulamaya Git">&#8594;</a>
     </div>
   </div>
 </nav>
@@ -498,7 +525,7 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
   <div class="corner bl"></div><div class="corner br"></div>
   <div class="h-eyebrow">
     <span class="cursor-blink"></span>
-    DFC Türkiye Yarışması&imath; &mdash; 2026
+    DFC Türkiye Yarışması &mdash; 2026
   </div>
   <div class="h-title">
     <span class="tl-wrap"><span class="tl-inner glitch t-amber" data-g="NEXSTOCK">NEXSTOCK</span></span>
@@ -507,12 +534,12 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
   </div>
   <div class="h-bottom">
     <div class="h-desc">
-      DFC FIDS metodolojisi ile gelistirilen <strong>akıllı barkod ve envanter</strong> yonetim sistemi.
+      DFC FIDS metodolojisi ile geliştirilen <strong>akıllı barkod ve envanter</strong> yönetim sistemi.
       Gerçek sorunlara, gerçek çözümler.
     </div>
     <div class="h-btns">
-      <a href="https://barkod-pro-production.up.railway.app" class="btn btn-a" id="mainBtn">Uygulamayı Dene <span class="btn-arr">&rarr;</span></a>
-      <a href="#dfc" class="btn btn-o">Daha Fazla</a>
+      <a href="https://barkod-pro-production.up.railway.app" class="btn btn-a" id="mainBtn" aria-label="NexStock Uygulamasını Dene">Uygulamayı Dene <span class="btn-arr">&rarr;</span></a>
+      <a href="#dfc" class="btn btn-o" aria-label="Daha Fazla Bilgi">Daha Fazla</a>
     </div>
   </div>
   <div class="scroll-h">
@@ -541,7 +568,7 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
 <section id="dfc">
   <div class="dfc-wrap">
     <div data-r="left">
-      <div class="s-eyebrow">// 01 &mdash; DFC Nedir??</div>
+      <div class="s-eyebrow">// 01 &mdash; DFC Nedir?</div>
       <div class="s-title">DEĞİŞİM<br>İÇİN<br><span style="color:var(--a)">TASARIM</span></div>
       <div class="dfc-body">
         Design for Change (DFC), 2009 yilinda Kiran Bir Sethi tarafindan kurulan dunyanin en buyuk
@@ -603,9 +630,9 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
   <div class="feat-hdr" data-r="up">
     <div>
       <div class="s-eyebrow">// 03 &mdash; Proje</div>
-      <div class="s-title">NEXSTOCK<br><span style="color:var(--a)">OZELLiKLERi</span></div>
+      <div class="s-title">NEXSTOCK<br><span style="color:var(--a)">ÖZELLİKLERİ</span></div>
     </div>
-    <a href="https://barkod-pro-production.up.railway.app" class="btn btn-a">Canlı Dene <span class="btn-arr">&rarr;</span></a>
+    <a href="https://barkod-pro-production.up.railway.app" class="btn btn-a" aria-label="Uygulamayı Canlı Dene">Canlı Dene <span class="btn-arr">&rarr;</span></a>
   </div>
   <div class="feat-grid">
     <div class="fc" data-r="up" style="transition-delay:.00s"><div class="fc-glow"></div><div class="fc-num">01/06</div><span class="fc-icon">&#128247;</span><div class="fc-name">Kamera Tarama</div><div class="fc-desc">Tarayıcı kamerası ile EAN-13 dahil tum barkod formatlarını gerçek zamanlı okuma. 3 tutarlı okuma algoritması ile maksimum doğruluk.</div></div>
@@ -643,7 +670,7 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
 
 <footer>
   <div class="fl">Nex<em>Stock</em></div>
-  <div class="fi">DFC Türkiye Yarışmasıı &mdash; 2026<br>FIDS Modeli ile Geliştirildi</div>
+  <div class="fi">DFC Türkiye Yarışması &mdash; 2026<br>FIDS Modeli ile Geliştirildi</div>
   <div class="flinks">
     <a href="https://dfcturkiye.org" target="_blank">DFC Türkiye</a>
     <a href="https://barkod-pro-production.up.railway.app" target="_blank">Uygulama</a>
@@ -681,7 +708,7 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
   }
 
   var startT = null;
-  var DUR    = 2800;
+  var DUR    = 1800;
   var running = true;
 
   function drawFrame(ts){
@@ -852,7 +879,14 @@ document.querySelectorAll('a,button,.f-card,.fc,.ctr,.tp,.dropdown a,.nav-item')
 
 /* ═══ NAV ════════════════════════════════════════════════ */
 window.addEventListener('scroll',function(){
-  document.getElementById('nav').classList.toggle('stuck',window.scrollY>60);
+  var scrollY = window.scrollY;
+  document.getElementById('nav').classList.toggle('stuck',scrollY>60);
+  document.getElementById('scrollToTop').classList.toggle('visible',scrollY>500);
+});
+
+/* ═══ SCROLL TO TOP ACTION ══════════════════════════════ */
+document.getElementById('scrollToTop').addEventListener('click',function(){
+  window.scrollTo({top:0,behavior:'smooth'});
 });
 
 /* ═══ MAGNETIC BUTTONS ═══════════════════════════════════ */
