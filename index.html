@@ -1,34 +1,126 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" style="cursor:none">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NexStock — Akıllı Envanter Sistemi</title>
+<title>NexStock — Akilli Envanter Sistemi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --a: #ffffff;       /* amber */
-  --a2: #e5e5e5;      /* light amber */
-  --a3: #a3a3a3;      /* dark amber */
-  --bg: #080808;      /* near black */
-  --bg2: #111111;
-  --bg3: #1a1a1a;
-  --border: #2a2a2a;
-  --text: #f5f5f5;
-  --sub: #d4d4d4;
-  --muted: #525252;
-  --red: #888888;
+:root{
+  --a:#ffffff;--a2:#e5e5e5;--a3:#a3a3a3;
+  --bg:#080808;--bg2:#111111;--bg3:#1a1a1a;
+  --border:#2a2a2a;--text:#f5f5f5;--sub:#d4d4d4;
+  --muted:#525252;--red:#888888;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;overflow-x:hidden;cursor:none}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;overflow-x:hidden}
 
-/* ═══ CUSTOM CURSOR ═══ */
-#dot{width:6px;height:6px;background:var(--a);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s,width .25s,height .25s,background .2s}
-#ring{width:36px;height:36px;border:1px solid rgba(255,255,255,.45);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .35s,height .35s,opacity .3s,border-color .3s}
-.cursor-hover #dot{width:0;height:0;background:transparent}
-.cursor-hover #ring{width:72px;height:72px;border-color:rgba(255,255,255,.7)}
+/* ═══ LOADER ═══ */
+#loader{
+  position:fixed;inset:0;z-index:9500;
+  background:#04040a;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;
+  transition:opacity 1.2s cubic-bezier(.16,1,.3,1);
+}
+#loader.out{opacity:0;pointer-events:none}
+
+#loader-canvas{position:absolute;inset:0;width:100%;height:100%}
+
+.ld-wrap{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;align-items:center;
+  gap:0;
+}
+
+/* Big logo */
+.ld-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(4rem,10vw,9rem);
+  letter-spacing:12px;
+  color:rgba(255,255,255,0);
+  text-indent:12px;
+  animation:ldLogoIn .8s .2s cubic-bezier(.16,1,.3,1) forwards;
+  position:relative;
+}
+@keyframes ldLogoIn{
+  from{opacity:0;letter-spacing:28px;transform:translateY(12px)}
+  to{opacity:1;letter-spacing:12px;transform:translateY(0);color:rgba(255,255,255,.85)}
+}
+.ld-logo.glitch{animation:ldGlitch .15s forwards}
+@keyframes ldGlitch{
+  0%{transform:none;color:rgba(255,255,255,.85)}
+  20%{transform:translate(-3px,1px);color:rgba(180,220,255,.9)}
+  40%{transform:translate(3px,-2px);color:rgba(255,140,140,.8)}
+  60%{transform:translate(-2px,1px);color:rgba(255,255,255,.85)}
+  80%{transform:translate(1px,-1px)}
+  100%{transform:none;color:rgba(255,255,255,.85)}
+}
+
+/* Thin horizontal rule */
+.ld-rule{
+  width:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
+  margin:16px 0 20px;
+  animation:ldRule .7s .8s cubic-bezier(.16,1,.3,1) forwards;
+}
+@keyframes ldRule{to{width:280px}}
+
+/* Status line */
+.ld-status{
+  display:flex;align-items:center;gap:12px;
+  opacity:0;
+  animation:ldFade .4s 1s forwards;
+}
+@keyframes ldFade{to{opacity:1}}
+.ld-pct{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;letter-spacing:2px;
+  color:rgba(255,255,255,.4);
+  min-width:38px;text-align:right;
+}
+.ld-bar-wrap{
+  width:160px;height:1px;
+  background:rgba(255,255,255,.07);
+  position:relative;overflow:hidden;
+}
+.ld-bar{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,rgba(165,216,255,.5),rgba(255,255,255,.9),rgba(165,216,255,.5));
+  transition:width .05s linear;
+  box-shadow:0 0 8px rgba(165,216,255,.6);
+}
+.ld-msg{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.5rem;letter-spacing:3px;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.2);
+  min-width:160px;
+}
+
+/* Bottom tag */
+.ld-tag{
+  position:absolute;bottom:32px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.52rem;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(255,255,255,.12);
+  opacity:0;animation:ldFade .4s 1.2s forwards;
+}
+
+/* Scanlines */
+#loader::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.08) 3px,rgba(0,0,0,.08) 4px);
+  z-index:2;
+}
+
+/* ═══ CURSOR ═══ */
+#dot{width:6px;height:6px;background:#ffffff;border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .08s,width .2s,height .2s;box-shadow:0 0 6px rgba(255,255,255,.8)}
+#ring{width:32px;height:32px;border:1px solid rgba(255,255,255,.5);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s,opacity .3s,border-color .3s}
+.cursor-hover #dot{transform:translate(-50%,-50%) scale(0)}
+.cursor-hover #ring{width:56px;height:56px;border-color:rgba(255,255,255,.75)}
 
 /* ═══ NOISE ═══ */
 body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:8000;
@@ -39,42 +131,108 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:8000;
 #bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.6}
 
 /* ═══ NAV ═══ */
-nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:24px 52px;display:flex;justify-content:space-between;align-items:center;transition:all .5s;mix-blend-mode:normal}
-nav.stuck{background:rgba(8,7,6,.93);backdrop-filter:blur(28px) saturate(180%);padding:14px 52px;border-bottom:1px solid var(--border)}
-.logo{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:4px;color:var(--text);cursor:none;user-select:none}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:0 52px;display:flex;justify-content:space-between;align-items:stretch;transition:all .5s;opacity:0;transform:translateY(-16px);background:rgba(8,8,8,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);height:64px}
+nav.visible{opacity:1;transform:translateY(0);transition:opacity .8s,transform .8s}
+nav.stuck{background:rgba(6,6,6,.98);border-bottom:1px solid var(--border)}
+.nav-left{display:flex;align-items:center;gap:48px}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:4px;color:var(--text);cursor:none;user-select:none;text-decoration:none;display:flex;align-items:center}
 .logo em{color:var(--a);font-style:normal}
-.nav-r{display:flex;gap:32px;align-items:center}
-.nav-r a{color:var(--muted);text-decoration:none;font-size:.78rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;transition:color .2s;position:relative;padding-bottom:3px}
-.nav-r a::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:1px;background:var(--a);transform:scaleX(0);transform-origin:right;transition:transform .4s cubic-bezier(.16,1,.3,1)}
-.nav-r a:hover{color:var(--text)}
-.nav-r a:hover::after{transform:scaleX(1);transform-origin:left}
-.nav-btn{background:var(--a)!important;color:#080808!important;font-weight:800!important;padding:11px 28px;font-size:.78rem!important;letter-spacing:2px;clip-path:polygon(0 0,calc(100%-10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100%-10px));transition:background .2s,transform .2s,box-shadow .2s!important}
-.nav-btn::after{display:none!important}
-.nav-btn:hover{background:#e5e5e5!important;transform:translateY(-2px)!important;box-shadow:0 14px 40px rgba(255,255,255,.3)!important;color:#080808!important}
+
+/* NAV ITEMS */
+.nav-items{display:flex;align-items:stretch;gap:0}
+.nav-item{position:relative;display:flex;align-items:center}
+.nav-item > a, .nav-item > span{
+  display:flex;align-items:center;gap:5px;
+  padding:0 18px;height:64px;
+  color:var(--muted);text-decoration:none;
+  font-size:.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  white-space:nowrap;
+  border-bottom:2px solid transparent;
+  transition:all .2s;
+  cursor:none;
+}
+.nav-item > a:hover,.nav-item > span:hover,.nav-item:hover > a,.nav-item:hover > span{
+  color:var(--text);background:rgba(255,255,255,.04);border-bottom-color:var(--a);
+}
+.nav-item .arrow{font-size:.55rem;opacity:.5;transition:transform .25s}
+.nav-item:hover .arrow{transform:rotate(180deg)}
+
+/* DROPDOWN */
+.dropdown{
+  position:absolute;top:calc(100% - 1px);left:0;
+  background:rgba(10,10,10,.97);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(255,255,255,.08);
+  border-top:2px solid var(--a);
+  min-width:220px;
+  opacity:0;pointer-events:none;
+  transform:translateY(-4px);
+  transition:opacity .18s,transform .18s;
+  z-index:100;
+  padding-top:4px;
+}
+/* invisible hover bridge so mouse doesn't lose hover */
+.dropdown::before{
+  content:'';
+  position:absolute;
+  top:-8px;left:0;right:0;
+  height:8px;
+  background:transparent;
+}
+.nav-item:hover .dropdown{opacity:1;pointer-events:all;transform:translateY(0)}
+.dropdown a{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 20px;
+  color:#737373;text-decoration:none;
+  font-size:.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+  transition:color .18s,background .18s,padding .18s;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.dropdown a:last-child{border-bottom:none}
+.dropdown a:hover{color:var(--text);background:rgba(255,255,255,.05);padding-left:26px}
+.dropdown a .dd-icon{font-size:1rem;opacity:.7}
+.dropdown a .dd-arrow{margin-left:auto;opacity:.3;font-size:.6rem;transition:opacity .18s}
+.dropdown a:hover .dd-arrow{opacity:.8}
+
+/* RIGHT SIDE */
+.nav-right{display:flex;align-items:center;gap:0}
+.nav-cta-wrap{display:flex;align-items:stretch}
+.nav-demo{
+  display:flex;align-items:center;gap:8px;
+  padding:0 28px;
+  background:var(--a);color:#080808;
+  font-size:.75rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  text-decoration:none;cursor:none;
+  transition:background .2s;
+  border-left:1px solid rgba(255,255,255,.1);
+  white-space:nowrap;
+}
+.nav-demo:hover{background:#e5e5e5}
+.nav-demo-arr{
+  display:flex;align-items:center;justify-content:center;
+  padding:0 18px;
+  background:rgba(255,255,255,.12);color:var(--text);
+  border-left:1px solid rgba(255,255,255,.08);
+  font-size:1.1rem;cursor:none;
+  transition:background .2s;
+}
+.nav-demo-arr:hover{background:rgba(255,255,255,.2)}
 
 /* ═══ HERO ═══ */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 52px 90px;position:relative;overflow:hidden;z-index:1}
-
-/* GRID */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 52px 90px;position:relative;overflow:hidden;z-index:1;opacity:0;transform:translateY(20px);transition:opacity .9s,transform .9s}
+.hero.visible{opacity:1;transform:translateY(0)}
 .h-grid{position:absolute;inset:-100%;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:90px 90px;animation:gGrid 40s linear infinite;pointer-events:none}
 @keyframes gGrid{0%{transform:translate(0,0)}100%{transform:translate(90px,90px)}}
-
-/* SCAN LINE */
 .scan{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:scanDrop 6s ease-in-out infinite;pointer-events:none;z-index:2}
 @keyframes scanDrop{0%{top:-2px;opacity:0}5%{opacity:1}95%{opacity:1}100%{top:100%;opacity:0}}
-
-/* CORNER DECORATIONS */
 .corner{position:absolute;width:80px;height:80px;pointer-events:none;z-index:2}
 .corner.tl{top:100px;left:52px;border-top:1px solid rgba(255,255,255,.3);border-left:1px solid rgba(255,255,255,.3)}
 .corner.tr{top:100px;right:52px;border-top:1px solid rgba(255,255,255,.3);border-right:1px solid rgba(255,255,255,.3)}
 .corner.bl{bottom:80px;left:52px;border-bottom:1px solid rgba(255,255,255,.3);border-left:1px solid rgba(255,255,255,.3)}
 .corner.br{bottom:80px;right:52px;border-bottom:1px solid rgba(255,255,255,.3);border-right:1px solid rgba(255,255,255,.3)}
-
-/* HERO TEXT */
-.h-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--a);letter-spacing:5px;text-transform:uppercase;margin-bottom:32px;display:flex;align-items:center;gap:16px;opacity:0;animation:fadeUp .7s .1s forwards}
+.h-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--a);letter-spacing:5px;text-transform:uppercase;margin-bottom:32px;display:flex;align-items:center;gap:16px;opacity:0;animation:fadeUp .7s .1s forwards;padding-top:100px}
 .cursor-blink{width:8px;height:16px;background:var(--a);display:inline-block;animation:cblink 1s infinite}
 @keyframes cblink{0%,100%{opacity:1}50%{opacity:0}}
-
 .h-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(5.5rem,14vw,15rem);line-height:.86;letter-spacing:-2px;position:relative;z-index:1}
 .tl-wrap{overflow:hidden;display:block}
 .tl-inner{display:block;transform:translateY(110%);animation:tUp .95s cubic-bezier(.16,1,.3,1) forwards}
@@ -85,21 +243,16 @@ nav.stuck{background:rgba(8,7,6,.93);backdrop-filter:blur(28px) saturate(180%);p
 .t-amber{color:var(--a)}
 .t-out{-webkit-text-stroke:2px var(--a);color:transparent}
 .t-dim{color:rgba(254,243,199,.15)}
-
-/* GLITCH */
 .glitch{position:relative}
 .glitch::before,.glitch::after{content:attr(data-g);position:absolute;top:0;left:0;width:100%;pointer-events:none}
 .glitch::before{color:rgba(255,255,255,.6);animation:gb 5s 2s infinite}
 .glitch::after{color:rgba(239,68,68,.4);animation:ga 5s 2s infinite}
 @keyframes gb{0%,92%,100%{clip-path:inset(0 0 100% 0);transform:none}93%{clip-path:inset(10% 0 60% 0);transform:translate(-3px,2px)}95%{clip-path:inset(40% 0 30% 0);transform:translate(3px,-1px)}97%{clip-path:inset(70% 0 5% 0);transform:translate(-2px,2px)}99%{clip-path:inset(0 0 100% 0)}}
 @keyframes ga{0%,93%,100%{clip-path:inset(0 0 100% 0);transform:none}94%{clip-path:inset(60% 0 10% 0);transform:translate(3px,-2px)}96%{clip-path:inset(20% 0 50% 0);transform:translate(-3px,1px)}98%{clip-path:inset(80% 0 2% 0);transform:translate(2px,-2px)}99%{clip-path:inset(0 0 100% 0)}}
-
 .h-bottom{display:flex;justify-content:space-between;align-items:flex-end;margin-top:52px;opacity:0;animation:fadeUp .8s .8s forwards}
 .h-desc{max-width:380px;font-size:.98rem;line-height:1.8;color:#737373;font-weight:400}
 .h-desc strong{color:var(--text)}
 .h-btns{display:flex;gap:14px}
-
-/* BUTTONS */
 .btn{position:relative;display:inline-flex;align-items:center;gap:8px;padding:18px 40px;font-family:'Syne',sans-serif;font-weight:800;font-size:.85rem;letter-spacing:2px;text-transform:uppercase;text-decoration:none;cursor:none;overflow:hidden;transition:transform .25s,box-shadow .25s}
 .btn-a{background:var(--a);color:#080808;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px))}
 .btn-a::before{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 20%,rgba(255,255,255,.2) 50%,transparent 80%);transform:translateX(-100%);transition:transform .6s}
@@ -109,14 +262,11 @@ nav.stuck{background:rgba(8,7,6,.93);backdrop-filter:blur(28px) saturate(180%);p
 .btn-o:hover{border-color:var(--a);color:var(--a);transform:translateY(-4px)}
 .btn-arr{display:inline-block;transition:transform .3s}
 .btn-a:hover .btn-arr{transform:translateX(4px)}
-
-/* SCROLL HINT */
 .scroll-h{position:absolute;bottom:40px;left:52px;display:flex;align-items:center;gap:14px;opacity:0;animation:fadeUp .6s 1.4s forwards}
 .scroll-track{width:1px;height:80px;background:var(--border);position:relative;overflow:hidden}
 .scroll-track::after{content:'';position:absolute;top:0;left:0;width:100%;height:50%;background:linear-gradient(to bottom,var(--a),transparent);animation:scrollPulse 2.2s ease-in-out infinite}
 @keyframes scrollPulse{0%{transform:translateY(-100%)}100%{transform:translateY(250%)}}
 .scroll-txt{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:4px;text-transform:uppercase;writing-mode:vertical-rl}
-
 @keyframes fadeUp{from{opacity:0;transform:translateY(50px)}to{opacity:1;transform:translateY(0)}}
 
 /* ═══ TICKER ═══ */
@@ -135,11 +285,7 @@ section{padding:140px 52px;position:relative;z-index:1}
 
 /* ═══ REVEAL ═══ */
 [data-r]{opacity:0;transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)}
-[data-r=up]{transform:translateY(70px)}
-[data-r=left]{transform:translateX(-70px)}
-[data-r=right]{transform:translateX(70px)}
-[data-r=scale]{transform:scale(.85)}
-[data-r=flip]{transform:perspective(600px) rotateX(20deg);transform-origin:top}
+[data-r=up]{transform:translateY(70px)}[data-r=left]{transform:translateX(-70px)}[data-r=right]{transform:translateX(70px)}[data-r=scale]{transform:scale(.85)}[data-r=flip]{transform:perspective(600px) rotateX(20deg);transform-origin:top}
 [data-r].on{opacity:1;transform:none}
 
 /* ═══ DFC ═══ */
@@ -154,8 +300,6 @@ section{padding:140px 52px;position:relative;z-index:1}
 .dfc-attr{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--muted);letter-spacing:1px}
 .dfc-body{color:#737373;font-size:1rem;line-height:1.9;font-weight:400;margin-top:32px}
 .dfc-body strong{color:var(--text)}
-
-/* COUNTERS */
 .ctrs{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:56px;background:var(--border)}
 .ctr{background:var(--bg);padding:28px 22px;position:relative;overflow:hidden;transition:background .3s}
 .ctr:hover{background:var(--bg2)}
@@ -198,7 +342,7 @@ section{padding:140px 52px;position:relative;z-index:1}
 .fc-name{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:2px;margin-bottom:14px}
 .fc-desc{font-size:.88rem;color:#737373;line-height:1.8}
 
-/* ═══ MARQUEE STRIP ═══ */
+/* ═══ STRIP ═══ */
 .strip{padding:28px 0;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;z-index:1}
 .strip-t{display:inline-flex;gap:0;animation:strp 18s linear infinite}
 .strip:hover .strip-t{animation-play-state:paused}
@@ -268,423 +412,516 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
 </head>
 <body>
 
-<!-- CANVAS BACKGROUND -->
-<canvas id="bgCanvas"></canvas>
+<!-- LOADER -->
+<div id="loader">
+  <canvas id="loader-canvas"></canvas>
+  <div class="ld-wrap">
+    <div class="ld-logo" id="ld-logo">NEXSTOCK</div>
+    <div class="ld-rule"></div>
+    <div class="ld-status">
+      <div class="ld-pct" id="ld-pct">0%</div>
+      <div class="ld-bar-wrap"><div class="ld-bar" id="ld-bar"></div></div>
+      <div class="ld-msg" id="ld-msg">INITIALIZING</div>
+    </div>
+  </div>
+  <div class="ld-tag">DFC TURKIYE 2026 &mdash; HORTOR</div>
+</div>
 
 <div id="dot"></div>
 <div id="ring"></div>
+<canvas id="bgCanvas"></canvas>
 
-<!-- NAV -->
 <nav id="nav">
-  <div class="logo">Nex<em>Stock</em></div>
-  <div class="nav-r">
-    <a href="#dfc">DFC Nedir?</a>
-    <a href="#fids">FIDS Modeli</a>
-    <a href="#features">Proje</a>
-    <a href="#tech">Teknoloji</a>
-    <a href="https://barkod-pro-production.up.railway.app" class="nav-btn">Uygulamayı Aç →</a>
+  <div class="nav-left">
+    <a href="#hero-section" class="logo">Nex<em>Stock</em></a>
+    <div class="nav-items">
+
+      <!-- COZUMLER -->
+      <div class="nav-item">
+        <span>Cozumler <span class="arrow">&#9660;</span></span>
+        <div class="dropdown">
+          <a href="#fids"><span class="dd-icon">&#9670;</span> FIDS Metodolojisi <span class="dd-arrow">&#8594;</span></a>
+          <a href="#features"><span class="dd-icon">&#9670;</span> SKT Zekasi <span class="dd-arrow">&#8594;</span></a>
+          <a href="#features"><span class="dd-icon">&#9670;</span> Envanter Yonetimi <span class="dd-arrow">&#8594;</span></a>
+          <a href="#features"><span class="dd-icon">&#9670;</span> Rol Sistemi <span class="dd-arrow">&#8594;</span></a>
+        </div>
+      </div>
+
+      <!-- URUNLER -->
+      <div class="nav-item">
+        <span>Urunler <span class="arrow">&#9660;</span></span>
+        <div class="dropdown">
+          <a href="#features"><span class="dd-icon">&#128247;</span> Kamera Tarama <span class="dd-arrow">&#8594;</span></a>
+          <a href="#features"><span class="dd-icon">&#128197;</span> SKT Takibi <span class="dd-arrow">&#8594;</span></a>
+          <a href="#features"><span class="dd-icon">&#128202;</span> Canli Dashboard <span class="dd-arrow">&#8594;</span></a>
+          <a href="#features"><span class="dd-icon">&#128266;</span> Ses Sistemi <span class="dd-arrow">&#8594;</span></a>
+        </div>
+      </div>
+
+      <!-- NEDEN NEXSTOCK -->
+      <div class="nav-item">
+        <a href="#dfc">Neden NexStock</a>
+      </div>
+
+      <!-- HAKKINDA -->
+      <div class="nav-item">
+        <span>Hakkinda <span class="arrow">&#9660;</span></span>
+        <div class="dropdown">
+          <a href="#dfc"><span class="dd-icon">&#127760;</span> DFC Nedir? <span class="dd-arrow">&#8594;</span></a>
+          <a href="#fids"><span class="dd-icon">&#9733;</span> FIDS Modeli <span class="dd-arrow">&#8594;</span></a>
+          <a href="#tech"><span class="dd-icon">&#128736;</span> Teknoloji <span class="dd-arrow">&#8594;</span></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="nav-right">
+    <div class="nav-cta-wrap">
+      <a href="https://barkod-pro-production.up.railway.app" class="nav-demo">Uygulamayi Ac</a>
+      <a href="https://barkod-pro-production.up.railway.app" class="nav-demo-arr">&#8594;</a>
+    </div>
   </div>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
+<section class="hero" id="hero-section">
   <div class="h-grid"></div>
   <div class="scan"></div>
-  <div class="corner tl"></div>
-  <div class="corner tr"></div>
-  <div class="corner bl"></div>
-  <div class="corner br"></div>
-
+  <div class="corner tl"></div><div class="corner tr"></div>
+  <div class="corner bl"></div><div class="corner br"></div>
   <div class="h-eyebrow">
     <span class="cursor-blink"></span>
-    DFC Türkiye Yarışması — 2026
+    DFC Turkiye Yarismas&imath; &mdash; 2026
   </div>
-
   <div class="h-title">
     <span class="tl-wrap"><span class="tl-inner glitch t-amber" data-g="NEXSTOCK">NEXSTOCK</span></span>
-    <span class="tl-wrap"><span class="tl-inner t-out">ENVANTERİN</span></span>
-    <span class="tl-wrap"><span class="tl-inner t-dim">GELECEĞİ.</span></span>
+    <span class="tl-wrap"><span class="tl-inner t-out">ENVANTERIN</span></span>
+    <span class="tl-wrap"><span class="tl-inner t-dim">GELECEGI.</span></span>
   </div>
-
   <div class="h-bottom">
     <div class="h-desc">
-      DFC FIDS metodolojisi ile geliştirilen <strong>akıllı barkod ve envanter</strong> yönetim sistemi.
-      Gerçek sorunlara, gerçek çözümler.
+      DFC FIDS metodolojisi ile gelistirilen <strong>akilli barkod ve envanter</strong> yonetim sistemi.
+      Gercek sorunlara, gercek cozumler.
     </div>
     <div class="h-btns">
-      <a href="https://barkod-pro-production.up.railway.app" class="btn btn-a" id="mainBtn">Uygulamayı Dene <span class="btn-arr">→</span></a>
+      <a href="https://barkod-pro-production.up.railway.app" class="btn btn-a" id="mainBtn">Uygulamayi Dene <span class="btn-arr">&rarr;</span></a>
       <a href="#dfc" class="btn btn-o">Daha Fazla</a>
     </div>
   </div>
-
   <div class="scroll-h">
     <div class="scroll-track"></div>
     <div class="scroll-txt">Scroll</div>
   </div>
 </section>
 
-<!-- TICKER -->
 <div class="ticker">
   <div class="ticker-t">
-    <span class="ti">FEEL</span><span class="ti ts">✦</span>
-    <span class="ti">IMAGINE</span><span class="ti ts">✦</span>
-    <span class="ti">DO</span><span class="ti ts">✦</span>
-    <span class="ti">SHARE</span><span class="ti ts">✦</span>
-    <span class="ti">DESIGN FOR CHANGE</span><span class="ti ts">✦</span>
-    <span class="ti">NEXSTOCK</span><span class="ti ts">✦</span>
-    <span class="ti">FEEL</span><span class="ti ts">✦</span>
-    <span class="ti">IMAGINE</span><span class="ti ts">✦</span>
-    <span class="ti">DO</span><span class="ti ts">✦</span>
-    <span class="ti">SHARE</span><span class="ti ts">✦</span>
-    <span class="ti">DESIGN FOR CHANGE</span><span class="ti ts">✦</span>
-    <span class="ti">NEXSTOCK</span><span class="ti ts">✦</span>
+    <span class="ti">FEEL</span><span class="ti ts">&#10022;</span>
+    <span class="ti">IMAGINE</span><span class="ti ts">&#10022;</span>
+    <span class="ti">DO</span><span class="ti ts">&#10022;</span>
+    <span class="ti">SHARE</span><span class="ti ts">&#10022;</span>
+    <span class="ti">DESIGN FOR CHANGE</span><span class="ti ts">&#10022;</span>
+    <span class="ti">NEXSTOCK</span><span class="ti ts">&#10022;</span>
+    <span class="ti">FEEL</span><span class="ti ts">&#10022;</span>
+    <span class="ti">IMAGINE</span><span class="ti ts">&#10022;</span>
+    <span class="ti">DO</span><span class="ti ts">&#10022;</span>
+    <span class="ti">SHARE</span><span class="ti ts">&#10022;</span>
+    <span class="ti">DESIGN FOR CHANGE</span><span class="ti ts">&#10022;</span>
+    <span class="ti">NEXSTOCK</span><span class="ti ts">&#10022;</span>
   </div>
 </div>
 
-<!-- DFC -->
 <section id="dfc">
   <div class="dfc-wrap">
     <div data-r="left">
-      <div class="s-eyebrow">// 01 — DFC Nedir?</div>
-      <div class="s-title">DEĞIŞIM<br>İÇİN<br><span style="color:var(--a)">TASARIM</span></div>
+      <div class="s-eyebrow">// 01 &mdash; DFC Nedir?</div>
+      <div class="s-title">DEGISIM<br>ICIN<br><span style="color:var(--a)">TASARIM</span></div>
       <div class="dfc-body">
-        Design for Change (DFC), 2009 yılında Kiran Bir Sethi tarafından kurulan dünyanın en büyük
-        çocuk hareketidir. Bugün <strong>70'ten fazla ülkede</strong>, <strong>30.000+ okulda</strong>
-        ve <strong>2 milyondan fazla çocukla</strong> hayata geçirilmektedir.
+        Design for Change (DFC), 2009 yilinda Kiran Bir Sethi tarafindan kurulan dunyanin en buyuk
+        cocuk hareketidir. Bugun <strong>70'ten fazla ulkede</strong>, <strong>30.000+ okulda</strong>
+        ve <strong>2 milyondan fazla cocukla</strong> hayata gecirilmektedir.
         <br><br>
-        DFC Türkiye, 2023 yılında başladı. Amacı, <strong style="color:var(--a)">"YAPABİLİRİM"</strong>
-        zihniyetini tüm Türkiye'ye yaymak. 9–17 yaş arası öğrenciler FIDS modeli ile gerçek
-        sorunlara çözümler geliştiriyor.
+        DFC Turkiye, 2023 yilinda basladi. Amaci, <strong style="color:var(--a)">"YAPABILIRIM"</strong>
+        zihniyetini tum Turkiye'ye yaymak. 9-17 yas arasi ogrenciler FIDS modeli ile gercek
+        sorunlara cozumler gelistiriyor.
       </div>
       <div class="ctrs" data-r="up">
-        <div class="ctr"><span class="c-n" data-c="70">0</span><span class="c-l">+ Ülke</span></div>
+        <div class="ctr"><span class="c-n" data-c="70">0</span><span class="c-l">+ Ulke</span></div>
         <div class="ctr"><span class="c-n" data-c="30">0</span><span class="c-l">K+ Okul</span></div>
-        <div class="ctr"><span class="c-n" data-c="2">0</span><span class="c-l">M+ Çocuk</span></div>
+        <div class="ctr"><span class="c-n" data-c="2">0</span><span class="c-l">M+ Cocuk</span></div>
       </div>
     </div>
     <div data-r="right">
       <div class="dfc-card">
-        <div class="dfc-q">"Zamanımızın en zorlayıcı problemlerine çözüm üretebilir, geçmişin sana dayattığı sınırlamalar yerine <em>kendi geleceğini inşa edebilirsin.</em>"</div>
-        <div class="dfc-attr">— Andreas Schleicher, OECD Eğitim Direktörü</div>
+        <div class="dfc-q">"Zamanımızın en zorlayici problemlerine cozum uretebilir, gecmisin sana dayattigi sinirlamalar yerine <em>kendi gelecegini insa edebilirsin.</em>"</div>
+        <div class="dfc-attr">&mdash; Andreas Schleicher, OECD Egitim Direktoru</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FIDS -->
 <section id="fids" class="fids-bg">
   <div style="text-align:center" data-r="up">
-    <div class="s-eyebrow" style="justify-content:center">// 02 — FIDS Modeli</div>
-    <div class="s-title">4 ADIMDA <span style="color:var(--a)">DEĞİŞİM</span></div>
+    <div class="s-eyebrow" style="justify-content:center">// 02 &mdash; FIDS Modeli</div>
+    <div class="s-title">4 ADIMDA <span style="color:var(--a)">DEGISIM</span></div>
   </div>
   <div class="fids-grid">
-    <div class="f-card" data-r="up" style="transition-delay:.00s"><div class="f-bg-num">01</div><div class="f-letter">F</div><div class="f-word">Feel — Hisset</div><div class="f-ttl">Empati Kur</div><div class="f-body">Bir sorunu çözmeye başlamadan önce yavaşla, gözlemle ve iyice anla. Varsayımlara değil, gözleme dayalı içgörülerle yaklaş.</div><div class="f-tag">EMPATİ BECERİSİ</div></div>
-    <div class="f-card" data-r="up" style="transition-delay:.10s"><div class="f-bg-num">02</div><div class="f-letter">I</div><div class="f-word">Imagine — Hayal Et</div><div class="f-ttl">Çözüm Tasarla</div><div class="f-body">Topluluğun yaratıcılığına ve ortak akla başvur. Durumu iyileştirmek için birlikte fikir üret.</div><div class="f-tag">YARATICI DÜŞÜNCE</div></div>
-    <div class="f-card" data-r="up" style="transition-delay:.20s"><div class="f-bg-num">03</div><div class="f-letter">D</div><div class="f-word">Do — Yap</div><div class="f-ttl">Harekete Geç</div><div class="f-body">Arzu edilen etkiye ulaşmak için pratiklik, yaratıcılık ve azimle çalış. Ayrıntılara odaklan, eyleme geç.</div><div class="f-tag">POTANSİYELİ ORTAYA ÇIKAR</div></div>
-    <div class="f-card" data-r="up" style="transition-delay:.30s"><div class="f-bg-num">04</div><div class="f-letter">S</div><div class="f-word">Share — Paylaş</div><div class="f-ttl">İlham Ver</div><div class="f-body">"YAPABİLİRİM" bilincini yay. Başkalarıyla rekabet etmek yerine başkalarını tamamla ve birlikte yüksel.</div><div class="f-tag">BİRLİKTE YÜKSELİŞ</div></div>
+    <div class="f-card" data-r="up" style="transition-delay:.00s"><div class="f-bg-num">01</div><div class="f-letter">F</div><div class="f-word">Feel &mdash; Hisset</div><div class="f-ttl">Empati Kur</div><div class="f-body">Bir sorunu cozmeye baslamadan once yavaşla, gozlemle ve iyice anla. Varsayimlara degil, gozleme dayali icgorülerle yaklas.</div><div class="f-tag">EMPATi BECERISI</div></div>
+    <div class="f-card" data-r="up" style="transition-delay:.10s"><div class="f-bg-num">02</div><div class="f-letter">I</div><div class="f-word">Imagine &mdash; Hayal Et</div><div class="f-ttl">Cozum Tasarla</div><div class="f-body">Toplulugun yaraticilgina ve ortak akla basvur. Durumu iyilestirmek icin birlikte fikir uret.</div><div class="f-tag">YARATICI DUSUNCE</div></div>
+    <div class="f-card" data-r="up" style="transition-delay:.20s"><div class="f-bg-num">03</div><div class="f-letter">D</div><div class="f-word">Do &mdash; Yap</div><div class="f-ttl">Harekete Gec</div><div class="f-body">Arzu edilen etkiye ulasmak icin pratiklik, yaraticilik ve azimle calis. Ayrintilar odaklan, eyleme gec.</div><div class="f-tag">POTANSIYELi ORTAYA CIKAR</div></div>
+    <div class="f-card" data-r="up" style="transition-delay:.30s"><div class="f-bg-num">04</div><div class="f-letter">S</div><div class="f-word">Share &mdash; Paylas</div><div class="f-ttl">Ilham Ver</div><div class="f-body">"YAPABILIRIM" bilincini yay. Baskalariyla rekabet etmek yerine baskalari tamamla ve birlikte yuksel.</div><div class="f-tag">BIRLIKTE YUKSELIS</div></div>
   </div>
 </section>
 
-<!-- MARQUEE STRIP -->
 <div class="strip">
   <div class="strip-t">
-    <span class="si">NexStock</span><span class="sd">◆</span>
-    <span class="si">Akıllı Envanter</span><span class="sd">◆</span>
-    <span class="si">Barkod Tarama</span><span class="sd">◆</span>
-    <span class="si">SKT Takibi</span><span class="sd">◆</span>
-    <span class="si">DFC Türkiye</span><span class="sd">◆</span>
-    <span class="si">FIDS Modeli</span><span class="sd">◆</span>
-    <span class="si">Open Food Facts</span><span class="sd">◆</span>
-    <span class="si">NexStock</span><span class="sd">◆</span>
-    <span class="si">Akıllı Envanter</span><span class="sd">◆</span>
-    <span class="si">Barkod Tarama</span><span class="sd">◆</span>
-    <span class="si">SKT Takibi</span><span class="sd">◆</span>
-    <span class="si">DFC Türkiye</span><span class="sd">◆</span>
-    <span class="si">FIDS Modeli</span><span class="sd">◆</span>
-    <span class="si">Open Food Facts</span><span class="sd">◆</span>
+    <span class="si">NexStock</span><span class="sd">&#9670;</span>
+    <span class="si">Akilli Envanter</span><span class="sd">&#9670;</span>
+    <span class="si">Barkod Tarama</span><span class="sd">&#9670;</span>
+    <span class="si">SKT Takibi</span><span class="sd">&#9670;</span>
+    <span class="si">DFC Turkiye</span><span class="sd">&#9670;</span>
+    <span class="si">FIDS Modeli</span><span class="sd">&#9670;</span>
+    <span class="si">Open Food Facts</span><span class="sd">&#9670;</span>
+    <span class="si">NexStock</span><span class="sd">&#9670;</span>
+    <span class="si">Akilli Envanter</span><span class="sd">&#9670;</span>
+    <span class="si">Barkod Tarama</span><span class="sd">&#9670;</span>
+    <span class="si">SKT Takibi</span><span class="sd">&#9670;</span>
+    <span class="si">DFC Turkiye</span><span class="sd">&#9670;</span>
+    <span class="si">FIDS Modeli</span><span class="sd">&#9670;</span>
+    <span class="si">Open Food Facts</span><span class="sd">&#9670;</span>
   </div>
 </div>
 
-<!-- FEATURES -->
 <section id="features">
   <div class="feat-hdr" data-r="up">
     <div>
-      <div class="s-eyebrow">// 03 — Proje</div>
-      <div class="s-title">NEXSTOCK<br><span style="color:var(--a)">ÖZELLİKLERİ</span></div>
+      <div class="s-eyebrow">// 03 &mdash; Proje</div>
+      <div class="s-title">NEXSTOCK<br><span style="color:var(--a)">OZELLiKLERi</span></div>
     </div>
-    <a href="https://barkod-pro-production.up.railway.app" class="btn btn-a">Canlı Dene <span class="btn-arr">→</span></a>
+    <a href="https://barkod-pro-production.up.railway.app" class="btn btn-a">Canli Dene <span class="btn-arr">&rarr;</span></a>
   </div>
   <div class="feat-grid">
-    <div class="fc" data-r="up" style="transition-delay:.00s"><div class="fc-glow"></div><div class="fc-num">01/06</div><span class="fc-icon">📷</span><div class="fc-name">Kamera Tarama</div><div class="fc-desc">Tarayıcı kamerası ile EAN-13 dahil tüm barkod formatlarını gerçek zamanlı okuma. 3 tutarlı okuma algoritması ile maksimum doğruluk.</div></div>
-    <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">02/06</div><span class="fc-icon">🗓️</span><div class="fc-name">SKT Takibi</div><div class="fc-desc">Son kullanma tarihi geçmiş ürünler için sesli ve görsel alarmlar. 7 günlük önceden uyarı sistemi ile gıda israfı önlenir.</div></div>
-    <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">03/06</div><span class="fc-icon">🌍</span><div class="fc-name">Open Food Facts</div><div class="fc-desc">Bilinmeyen barkodlar Open Food Facts API'sinden otomatik sorgulanır, ürün bilgileri anında sisteme eklenir.</div></div>
-    <div class="fc" data-r="up" style="transition-delay:.00s"><div class="fc-glow"></div><div class="fc-num">04/06</div><span class="fc-icon">👥</span><div class="fc-name">Rol Sistemi</div><div class="fc-desc">Admin, müdür, kasiyer ve görüntüleyici rolleri. Her rol kendi yetki seviyesine göre erişim sağlar.</div></div>
-    <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">05/06</div><span class="fc-icon">📊</span><div class="fc-name">Canlı Dashboard</div><div class="fc-desc">Gerçek zamanlı envanter istatistikleri, kritik stok uyarıları, hareket geçmişi ve raporlar tek ekranda.</div></div>
-    <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">06/06</div><span class="fc-icon">🔊</span><div class="fc-name">Ses Sistemi</div><div class="fc-desc">Web Audio API ile başarılı okuma, hata ve SKT uyarı sesleri. Her durum için farklı ses tonu ile anlık geri bildirim.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.00s"><div class="fc-glow"></div><div class="fc-num">01/06</div><span class="fc-icon">&#128247;</span><div class="fc-name">Kamera Tarama</div><div class="fc-desc">Tarayici kamerasi ile EAN-13 dahil tum barkod formatlarini gercek zamanli okuma. 3 tutarli okuma algoritmasi ile maksimum dogruluk.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">02/06</div><span class="fc-icon">&#128197;</span><div class="fc-name">SKT Takibi</div><div class="fc-desc">Son kullanma tarihi gecmis urunler icin sesli ve gorsel alarmlar. 7 gunluk onceden uyari sistemi ile gida israfi onlenir.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">03/06</div><span class="fc-icon">&#127758;</span><div class="fc-name">Open Food Facts</div><div class="fc-desc">Bilinmeyen barkodlar Open Food Facts API'sinden otomatik sorgulanir, urun bilgileri aninda sisteme eklenir.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.00s"><div class="fc-glow"></div><div class="fc-num">04/06</div><span class="fc-icon">&#128101;</span><div class="fc-name">Rol Sistemi</div><div class="fc-desc">Admin, mudur, kasiyer ve goruntuleyici rolleri. Her rol kendi yetki seviyesine gore erisim saglar.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">05/06</div><span class="fc-icon">&#128202;</span><div class="fc-name">Canli Dashboard</div><div class="fc-desc">Gercek zamanli envanter istatistikleri, kritik stok uyarilari, hareket gecmisi ve raporlar tek ekranda.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">06/06</div><span class="fc-icon">&#128266;</span><div class="fc-name">Ses Sistemi</div><div class="fc-desc">Web Audio API ile basarili okuma, hata ve SKT uyari sesleri. Her durum icin farkli ses tonu ile anlik geri bildirim.</div></div>
   </div>
 </section>
 
-<!-- STATS -->
 <div class="stats-s" data-r="scale">
   <div class="stats-g">
-    <div><div class="stn" data-c="70">0</div><div class="stl">Ülkede DFC</div></div>
-    <div><div class="stn" data-c="2">0</div><div class="stl">Milyon+ Katılımcı</div></div>
-    <div><div class="stn" data-c="4">0</div><div class="stl">FIDS Adımı</div></div>
-    <div><div class="stn">∞</div><div class="stl">Değişim Potansiyeli</div></div>
+    <div><div class="stn" data-c="70">0</div><div class="stl">Ulkede DFC</div></div>
+    <div><div class="stn" data-c="2">0</div><div class="stl">Milyon+ Katilimci</div></div>
+    <div><div class="stn" data-c="4">0</div><div class="stl">FIDS Adimi</div></div>
+    <div><div class="stn">&#8734;</div><div class="stl">Degisim Potansiyeli</div></div>
   </div>
 </div>
 
-<!-- TECH -->
 <section id="tech">
   <div data-r="up">
-    <div class="s-eyebrow">// 04 — Teknoloji</div>
+    <div class="s-eyebrow">// 04 &mdash; Teknoloji</div>
     <div class="s-title">NASIL<br><span style="color:var(--a)">YAPILDI?</span></div>
     <div class="tech-l">
-      <div class="tp hot"><span>Python</span></div>
-      <div class="tp hot"><span>Flask</span></div>
-      <div class="tp hot"><span>SQLite</span></div>
-      <div class="tp hot"><span>Tkinter</span></div>
-      <div class="tp"><span>QuaggaJS</span></div>
-      <div class="tp"><span>OpenCV</span></div>
-      <div class="tp"><span>zxing-cpp</span></div>
-      <div class="tp"><span>Web Audio API</span></div>
-      <div class="tp"><span>Open Food Facts API</span></div>
-      <div class="tp"><span>Railway</span></div>
-      <div class="tp"><span>Vercel</span></div>
-      <div class="tp"><span>GitHub</span></div>
-      <div class="tp"><span>pygame</span></div>
+      <div class="tp hot"><span>Python</span></div><div class="tp hot"><span>Flask</span></div>
+      <div class="tp hot"><span>SQLite</span></div><div class="tp hot"><span>Tkinter</span></div>
+      <div class="tp"><span>QuaggaJS</span></div><div class="tp"><span>OpenCV</span></div>
+      <div class="tp"><span>zxing-cpp</span></div><div class="tp"><span>Web Audio API</span></div>
+      <div class="tp"><span>Open Food Facts API</span></div><div class="tp"><span>Railway</span></div>
+      <div class="tp"><span>Vercel</span></div><div class="tp"><span>GitHub</span></div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="fl">Nex<em>Stock</em></div>
-  <div class="fi">DFC Türkiye Yarışması — 2026<br>FIDS Modeli ile Geliştirildi</div>
+  <div class="fi">DFC Turkiye Yarisması &mdash; 2026<br>FIDS Modeli ile Gelistirildi</div>
   <div class="flinks">
-    <a href="https://dfcturkiye.org" target="_blank">DFC Türkiye</a>
+    <a href="https://dfcturkiye.org" target="_blank">DFC Turkiye</a>
     <a href="https://barkod-pro-production.up.railway.app" target="_blank">Uygulama</a>
   </div>
 </footer>
 
 <script>
-// ─── CANVAS PARTICLES (connecting dots) ─────────────────
-const canvas = document.getElementById('bgCanvas');
-const ctx = canvas.getContext('2d');
-let W, H, dots = [];
+/* ═══ LOADER CANVAS ═══════════════════════════════════════ */
+(function(){
+  var lc   = document.getElementById('loader-canvas');
+  var lctx = lc.getContext('2d');
+  var W, H, CX, CY;
 
-function resize() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener('resize', resize);
-
-class Dot {
-  constructor() { this.reset(); }
-  reset() {
-    this.x = Math.random() * W;
-    this.y = Math.random() * H;
-    this.vx = (Math.random() - .5) * .35;
-    this.vy = (Math.random() - .5) * .35;
-    this.r = Math.random() * 1.5 + .5;
-    this.a = Math.random() * .5 + .1;
+  function resize(){
+    W = lc.width  = window.innerWidth;
+    H = lc.height = window.innerHeight;
+    CX = W/2; CY = H/2;
   }
-  update() {
-    this.x += this.vx;
-    this.y += this.vy;
-    if (this.x < 0 || this.x > W) this.vx *= -1;
-    if (this.y < 0 || this.y > H) this.vy *= -1;
+  resize();
+
+  /* Generate crystal shards */
+  var shards = [];
+  for(var i=0;i<200;i++){
+    var angle  = Math.random()*Math.PI*2;
+    var radius = 30 + Math.random()*Math.min(W,H)*0.42;
+    shards.push({
+      x: CX + Math.cos(angle)*radius,
+      y: CY + Math.sin(angle)*radius*0.55,
+      w: 3 + Math.random()*16,
+      h: 5 + Math.random()*28,
+      rot: (Math.random()-0.5)*Math.PI*0.5,
+      delay: Math.random(),
+      phase: Math.random()*Math.PI*2,
+    });
   }
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(255,255,255,${this.a})`;
-    ctx.fill();
-  }
-}
 
-for (let i = 0; i < 80; i++) dots.push(new Dot());
+  var startT = null;
+  var DUR    = 2800;
+  var running = true;
 
-let mouseX = -1000, mouseY = -1000;
-window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+  function drawFrame(ts){
+    if(!startT) startT = ts;
+    var prog = Math.min((ts-startT)/DUR, 1);
 
-function animCanvas() {
-  ctx.clearRect(0, 0, W, H);
-  dots.forEach(d => { d.update(); d.draw(); });
+    lctx.clearRect(0,0,W,H);
 
-  // Connect nearby dots
-  for (let i = 0; i < dots.length; i++) {
-    for (let j = i + 1; j < dots.length; j++) {
-      const dx = dots[i].x - dots[j].x;
-      const dy = dots[i].y - dots[j].y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 120) {
-        ctx.beginPath();
-        ctx.moveTo(dots[i].x, dots[i].y);
-        ctx.lineTo(dots[j].x, dots[j].y);
-        ctx.strokeStyle = `rgba(255,255,255,${(1 - dist / 120) * .12})`;
-        ctx.lineWidth = .5;
-        ctx.stroke();
+    /* BG gradient */
+    var bg = lctx.createRadialGradient(CX,CY,0,CX,CY,Math.max(W,H)*0.7);
+    bg.addColorStop(0,'rgba(16,18,28,1)');
+    bg.addColorStop(1,'rgba(4,4,10,1)');
+    lctx.fillStyle = bg;
+    lctx.fillRect(0,0,W,H);
+
+    /* Center glow */
+    var gAlpha = prog*0.12;
+    var gr = lctx.createRadialGradient(CX,CY,0,CX,CY,180+prog*80);
+    gr.addColorStop(0,'rgba(165,216,255,'+gAlpha+')');
+    gr.addColorStop(1,'rgba(165,216,255,0)');
+    lctx.fillStyle = gr;
+    lctx.beginPath(); lctx.arc(CX,CY,280,0,Math.PI*2); lctx.fill();
+
+    /* Draw shards */
+    for(var s=0;s<shards.length;s++){
+      var sh   = shards[s];
+      var cp   = Math.max(0, Math.min((prog - sh.delay*0.55)/0.45, 1));
+      var ease = 1 - Math.pow(1-cp,3);
+      if(ease<=0.01) continue;
+
+      lctx.save();
+      lctx.translate(sh.x, sh.y);
+      lctx.rotate(sh.rot);
+      lctx.globalAlpha = ease * 0.28;
+
+      var sg = lctx.createLinearGradient(-sh.w/2,-sh.h/2,sh.w/2,sh.h/2);
+      sg.addColorStop(0,'rgba(210,230,255,0.95)');
+      sg.addColorStop(0.5,'rgba(140,190,240,0.6)');
+      sg.addColorStop(1,'rgba(60,110,200,0.3)');
+      lctx.fillStyle   = sg;
+      lctx.strokeStyle = 'rgba(165,216,255,'+(ease*0.55)+')';
+      lctx.lineWidth   = 0.6;
+
+      lctx.beginPath();
+      lctx.moveTo(0,-sh.h/2);
+      lctx.lineTo(sh.w/2,-sh.h/4);
+      lctx.lineTo(sh.w/2, sh.h/4);
+      lctx.lineTo(0, sh.h/2);
+      lctx.lineTo(-sh.w/2, sh.h/4);
+      lctx.lineTo(-sh.w/2,-sh.h/4);
+      lctx.closePath();
+      lctx.fill(); lctx.stroke();
+
+      /* Inner spine */
+      lctx.globalAlpha = ease*0.35;
+      lctx.strokeStyle = 'rgba(220,240,255,0.8)';
+      lctx.lineWidth   = 0.4;
+      lctx.beginPath();
+      lctx.moveTo(0,-sh.h/2+2); lctx.lineTo(0,sh.h/2-2);
+      lctx.stroke();
+      lctx.restore();
+    }
+
+    /* Connecting lines */
+    lctx.globalAlpha = prog*0.055;
+    lctx.strokeStyle = 'rgba(165,216,255,1)';
+    lctx.lineWidth   = 0.3;
+    for(var a=0;a<shards.length;a+=3){
+      for(var b=a+1;b<shards.length;b+=4){
+        var ddx = shards[a].x-shards[b].x;
+        var ddy = shards[a].y-shards[b].y;
+        if(Math.sqrt(ddx*ddx+ddy*ddy)<100){
+          lctx.beginPath();
+          lctx.moveTo(shards[a].x,shards[a].y);
+          lctx.lineTo(shards[b].x,shards[b].y);
+          lctx.stroke();
+        }
       }
     }
-    // Connect to mouse
-    const dx = dots[i].x - mouseX;
-    const dy = dots[i].y - mouseY;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    if (dist < 180) {
-      ctx.beginPath();
-      ctx.moveTo(dots[i].x, dots[i].y);
-      ctx.lineTo(mouseX, mouseY);
-      ctx.strokeStyle = `rgba(255,255,255,${(1 - dist / 180) * .25})`;
-      ctx.lineWidth = .8;
-      ctx.stroke();
+    lctx.globalAlpha = 1;
+
+    if(running) requestAnimationFrame(drawFrame);
+  }
+  requestAnimationFrame(drawFrame);
+  window._stopLoaderCanvas = function(){ running=false; };
+})();
+
+/* ═══ LOADER PROGRESS ════════════════════════════════════ */
+var ldBar  = document.getElementById('ld-bar');
+var ldPct  = document.getElementById('ld-pct');
+var ldMsg  = document.getElementById('ld-msg');
+var ldLogo = document.getElementById('ld-logo');
+var loader = document.getElementById('loader');
+var msgs   = ['INITIALIZING','GROWING CRYSTALS','LOADING SHADERS','BUILDING WORLD','SYSTEM READY'];
+var pct    = 0;
+
+/* Glitch logo periodically */
+var glitchTimer = setInterval(function(){
+  if(Math.random()>0.55){
+    ldLogo.classList.add('glitch');
+    setTimeout(function(){ ldLogo.classList.remove('glitch'); },150);
+  }
+},700);
+
+var ldInterval = setInterval(function(){
+  pct += Math.random()*14 + 3;
+  if(pct>100) pct=100;
+  ldBar.style.width  = pct+'%';
+  ldPct.textContent  = Math.floor(pct)+'%';
+  ldMsg.textContent  = msgs[Math.min(Math.floor(pct/22),4)];
+  if(pct>=100){
+    clearInterval(ldInterval);
+    clearInterval(glitchTimer);
+    ldMsg.textContent = 'SYSTEM READY';
+    ldPct.textContent = '100%';
+    setTimeout(function(){
+      loader.classList.add('out');
+      window._stopLoaderCanvas && window._stopLoaderCanvas();
+      document.getElementById('nav').classList.add('visible');
+      document.getElementById('hero-section').classList.add('visible');
+      setTimeout(function(){ loader.style.display='none'; },1300);
+    },500);
+  }
+},85);
+
+/* ═══ CANVAS BG (constellation) ══════════════════════════ */
+var canvas = document.getElementById('bgCanvas');
+var ctx    = canvas.getContext('2d');
+var W2,H2,dots=[];
+function resize2(){W2=canvas.width=window.innerWidth;H2=canvas.height=window.innerHeight;}
+resize2();
+window.addEventListener('resize',resize2);
+function Dot(){this.reset();}
+Dot.prototype.reset=function(){this.x=Math.random()*W2;this.y=Math.random()*H2;this.vx=(Math.random()-.5)*.35;this.vy=(Math.random()-.5)*.35;this.r=Math.random()*1.5+.5;this.a=Math.random()*.5+.1;};
+Dot.prototype.update=function(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>W2)this.vx*=-1;if(this.y<0||this.y>H2)this.vy*=-1;};
+Dot.prototype.draw=function(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,'+this.a+')';ctx.fill();};
+for(var i=0;i<80;i++) dots.push(new Dot());
+var mX=-1000,mY=-1000;
+window.addEventListener('mousemove',function(e){mX=e.clientX;mY=e.clientY;});
+function animCanvas(){
+  ctx.clearRect(0,0,W2,H2);
+  dots.forEach(function(d){d.update();d.draw();});
+  for(var i=0;i<dots.length;i++){
+    for(var j=i+1;j<dots.length;j++){
+      var dx=dots[i].x-dots[j].x,dy=dots[i].y-dots[j].y,dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<120){ctx.beginPath();ctx.moveTo(dots[i].x,dots[i].y);ctx.lineTo(dots[j].x,dots[j].y);ctx.strokeStyle='rgba(255,255,255,'+((1-dist/120)*.12)+')';ctx.lineWidth=.5;ctx.stroke();}
     }
+    var dx2=dots[i].x-mX,dy2=dots[i].y-mY,dist2=Math.sqrt(dx2*dx2+dy2*dy2);
+    if(dist2<180){ctx.beginPath();ctx.moveTo(dots[i].x,dots[i].y);ctx.lineTo(mX,mY);ctx.strokeStyle='rgba(255,255,255,'+((1-dist2/180)*.25)+')';ctx.lineWidth=.8;ctx.stroke();}
   }
   requestAnimationFrame(animCanvas);
 }
 animCanvas();
 
-// ─── CURSOR ─────────────────────────────────────────────
-const dot = document.getElementById('dot');
-const ring = document.getElementById('ring');
-let mx = 0, my = 0, rx = 0, ry = 0;
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+/* ═══ CURSOR ════════════════════════════════════════════ */
+var dot=document.getElementById('dot'),ring=document.getElementById('ring');
+var mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',function(e){
+  mx=e.clientX;my=e.clientY;
+  dot.style.left=mx+'px';dot.style.top=my+'px';
+  dot.style.display='block';ring.style.display='block';
 });
-(function loop() {
-  rx += (mx - rx) * .11; ry += (my - ry) * .11;
-  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-  requestAnimationFrame(loop);
-})();
-document.querySelectorAll('a,button,.f-card,.fc,.ctr,.tp').forEach(el => {
-  el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-  el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+(function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button,.f-card,.fc,.ctr,.tp,.dropdown a,.nav-item').forEach(function(el){
+  el.addEventListener('mouseenter',function(){document.body.classList.add('cursor-hover');});
+  el.addEventListener('mouseleave',function(){document.body.classList.remove('cursor-hover');});
 });
 
-// ─── NAV ────────────────────────────────────────────────
-window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('stuck', window.scrollY > 60);
+/* ═══ NAV ════════════════════════════════════════════════ */
+window.addEventListener('scroll',function(){
+  document.getElementById('nav').classList.toggle('stuck',window.scrollY>60);
 });
 
-// ─── MAGNETIC BUTTONS ───────────────────────────────────
-document.querySelectorAll('.btn').forEach(btn => {
-  btn.addEventListener('mousemove', e => {
-    const r = btn.getBoundingClientRect();
-    const x = (e.clientX - r.left - r.width / 2) * .22;
-    const y = (e.clientY - r.top - r.height / 2) * .22;
-    btn.style.transform = `translate(${x}px,${y}px)`;
+/* ═══ MAGNETIC BUTTONS ═══════════════════════════════════ */
+document.querySelectorAll('.btn').forEach(function(btn){
+  btn.addEventListener('mousemove',function(e){
+    var r=btn.getBoundingClientRect();
+    btn.style.transform='translate('+((e.clientX-r.left-r.width/2)*.22)+'px,'+((e.clientY-r.top-r.height/2)*.22)+'px)';
   });
-  btn.addEventListener('mouseleave', () => btn.style.transform = '');
+  btn.addEventListener('mouseleave',function(){btn.style.transform='';});
 });
 
-// ─── FEATURE CARD GLOW ──────────────────────────────────
-document.querySelectorAll('.fc').forEach(card => {
-  const glow = card.querySelector('.fc-glow');
-  card.addEventListener('mousemove', e => {
-    const r = card.getBoundingClientRect();
-    glow.style.left = (e.clientX - r.left) + 'px';
-    glow.style.top = (e.clientY - r.top) + 'px';
+/* ═══ FEATURE CARD GLOW ══════════════════════════════════ */
+document.querySelectorAll('.fc').forEach(function(card){
+  var glow=card.querySelector('.fc-glow');
+  card.addEventListener('mousemove',function(e){
+    var r=card.getBoundingClientRect();
+    glow.style.left=(e.clientX-r.left)+'px';
+    glow.style.top=(e.clientY-r.top)+'px';
   });
 });
 
-// ─── SCROLL REVEAL ──────────────────────────────────────
-const io = new IntersectionObserver(entries => {
-  entries.forEach(en => {
-    if (en.isIntersecting) {
+/* ═══ SCROLL REVEAL ══════════════════════════════════════ */
+var io=new IntersectionObserver(function(entries){
+  entries.forEach(function(en){
+    if(en.isIntersecting){
       en.target.classList.add('on');
       en.target.querySelectorAll('[data-c]').forEach(animCount);
     }
   });
-}, { threshold: .1 });
-document.querySelectorAll('[data-r]').forEach(el => io.observe(el));
+},{threshold:.1});
+document.querySelectorAll('[data-r]').forEach(function(el){io.observe(el);});
 
-// ─── COUNTER ────────────────────────────────────────────
-function animCount(el) {
-  if (el._done) return; el._done = true;
-  const target = +el.dataset.c, dur = 1800, t0 = performance.now();
-  (function tick(now) {
-    const p = Math.min((now - t0) / dur, 1);
-    el.textContent = Math.floor((1 - Math.pow(1 - p, 4)) * target);
-    if (p < 1) requestAnimationFrame(tick); else el.textContent = target;
+/* ═══ COUNTER ════════════════════════════════════════════ */
+function animCount(el){
+  if(el._done) return; el._done=true;
+  var target=+el.dataset.c,dur=1800,t0=performance.now();
+  (function tick(now){
+    var p=Math.min((now-t0)/dur,1);
+    el.textContent=Math.floor((1-Math.pow(1-p,4))*target);
+    if(p<1) requestAnimationFrame(tick); else el.textContent=target;
   })(t0);
 }
 
-// ─── TEXT SCRAMBLE ──────────────────────────────────────
-const ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&';
-function scramble(el, final, delay = 0) {
-  setTimeout(() => {
-    let f = 0, tot = 35;
-    const id = setInterval(() => {
-      el.textContent = final.split('').map((c, i) => {
-        if (c === ' ') return ' ';
-        return f / tot > i / final.length ? c : ABC[Math.floor(Math.random() * ABC.length)];
+/* ═══ STATS COUNTER ══════════════════════════════════════ */
+var sio=new IntersectionObserver(function(entries){
+  entries.forEach(function(en){
+    if(en.isIntersecting) en.target.querySelectorAll('[data-c]').forEach(animCount);
+  });
+},{threshold:.2});
+document.querySelectorAll('.stats-s,.ctrs').forEach(function(el){sio.observe(el);});
+
+/* ═══ FIDS CARD TILT ══════════════════════════════════════ */
+document.querySelectorAll('.f-card').forEach(function(card){
+  card.addEventListener('mousemove',function(e){
+    var r=card.getBoundingClientRect();
+    var x=((e.clientX-r.left)/r.width-.5)*12;
+    var y=((e.clientY-r.top)/r.height-.5)*12;
+    card.style.transform='perspective(600px) rotateY('+x+'deg) rotateX('+(-y)+'deg) translateZ(8px)';
+  });
+  card.addEventListener('mouseleave',function(){card.style.transform='';});
+});
+
+/* ═══ SCRAMBLE ════════════════════════════════════════════ */
+var ABC='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&';
+function scramble(el,final,delay){
+  setTimeout(function(){
+    var f=0,tot=35;
+    var id=setInterval(function(){
+      el.textContent=final.split('').map(function(c,i){
+        if(c===' ') return ' ';
+        return f/tot>i/final.length ? c : ABC[Math.floor(Math.random()*ABC.length)];
       }).join('');
-      if (++f >= tot) { el.textContent = final; clearInterval(id); }
-    }, 40);
-  }, delay);
+      if(++f>=tot){el.textContent=final;clearInterval(id);}
+    },40);
+  },delay||0);
 }
-// Scramble eyebrow on load
-const ey = document.querySelector('.h-eyebrow');
-if (ey) {
-  const original = 'DFC Türkiye Yarışması — 2026';
-  scramble({ set textContent(v) { ey.childNodes[1] && (ey.childNodes[1].textContent = ' ' + v); } }, original, 300);
-}
-
-// ─── PARALLAX ORBS via CSS vars ─────────────────────────
-window.addEventListener('mousemove', e => {
-  const px = (e.clientX / W - .5) * 40;
-  const py = (e.clientY / H - .5) * 40;
-  document.documentElement.style.setProperty('--px', px + 'px');
-  document.documentElement.style.setProperty('--py', py + 'px');
-});
-
-// ─── HERO TITLE TILT ────────────────────────────────────
-const heroTitle = document.querySelector('.h-title');
-document.querySelector('.hero').addEventListener('mousemove', e => {
-  const r = document.querySelector('.hero').getBoundingClientRect();
-  const x = ((e.clientX - r.left) / r.width - .5) * 6;
-  const y = ((e.clientY - r.top) / r.height - .5) * 4;
-  heroTitle.style.transform = `perspective(1200px) rotateY(${x}deg) rotateX(${-y}deg)`;
-});
-document.querySelector('.hero').addEventListener('mouseleave', () => {
-  heroTitle.style.transform = '';
-});
-
-// ─── FIDS CARD 3D TILT ──────────────────────────────────
-document.querySelectorAll('.f-card').forEach(card => {
-  card.addEventListener('mousemove', e => {
-    const r = card.getBoundingClientRect();
-    const x = ((e.clientX - r.left) / r.width - .5) * 12;
-    const y = ((e.clientY - r.top) / r.height - .5) * 12;
-    card.style.transform = `perspective(600px) rotateY(${x}deg) rotateX(${-y}deg) translateZ(8px)`;
-  });
-  card.addEventListener('mouseleave', () => { card.style.transform = ''; });
-});
-
-// ─── TYPEWRITER for hero desc ───────────────────────────
-const desc = document.querySelector('.h-desc');
-const descText = desc.innerHTML;
-desc.innerHTML = '';
-let charI = 0;
-setTimeout(() => {
-  const temp = document.createElement('div');
-  temp.innerHTML = descText;
-  const plain = temp.textContent;
-  const typed = setInterval(() => {
-    desc.textContent = plain.slice(0, ++charI);
-    if (charI >= plain.length) { desc.innerHTML = descText; clearInterval(typed); }
-  }, 18);
-}, 1200);
-
-// ─── STATS COUNT on scroll ──────────────────────────────
-const statsIO = new IntersectionObserver(entries => {
-  entries.forEach(en => {
-    if (en.isIntersecting) en.target.querySelectorAll('[data-c]').forEach(animCount);
-  });
-}, { threshold: .2 });
-document.querySelectorAll('.stats-s,.ctrs').forEach(el => statsIO.observe(el));
 </script>
 </body>
 </html>
