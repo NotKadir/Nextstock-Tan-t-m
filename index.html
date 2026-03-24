@@ -528,6 +528,55 @@ section{padding:140px 52px;position:relative;z-index:1}
 .tp.hot span{color:#080808;font-weight:700}
 .tp.hot::before{display:none}
 
+/* ═══ ROLES ═══ */
+#roller{padding:140px 52px;position:relative;z-index:1;overflow:hidden}
+#roller::before{
+  content:'';position:absolute;top:0;right:-200px;width:500px;height:500px;
+  background:radial-gradient(circle,rgba(165,216,255,.04),transparent 70%);
+  pointer-events:none;
+}
+.rol-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:60px;background:var(--border)}
+.rol-card{
+  background:var(--bg);padding:40px 28px;position:relative;overflow:hidden;
+  transition:background .4s,transform .4s cubic-bezier(.16,1,.3,1);cursor:default;
+}
+.rol-card:hover{background:var(--bg3);transform:translateY(-4px)}
+.rol-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--a),var(--a2));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .5s cubic-bezier(.16,1,.3,1);
+}
+.rol-card:hover::after{transform:scaleX(1)}
+.rol-icon{font-size:2.2rem;margin-bottom:16px;display:block;transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.rol-card:hover .rol-icon{transform:scale(1.15) rotate(5deg)}
+.rol-name{
+  font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:2px;
+  color:var(--text);margin-bottom:8px;
+}
+.rol-desc{font-size:.82rem;color:#666;line-height:1.7;margin-bottom:16px}
+.rol-perms{list-style:none;padding:0}
+.rol-perms li{
+  font-family:'JetBrains Mono',monospace;font-size:.65rem;
+  color:var(--muted);letter-spacing:1px;
+  padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);
+  display:flex;align-items:center;gap:8px;
+  transition:color .2s;
+}
+.rol-perms li:last-child{border-bottom:none}
+.rol-card:hover .rol-perms li{color:var(--sub)}
+.rol-check{color:#4ade80;font-size:.7rem}
+.rol-x{color:#e05252;font-size:.7rem}
+.rol-badge-tag{
+  display:inline-block;margin-top:14px;padding:4px 12px;
+  border:1px solid var(--border);font-family:'JetBrains Mono',monospace;
+  font-size:.6rem;letter-spacing:2px;text-transform:uppercase;
+  color:var(--a);transition:all .35s cubic-bezier(.16,1,.3,1);
+}
+.rol-card:hover .rol-badge-tag{background:var(--a);color:#080808;border-color:var(--a)}
+@media(max-width:900px){.rol-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.rol-grid{grid-template-columns:1fr}}
+
 /* ═══ TEAM ═══ */
 #team{padding:100px 52px;position:relative;z-index:1}
 .team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:56px}
@@ -555,6 +604,168 @@ section{padding:140px 52px;position:relative;z-index:1}
 .team-card:hover .team-avatar{border-color:rgba(255,255,255,.3);transform:scale(1.08);box-shadow:0 8px 24px rgba(0,0,0,.4)}
 .team-name{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:8px}
 .team-role{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+
+/* ═══ DEMO VIDEO ═══ */
+#demo{padding:140px 52px;position:relative;z-index:1;overflow:hidden}
+.demo-wrap{
+  display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;margin-top:60px;
+}
+.demo-txt{color:#666;font-size:.95rem;line-height:1.9}
+.demo-txt strong{color:var(--text)}
+.demo-steps{list-style:none;padding:0;margin-top:32px;counter-reset:steps}
+.demo-steps li{
+  counter-increment:steps;position:relative;
+  padding:18px 0 18px 56px;border-bottom:1px solid rgba(255,255,255,.04);
+  font-family:'JetBrains Mono',monospace;font-size:.78rem;
+  color:var(--muted);letter-spacing:1px;transition:color .3s,padding-left .3s;
+}
+.demo-steps li:hover{color:var(--text);padding-left:64px}
+.demo-steps li::before{
+  content:counter(steps,decimal-leading-zero);
+  position:absolute;left:0;top:18px;
+  font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--a);
+  line-height:1;opacity:.4;transition:opacity .3s;
+}
+.demo-steps li:hover::before{opacity:1}
+.demo-frame{
+  position:relative;background:var(--bg2);border:1px solid var(--border);
+  aspect-ratio:16/9;overflow:hidden;
+}
+.demo-frame::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(165,216,255,.03),transparent 50%);
+  z-index:1;pointer-events:none;
+}
+.demo-frame iframe{width:100%;height:100%;border:none}
+.demo-frame-placeholder{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:16px;
+  background:var(--bg2);
+}
+.demo-play{
+  width:72px;height:72px;border-radius:50%;border:2px solid var(--a);
+  background:transparent;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .4s cubic-bezier(.16,1,.3,1);
+  position:relative;overflow:hidden;
+}
+.demo-play::before{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  background:var(--a);transform:scale(0);transition:transform .4s cubic-bezier(.16,1,.3,1);
+}
+.demo-play:hover{transform:scale(1.1);box-shadow:0 0 40px rgba(165,216,255,.2)}
+.demo-play:hover::before{transform:scale(1)}
+.demo-play-tri{
+  width:0;height:0;border:12px solid transparent;border-left:20px solid var(--a);
+  margin-left:5px;position:relative;z-index:1;transition:border-color .3s;
+}
+.demo-play:hover .demo-play-tri{border-left-color:#080808}
+.demo-play-lbl{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase}
+.demo-scan{
+  position:absolute;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  animation:demoScan 3s ease-in-out infinite;pointer-events:none;z-index:2;
+}
+@keyframes demoScan{0%{top:0;opacity:0}10%{opacity:.5}90%{opacity:.5}100%{top:100%;opacity:0}}
+.demo-corner{position:absolute;width:20px;height:20px;z-index:2;pointer-events:none}
+.demo-corner.dc-tl{top:8px;left:8px;border-top:2px solid var(--a);border-left:2px solid var(--a)}
+.demo-corner.dc-tr{top:8px;right:8px;border-top:2px solid var(--a);border-right:2px solid var(--a)}
+.demo-corner.dc-bl{bottom:8px;left:8px;border-bottom:2px solid var(--a);border-left:2px solid var(--a)}
+.demo-corner.dc-br{bottom:8px;right:8px;border-bottom:2px solid var(--a);border-right:2px solid var(--a)}
+
+/* ═══ COMPARISON ═══ */
+#compare{padding:140px 52px;position:relative;z-index:1;background:var(--bg2)}
+.cmp-table{
+  width:100%;border-collapse:collapse;margin-top:60px;
+  font-family:'JetBrains Mono',monospace;font-size:.8rem;
+}
+.cmp-table thead th{
+  padding:20px 24px;text-align:left;
+  font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:2px;
+  border-bottom:2px solid var(--a);color:var(--text);
+}
+.cmp-table thead th:first-child{color:var(--muted);font-size:1rem}
+.cmp-table thead th:last-child{color:var(--a)}
+.cmp-table tbody td{
+  padding:18px 24px;border-bottom:1px solid rgba(255,255,255,.04);
+  color:var(--muted);transition:all .3s;vertical-align:middle;
+}
+.cmp-table tbody tr{transition:background .3s}
+.cmp-table tbody tr:hover{background:rgba(255,255,255,.02)}
+.cmp-table tbody tr:hover td{color:var(--sub)}
+.cmp-table tbody td:first-child{
+  font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;
+  color:var(--text);letter-spacing:0;
+}
+.cmp-yes{color:#4ade80;font-weight:700;font-size:.9rem}
+.cmp-no{color:#e05252;font-weight:700;font-size:.9rem}
+.cmp-partial{color:#fbbf24;font-weight:700;font-size:.9rem}
+.cmp-table tbody td:last-child{position:relative}
+.cmp-table tbody tr:hover td:last-child::after{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--a);animation:cmpPulse .3s forwards;
+}
+@keyframes cmpPulse{from{height:0}to{height:100%}}
+.cmp-verdict{
+  display:flex;gap:40px;margin-top:48px;padding:36px;
+  border:1px solid var(--border);background:var(--bg);
+  align-items:center;
+}
+.cmp-verdict-icon{font-size:3rem;animation:cmpBounce 2s ease-in-out infinite}
+@keyframes cmpBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.cmp-verdict-txt{font-size:.9rem;color:#666;line-height:1.8}
+.cmp-verdict-txt strong{color:var(--a)}
+
+/* ═══ FAQ ═══ */
+#faq{padding:140px 52px;position:relative;z-index:1}
+.faq-grid{max-width:800px;margin:60px auto 0;display:flex;flex-direction:column;gap:1px;background:var(--border)}
+.faq-item{background:var(--bg);overflow:hidden}
+.faq-q{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:24px 28px;cursor:pointer;transition:background .3s,color .3s;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;
+  color:var(--muted);letter-spacing:.5px;
+}
+.faq-q:hover{background:rgba(255,255,255,.02);color:var(--text)}
+.faq-item.open .faq-q{color:var(--a);background:rgba(255,255,255,.02)}
+.faq-toggle{
+  width:28px;height:28px;border-radius:50%;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;color:var(--muted);flex-shrink:0;
+  transition:all .4s cubic-bezier(.16,1,.3,1);
+}
+.faq-item.open .faq-toggle{transform:rotate(45deg);border-color:var(--a);color:var(--a);background:rgba(255,255,255,.04)}
+.faq-a{
+  max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.16,1,.3,1),padding .3s;
+}
+.faq-item.open .faq-a{max-height:300px}
+.faq-a-inner{
+  padding:0 28px 24px;font-size:.84rem;color:#666;line-height:1.9;
+  border-left:2px solid var(--a);margin-left:28px;padding-left:20px;
+}
+
+/* ═══ LANG TOGGLE ═══ */
+.lang-toggle{
+  display:flex;align-items:center;gap:0;
+  border:1px solid var(--border);height:32px;margin-right:16px;
+  overflow:hidden;
+}
+.lang-btn{
+  padding:0 12px;height:100%;border:none;background:transparent;
+  font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+  cursor:pointer;transition:all .3s;position:relative;
+}
+.lang-btn.active{background:var(--a);color:#080808}
+.lang-btn:hover:not(.active){color:var(--text);background:rgba(255,255,255,.04)}
+
+@media(max-width:900px){
+  .demo-wrap{grid-template-columns:1fr;gap:40px}
+  .cmp-table{font-size:.65rem}
+  .cmp-table thead th,.cmp-table tbody td{padding:12px 14px}
+  .cmp-verdict{flex-direction:column;text-align:center;gap:20px}
+  .lang-toggle{display:none}
+  #demo,#compare,#faq{padding-left:24px;padding-right:24px}
+}
 
 /* ═══ FOOTER ═══ */
 footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}
@@ -629,7 +840,7 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
           <a href="#fids"><span class="dd-icon">&#9670;</span> FIDS Metodolojisi <span class="dd-arrow">&#8594;</span></a>
           <a href="#features"><span class="dd-icon">&#9670;</span> SKT Zekas&#305; <span class="dd-arrow">&#8594;</span></a>
           <a href="#features"><span class="dd-icon">&#9670;</span> Envanter Y&#246;netimi <span class="dd-arrow">&#8594;</span></a>
-          <a href="#features"><span class="dd-icon">&#9670;</span> Rol Sistemi <span class="dd-arrow">&#8594;</span></a>
+          <a href="#roller"><span class="dd-icon">&#9670;</span> Rol Sistemi <span class="dd-arrow">&#8594;</span></a>
         </div>
       </div>
       <div class="nav-item">
@@ -651,13 +862,19 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
           <a href="#fids"><span class="dd-icon">&#9733;</span> FIDS Modeli <span class="dd-arrow">&#8594;</span></a>
           <a href="#tech"><span class="dd-icon">&#128736;</span> Teknoloji <span class="dd-arrow">&#8594;</span></a>
           <a href="#team"><span class="dd-icon">&#128101;</span> Ekip <span class="dd-arrow">&#8594;</span></a>
+          <a href="#compare"><span class="dd-icon">&#9878;</span> Kar&#351;&#305;la&#351;t&#305;rma <span class="dd-arrow">&#8594;</span></a>
+          <a href="#faq"><span class="dd-icon">&#10068;</span> SSS <span class="dd-arrow">&#8594;</span></a>
         </div>
       </div>
     </div>
   </div>
   <div class="nav-right">
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="tr" onclick="setLang('tr')">TR</button>
+      <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+    </div>
     <div class="nav-cta-wrap">
-      <a href="https://barkod-pro-production.up.railway.app" class="nav-demo">Uygulamay&#305; A&#231;</a>
+      <a href="https://barkod-pro-production.up.railway.app" class="nav-demo" data-tr="Uygulamay&#305; A&#231;" data-en="Open App">Uygulamay&#305; A&#231;</a>
       <a href="https://barkod-pro-production.up.railway.app" class="nav-demo-arr">&#8594;</a>
     </div>
   </div>
@@ -792,9 +1009,66 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
     <div class="fc" data-r="up" style="transition-delay:.0s"><div class="fc-glow"></div><div class="fc-num">01/06</div><span class="fc-icon">&#128247;</span><div class="fc-name">Kamera Tarama</div><div class="fc-desc">Taray&#305;c&#305; kameras&#305; ile EAN-13 dahil t&#252;m barkod formatlar&#305;n&#305; ger&#231;ek zamanl&#305; okuma. 3 tutarl&#305; okuma algoritmas&#305; ile maksimum do&#287;ruluk.</div></div>
     <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">02/06</div><span class="fc-icon">&#128197;</span><div class="fc-name">SKT Takibi</div><div class="fc-desc">Son kullanma tarihi ge&#231;mi&#351; &#252;r&#252;nler i&#231;in sesli ve g&#246;rsel alarmlar. 7 g&#252;nl&#252;k &#246;nceden uyar&#305; sistemi ile g&#305;da israf&#305; &#246;nlenir.</div></div>
     <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">03/06</div><span class="fc-icon">&#127758;</span><div class="fc-name">Open Food Facts</div><div class="fc-desc">Bilinmeyen barkodlar Open Food Facts API'sinden otomatik sorgulan&#305;r, &#252;r&#252;n bilgileri an&#305;nda sisteme eklenir.</div></div>
-    <div class="fc" data-r="up" style="transition-delay:.0s"><div class="fc-glow"></div><div class="fc-num">04/06</div><span class="fc-icon">&#128101;</span><div class="fc-name">Rol Sistemi</div><div class="fc-desc">Admin, m&#252;d&#252;r, kasiyer ve g&#246;r&#252;nt&#252;leyici rolleri. Her rol kendi yetki seviyesine g&#246;re eri&#351;im sa&#287;lar.</div></div>
+    <a href="#roller" style="text-decoration:none;color:inherit" class="fc" data-r="up" style="transition-delay:.0s"><div class="fc-glow"></div><div class="fc-num">04/06</div><span class="fc-icon">&#128101;</span><div class="fc-name">Rol Sistemi</div><div class="fc-desc">Admin, m&#252;d&#252;r, kasiyer ve g&#246;r&#252;nt&#252;leyici rolleri. Her rol kendi yetki seviyesine g&#246;re eri&#351;im sa&#287;lar.</div></a>
     <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">05/06</div><span class="fc-icon">&#128202;</span><div class="fc-name">Canl&#305; Dashboard</div><div class="fc-desc">Ger&#231;ek zamanl&#305; envanter istatistikleri, kritik stok uyar&#305;lar&#305;, hareket ge&#231;mi&#351;i ve raporlar tek ekranda.</div></div>
     <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">06/06</div><span class="fc-icon">&#128266;</span><div class="fc-name">Ses Sistemi</div><div class="fc-desc">Web Audio API ile ba&#351;ar&#305;l&#305; okuma, hata ve SKT uyar&#305; sesleri. Her durum i&#231;in farkl&#305; ses tonu ile anl&#305;k geri bildirim.</div></div>
+  </div>
+</section>
+
+<section id="roller">
+  <div data-r="up">
+    <div class="s-eyebrow">// 03.5 &mdash; Yetkilendirme</div>
+    <div class="s-title">ROL<br><span style="color:var(--a)">S&#304;STEM&#304;</span></div>
+  </div>
+  <div class="rol-grid">
+    <div class="rol-card" data-r="up" style="transition-delay:.0s">
+      <span class="rol-icon">&#128081;</span>
+      <div class="rol-name">Admin</div>
+      <div class="rol-desc">Sistemin tam kontrol&#252;. T&#252;m yetkilere sahip tek rol.</div>
+      <ul class="rol-perms">
+        <li><span class="rol-check">&#10003;</span> Kullan&#305;c&#305; y&#246;netimi</li>
+        <li><span class="rol-check">&#10003;</span> &#220;r&#252;n ekleme / silme</li>
+        <li><span class="rol-check">&#10003;</span> Raporlar &amp; istatistik</li>
+        <li><span class="rol-check">&#10003;</span> T&#252;m tarama yetkisi</li>
+      </ul>
+      <span class="rol-badge-tag">Tam Yetki</span>
+    </div>
+    <div class="rol-card" data-r="up" style="transition-delay:.08s">
+      <span class="rol-icon">&#128188;</span>
+      <div class="rol-name">M&#252;d&#252;r</div>
+      <div class="rol-desc">Envanter y&#246;netimi ve raporlama yetkilerine sahip.</div>
+      <ul class="rol-perms">
+        <li><span class="rol-x">&#10007;</span> Kullan&#305;c&#305; y&#246;netimi</li>
+        <li><span class="rol-check">&#10003;</span> &#220;r&#252;n ekleme / d&#252;zenleme</li>
+        <li><span class="rol-check">&#10003;</span> Raporlar &amp; istatistik</li>
+        <li><span class="rol-check">&#10003;</span> T&#252;m tarama yetkisi</li>
+      </ul>
+      <span class="rol-badge-tag">Y&#246;netici</span>
+    </div>
+    <div class="rol-card" data-r="up" style="transition-delay:.16s">
+      <span class="rol-icon">&#128179;</span>
+      <div class="rol-name">Kasiyer</div>
+      <div class="rol-desc">G&#252;nl&#252;k tarama ve stok i&#351;lemleri yapabilir.</div>
+      <ul class="rol-perms">
+        <li><span class="rol-x">&#10007;</span> Kullan&#305;c&#305; y&#246;netimi</li>
+        <li><span class="rol-x">&#10007;</span> &#220;r&#252;n silme</li>
+        <li><span class="rol-x">&#10007;</span> Raporlar</li>
+        <li><span class="rol-check">&#10003;</span> Barkod tarama</li>
+      </ul>
+      <span class="rol-badge-tag">Operat&#246;r</span>
+    </div>
+    <div class="rol-card" data-r="up" style="transition-delay:.24s">
+      <span class="rol-icon">&#128065;</span>
+      <div class="rol-name">G&#246;r&#252;nt&#252;leyici</div>
+      <div class="rol-desc">Sadece verileri g&#246;r&#252;nt&#252;leyebilir, de&#287;i&#351;iklik yapamaz.</div>
+      <ul class="rol-perms">
+        <li><span class="rol-x">&#10007;</span> Kullan&#305;c&#305; y&#246;netimi</li>
+        <li><span class="rol-x">&#10007;</span> &#220;r&#252;n i&#351;lemleri</li>
+        <li><span class="rol-x">&#10007;</span> Raporlar</li>
+        <li><span class="rol-check">&#10003;</span> Salt okunur eri&#351;im</li>
+      </ul>
+      <span class="rol-badge-tag">&#304;zleyici</span>
+    </div>
   </div>
 </section>
 
@@ -847,6 +1121,98 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
         <div class="team-name">Yusuf Ata Aksoy</div>
         <div class="team-role">Debugger</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section id="demo">
+  <div data-r="up">
+    <div class="s-eyebrow" data-tr="// 06 &mdash; Demo" data-en="// 06 &mdash; Demo">// 06 &mdash; Demo</div>
+    <div class="s-title" data-tr="NASIL<br><span style='color:var(--a)'>&#199;ALI&#350;IR?</span>" data-en="HOW DOES<br><span style='color:var(--a)'>IT WORK?</span>">NASIL<br><span style="color:var(--a)">&#199;ALI&#350;IR?</span></div>
+  </div>
+  <div class="demo-wrap">
+    <div data-r="left">
+      <div class="demo-txt" data-tr="NexStock ile envanter y&#246;netimi <strong>3 basit ad&#305;mda</strong> tamamlan&#305;r. Barkodu tarat, bilgileri g&#246;r ve stokunu y&#246;net." data-en="Inventory management with NexStock is done in <strong>3 simple steps</strong>. Scan the barcode, view info, and manage your stock.">NexStock ile envanter y&#246;netimi <strong>3 basit ad&#305;mda</strong> tamamlan&#305;r. Barkodu tarat, bilgileri g&#246;r ve stokunu y&#246;net.</div>
+      <ol class="demo-steps">
+        <li data-tr="Kameray&#305; barkodun &#252;zerine tut" data-en="Point the camera at the barcode">Kameray&#305; barkodun &#252;zerine tut</li>
+        <li data-tr="&#220;r&#252;n bilgisi otomatik olarak getirilir" data-en="Product info is fetched automatically">&#220;r&#252;n bilgisi otomatik olarak getirilir</li>
+        <li data-tr="Stok miktar&#305;, SKT ve detaylar&#305; y&#246;net" data-en="Manage stock quantity, expiry date &amp; details">Stok miktar&#305;, SKT ve detaylar&#305; y&#246;net</li>
+      </ol>
+    </div>
+    <div data-r="right">
+      <div class="demo-frame">
+        <div class="demo-scan"></div>
+        <div class="demo-corner dc-tl"></div><div class="demo-corner dc-tr"></div>
+        <div class="demo-corner dc-bl"></div><div class="demo-corner dc-br"></div>
+        <div class="demo-frame-placeholder" id="demoPlaceholder">
+          <div class="demo-play" onclick="loadDemo()">
+            <span class="demo-play-tri"></span>
+          </div>
+          <span class="demo-play-lbl" data-tr="Canl&#305; Demo Ba&#351;lat" data-en="Launch Live Demo">Canl&#305; Demo Ba&#351;lat</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="compare">
+  <div style="text-align:center" data-r="up">
+    <div class="s-eyebrow" style="justify-content:center" data-tr="// 07 &mdash; Kar&#351;&#305;la&#351;t&#305;rma" data-en="// 07 &mdash; Comparison">// 07 &mdash; Kar&#351;&#305;la&#351;t&#305;rma</div>
+    <div class="s-title" data-tr="MANUEL Y&#214;NET&#304;M<br><span style='color:var(--a)'>vs NEXSTOCK</span>" data-en="MANUAL MANAGEMENT<br><span style='color:var(--a)'>vs NEXSTOCK</span>">MANUEL Y&#214;NET&#304;M<br><span style="color:var(--a)">vs NEXSTOCK</span></div>
+  </div>
+  <table class="cmp-table" data-r="up">
+    <thead>
+      <tr>
+        <th data-tr="&#214;zellik" data-en="Feature">&#214;zellik</th>
+        <th data-tr="Manuel" data-en="Manual">Manuel</th>
+        <th>NexStock</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td data-tr="Barkod Tarama" data-en="Barcode Scanning">Barkod Tarama</td><td><span class="cmp-no">&#10007;</span></td><td><span class="cmp-yes">&#10003; Kamera + QuaggaJS</span></td></tr>
+      <tr><td data-tr="SKT Takibi" data-en="Expiry Tracking">SKT Takibi</td><td><span class="cmp-partial">~ Elle kontrol</span></td><td><span class="cmp-yes">&#10003; Otomatik uyar&#305;</span></td></tr>
+      <tr><td data-tr="Sesli Uyar&#305;" data-en="Sound Alerts">Sesli Uyar&#305;</td><td><span class="cmp-no">&#10007;</span></td><td><span class="cmp-yes">&#10003; Web Audio API</span></td></tr>
+      <tr><td data-tr="&#220;r&#252;n Tan&#305;ma" data-en="Product Recognition">&#220;r&#252;n Tan&#305;ma</td><td><span class="cmp-no">&#10007;</span></td><td><span class="cmp-yes">&#10003; Open Food Facts</span></td></tr>
+      <tr><td data-tr="Rol Bazl&#305; Eri&#351;im" data-en="Role-Based Access">Rol Bazl&#305; Eri&#351;im</td><td><span class="cmp-no">&#10007;</span></td><td><span class="cmp-yes">&#10003; 4 Farkl&#305; Rol</span></td></tr>
+      <tr><td data-tr="Ger&#231;ek Zamanl&#305; Raporlar" data-en="Real-Time Reports">Ger&#231;ek Zamanl&#305; Raporlar</td><td><span class="cmp-partial">~ Excel ile</span></td><td><span class="cmp-yes">&#10003; Canl&#305; Dashboard</span></td></tr>
+      <tr><td data-tr="Maliyet" data-en="Cost">Maliyet</td><td><span class="cmp-partial">~ Y&#252;ksek (yaz&#305;l&#305;m lisans&#305;)</span></td><td><span class="cmp-yes">&#10003; &#220;cretsiz &amp; A&#231;&#305;k Kaynak</span></td></tr>
+    </tbody>
+  </table>
+  <div class="cmp-verdict" data-r="up">
+    <div class="cmp-verdict-icon">&#128640;</div>
+    <div class="cmp-verdict-txt" data-tr="NexStock, geleneksel envanter y&#246;netiminin t&#252;m eksikliklerini <strong>tek bir platformda</strong> &#231;&#246;zer. &#220;stelik tamamen <strong>&#252;cretsiz ve a&#231;&#305;k kaynak</strong>." data-en="NexStock solves all shortcomings of traditional inventory management <strong>in one platform</strong>. Plus it's completely <strong>free and open source</strong>.">NexStock, geleneksel envanter y&#246;netiminin t&#252;m eksikliklerini <strong>tek bir platformda</strong> &#231;&#246;zer. &#220;stelik tamamen <strong>&#252;cretsiz ve a&#231;&#305;k kaynak</strong>.</div>
+  </div>
+</section>
+
+<section id="faq">
+  <div style="text-align:center" data-r="up">
+    <div class="s-eyebrow" style="justify-content:center" data-tr="// 08 &mdash; S&#305;k Sorulan Sorular" data-en="// 08 &mdash; FAQ">// 08 &mdash; S&#305;k Sorulan Sorular</div>
+    <div class="s-title" data-tr="MERAK<br><span style='color:var(--a)'>ED&#304;LENLER</span>" data-en="FREQUENTLY<br><span style='color:var(--a)'>ASKED</span>">MERAK<br><span style="color:var(--a)">ED&#304;LENLER</span></div>
+  </div>
+  <div class="faq-grid">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span data-tr="NexStock nedir ve ne i&#351;e yarar?" data-en="What is NexStock and what does it do?">NexStock nedir ve ne i&#351;e yarar?</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a"><div class="faq-a-inner" data-tr="NexStock, barkod tarama ile envanter y&#246;netimini kolayla&#351;t&#305;ran bir web uygulamas&#305;d&#305;r. &#220;r&#252;n stok takibi, son kullanma tarihi kontrolü ve rol bazl&#305; eri&#351;im gibi &#246;zellikler sunar." data-en="NexStock is a web application that simplifies inventory management through barcode scanning. It offers features like stock tracking, expiry date monitoring, and role-based access control.">NexStock, barkod tarama ile envanter y&#246;netimini kolayla&#351;t&#305;ran bir web uygulamas&#305;d&#305;r. &#220;r&#252;n stok takibi, son kullanma tarihi kontrol&#252; ve rol bazl&#305; eri&#351;im gibi &#246;zellikler sunar.</div></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span data-tr="Hangi barkod formatlar&#305;n&#305; destekliyor?" data-en="Which barcode formats are supported?">Hangi barkod formatlar&#305;n&#305; destekliyor?</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a"><div class="faq-a-inner" data-tr="EAN-13, EAN-8, UPC-A, UPC-E ve Code-128 gibi yayg&#305;n barkod formatlar&#305;n&#305;n t&#252;m&#252;n&#252; QuaggaJS k&#252;t&#252;phanesi ile ger&#231;ek zamanl&#305; olarak okuyabilir." data-en="It can read all common barcode formats like EAN-13, EAN-8, UPC-A, UPC-E, and Code-128 in real-time using the QuaggaJS library.">EAN-13, EAN-8, UPC-A, UPC-E ve Code-128 gibi yayg&#305;n barkod formatlar&#305;n&#305;n t&#252;m&#252;n&#252; QuaggaJS k&#252;t&#252;phanesi ile ger&#231;ek zamanl&#305; olarak okuyabilir.</div></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span data-tr="&#220;cretsiz mi?" data-en="Is it free?">&#220;cretsiz mi?</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a"><div class="faq-a-inner" data-tr="Evet! NexStock tamamen &#252;cretsiz ve a&#231;&#305;k kaynak bir projedir. DFC T&#252;rkiye Yar&#305;&#351;mas&#305; kapsam&#305;nda geli&#351;tirilmi&#351;tir." data-en="Yes! NexStock is completely free and open source. It was developed as part of the DFC Turkey Competition.">Evet! NexStock tamamen &#252;cretsiz ve a&#231;&#305;k kaynak bir projedir. DFC T&#252;rkiye Yar&#305;&#351;mas&#305; kapsam&#305;nda geli&#351;tirilmi&#351;tir.</div></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span data-tr="Telefonda &#231;al&#305;&#351;&#305;yor mu?" data-en="Does it work on mobile?">Telefonda &#231;al&#305;&#351;&#305;yor mu?</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a"><div class="faq-a-inner" data-tr="Evet, NexStock responsive tasar&#305;m ile geli&#351;tirilmi&#351;tir. Hem telefon hem de tablet &#252;zerinden barkod tarama ve envanter y&#246;netimi yapabilirsiniz." data-en="Yes, NexStock is built with responsive design. You can scan barcodes and manage inventory from both phones and tablets.">Evet, NexStock responsive tasar&#305;m ile geli&#351;tirilmi&#351;tir. Hem telefon hem de tablet &#252;zerinden barkod tarama ve envanter y&#246;netimi yapabilirsiniz.</div></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span data-tr="DFC FIDS modeli ne anlama geliyor?" data-en="What does the DFC FIDS model mean?">DFC FIDS modeli ne anlama geliyor?</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a"><div class="faq-a-inner" data-tr="FIDS, Feel (Hisset) - Imagine (Hayal Et) - Do (Yap) - Share (Payla&#351;) ad&#305;mlar&#305;ndan olu&#351;an bir tasar&#305;m d&#252;&#351;&#252;ncesi metodolojisidir. NexStock bu 4 ad&#305;mla geli&#351;tirilmi&#351;tir." data-en="FIDS stands for Feel - Imagine - Do - Share, a design thinking methodology. NexStock was developed following these 4 steps.">FIDS, Feel (Hisset) - Imagine (Hayal Et) - Do (Yap) - Share (Payla&#351;) ad&#305;mlar&#305;ndan olu&#351;an bir tasar&#305;m d&#252;&#351;&#252;ncesi metodolojisidir. NexStock bu 4 ad&#305;mla geli&#351;tirilmi&#351;tir.</div></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span data-tr="Verilerim g&#252;vende mi?" data-en="Is my data safe?">Verilerim g&#252;vende mi?</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a"><div class="faq-a-inner" data-tr="Evet. Veriler SQLite veritaban&#305;nda saklan&#305;r ve rol bazl&#305; eri&#351;im kontrol&#252; ile koruma alt&#305;ndad&#305;r. Yetkisiz eri&#351;im engellenir." data-en="Yes. Data is stored in an SQLite database and protected by role-based access control. Unauthorized access is prevented.">Evet. Veriler SQLite veritaban&#305;nda saklan&#305;r ve rol bazl&#305; eri&#351;im kontrol&#252; ile koruma alt&#305;ndad&#305;r. Yetkisiz eri&#351;im engellenir.</div></div>
     </div>
   </div>
 </section>
@@ -1098,7 +1464,7 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
     requestAnimationFrame(loop);
   })();
 
-  document.querySelectorAll('a,button,.f-card,.fc,.ctr,.tp,.dropdown a,.nav-item,.team-card,.dfc-card').forEach(function(el){
+  document.querySelectorAll('a,button,.f-card,.fc,.ctr,.tp,.dropdown a,.nav-item,.team-card,.dfc-card,.rol-card,.faq-q,.demo-play,.lang-btn,.cmp-table tbody tr').forEach(function(el){
     el.addEventListener('mouseenter',function(){document.body.classList.add('cursor-hover');});
     el.addEventListener('mouseleave',function(){document.body.classList.remove('cursor-hover');});
   });
@@ -1176,6 +1542,17 @@ document.querySelectorAll('.f-card').forEach(function(card){
   card.addEventListener('mouseleave',function(){card.style.transform='';});
 });
 
+/* ═══ ROL CARD TILT ═══════════════════════════════════════ */
+document.querySelectorAll('.rol-card').forEach(function(card){
+  card.addEventListener('mousemove',function(e){
+    var r=card.getBoundingClientRect();
+    var x=((e.clientX-r.left)/r.width-.5)*10;
+    var y=((e.clientY-r.top)/r.height-.5)*10;
+    card.style.transform='perspective(600px) rotateY('+x+'deg) rotateX('+(-y)+'deg) translateY(-4px)';
+  });
+  card.addEventListener('mouseleave',function(){card.style.transform='';});
+});
+
 /* ═══ TEAM CARD TILT ══════════════════════════════════════ */
 document.querySelectorAll('.team-card').forEach(function(card){
   card.addEventListener('mousemove',function(e){
@@ -1185,6 +1562,58 @@ document.querySelectorAll('.team-card').forEach(function(card){
     card.style.transform='perspective(800px) rotateY('+x+'deg) rotateX('+(-y)+'deg) translateY(-8px)';
   });
   card.addEventListener('mouseleave',function(){card.style.transform='';});
+});
+
+/* ═══ FAQ ACCORDION ══════════════════════════════════════ */
+function toggleFaq(q){
+  var item = q.closest('.faq-item');
+  var wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(function(el){el.classList.remove('open');});
+  if(!wasOpen) item.classList.add('open');
+}
+
+/* ═══ DEMO LOADER ════════════════════════════════════════ */
+function loadDemo(){
+  var ph = document.getElementById('demoPlaceholder');
+  var frame = ph.parentElement;
+  ph.style.opacity='0';
+  setTimeout(function(){
+    ph.style.display='none';
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://barkod-pro-production.up.railway.app/tarama';
+    iframe.allow = 'camera;microphone';
+    iframe.style.opacity='0';
+    iframe.style.transition='opacity .6s';
+    frame.appendChild(iframe);
+    setTimeout(function(){iframe.style.opacity='1';},100);
+  },300);
+}
+
+/* ═══ LANGUAGE SYSTEM (TR/EN) ════════════════════════════ */
+var currentLang = 'tr';
+function setLang(lang){
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+  document.querySelectorAll('[data-'+lang+']').forEach(function(el){
+    var val = el.getAttribute('data-'+lang);
+    if(val){
+      if(el.tagName==='INPUT'||el.tagName==='TEXTAREA') el.placeholder=val;
+      else el.innerHTML = val;
+    }
+  });
+  document.documentElement.lang = lang;
+}
+
+/* ═══ COMPARISON TABLE HOVER ═════════════════════════════ */
+document.querySelectorAll('.cmp-table tbody tr').forEach(function(row){
+  row.addEventListener('mouseenter',function(){
+    row.style.transform='translateX(4px)';
+  });
+  row.addEventListener('mouseleave',function(){
+    row.style.transform='';
+  });
 });
 
 /* ═══ PARALLAX ELEMENTS ══════════════════════════════════ */
