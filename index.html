@@ -196,16 +196,15 @@ nav.stuck{background:rgba(4,4,4,.97);border-bottom-color:var(--border)}
 .dropdown a:hover .dd-arrow{opacity:.7;transform:translateX(3px)}
 
 .nav-right{display:flex;align-items:center}
-.nav-cta-wrap{display:flex;align-items:stretch}
+.nav-cta-wrap{display:flex;align-items:stretch;margin:10px 0 10px 24px}
 .nav-demo{
-  display:flex;align-items:center;gap:10px;padding:0 24px;
+  display:flex;align-items:center;gap:10px;padding:0 24px;height:44px;
   background:var(--a);color:#080808;
   font-family:'Syne',sans-serif;font-size:.75rem;font-weight:800;
   letter-spacing:2px;text-transform:uppercase;text-decoration:none;cursor:none;
   transition:all .3s cubic-bezier(.16,1,.3,1);
   white-space:nowrap;position:relative;overflow:hidden;
   clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
-  margin:10px 0 10px 24px;height:44px;
 }
 .nav-demo::before{
   content:'';position:absolute;inset:0;
@@ -216,11 +215,29 @@ nav.stuck{background:rgba(4,4,4,.97);border-bottom-color:var(--border)}
 .nav-demo:hover::before{transform:translateX(100%)}
 .nav-demo-arr{
   display:flex;align-items:center;justify-content:center;
-  width:44px;height:44px;background:rgba(255,255,255,.08);
-  color:var(--text);border:1px solid rgba(255,255,255,.1);
-  font-size:1rem;cursor:none;transition:all .3s;margin:10px 0;text-decoration:none;
+  width:44px;height:44px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));
+  cursor:none;transition:all .35s cubic-bezier(.16,1,.3,1);text-decoration:none;
+  position:relative;overflow:hidden;margin-left:6px;
 }
-.nav-demo-arr:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.25)}
+.nav-demo-arr::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.08),transparent);
+  transition:opacity .3s;opacity:0;
+}
+.nav-demo-arr:hover::after{opacity:1}
+.nav-demo-arr:hover{
+  background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.3);
+  transform:translateY(-2px);box-shadow:0 8px 20px rgba(255,255,255,.08);
+}
+.nav-demo-arr svg{
+  width:16px;height:16px;stroke:var(--text);stroke-width:2;fill:none;
+  stroke-linecap:round;stroke-linejoin:round;
+  transition:transform .35s cubic-bezier(.16,1,.3,1);position:relative;z-index:1;
+}
+.nav-demo-arr:hover svg{transform:translateX(3px)}
 
 /* ═══ HERO ═══ */
 .hero{
@@ -875,7 +892,7 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
     </div>
     <div class="nav-cta-wrap">
       <a href="https://barkod-pro-production.up.railway.app" class="nav-demo" data-tr="Uygulamay&#305; A&#231;" data-en="Open App">Uygulamay&#305; A&#231;</a>
-      <a href="https://barkod-pro-production.up.railway.app" class="nav-demo-arr">&#8594;</a>
+      <a href="https://barkod-pro-production.up.railway.app" class="nav-demo-arr"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
     </div>
   </div>
 </nav>
