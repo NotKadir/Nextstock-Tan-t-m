@@ -490,6 +490,37 @@ section{padding:140px 52px;position:relative;z-index:1}
 .fc-name{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:2px;margin-bottom:14px}
 .fc-desc{font-size:.88rem;color:#666;line-height:1.8}
 
+/* ═══ PARTİ / FEFO ═══ */
+#parti{border-top:1px solid var(--border)}
+.parti-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-top:72px}
+@media(max-width:820px){.parti-layout{grid-template-columns:1fr}}
+.p-point{display:flex;gap:18px;margin-bottom:32px;align-items:flex-start}
+.p-num{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:3px;min-width:26px;padding-top:3px}
+.p-body{font-size:.9rem;color:#888;line-height:1.9}
+.p-body strong{color:var(--a);font-weight:700}
+
+.fefo-demo{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:32px;position:sticky;top:120px}
+.fefo-top-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:3px;color:var(--muted);margin-bottom:24px;display:flex;align-items:center;gap:8px}
+.fefo-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;animation:fPulse 1.5s ease-in-out infinite}
+@keyframes fPulse{0%,100%{opacity:1}50%{opacity:.3}}
+.batch-cards{display:flex;flex-direction:column;gap:10px}
+.batch-card{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border:1px solid var(--border);border-radius:10px;background:var(--bg);position:relative;overflow:hidden;transition:border-color .4s,background .4s}
+.batch-card::before{content:'';position:absolute;inset:0;background:rgba(165,216,255,.04);opacity:0;transition:opacity .4s}
+.batch-card.bc-active{border-color:rgba(165,216,255,.45);background:rgba(165,216,255,.05)}
+.batch-card.bc-active::before{opacity:1}
+.bc-left{}
+.bc-no{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:3px;line-height:1}
+.bc-skt{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);margin-top:4px}
+.bc-skt em{color:var(--accent);font-style:normal}
+.bc-qty{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:600;transition:color .3s}
+.bc-qty.flash{color:#4ade80}
+.bc-badge{position:absolute;top:10px;right:12px;font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:2px;padding:3px 8px;border-radius:4px;background:rgba(165,216,255,.12);color:var(--accent);opacity:0;transition:opacity .4s}
+.batch-card.bc-active .bc-badge{opacity:1}
+.fefo-event-bar{margin-top:18px;padding:12px 16px;background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.18);border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:2px;color:#4ade80;opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s;text-align:center}
+.fefo-event-bar.show{opacity:1;transform:translateY(0)}
+.fefo-note{margin-top:20px;font-size:.78rem;color:var(--muted);line-height:1.7;border-top:1px solid var(--border);padding-top:16px}
+.fefo-note span{color:var(--accent)}
+
 /* ═══ STRIP ═══ */
 .strip{
   padding:28px 0;overflow:hidden;
@@ -856,6 +887,7 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
         <div class="dropdown">
           <a href="#fids"><span class="dd-icon">&#9670;</span> <span data-tr="FIDS Metodolojisi" data-en="FIDS Methodology">FIDS Metodolojisi</span> <span class="dd-arrow">&#8594;</span></a>
           <a href="#features"><span class="dd-icon">&#9670;</span> <span data-tr="SKT Zekas&#305;" data-en="Expiry Intelligence">SKT Zekas&#305;</span> <span class="dd-arrow">&#8594;</span></a>
+          <a href="#parti"><span class="dd-icon">&#9889;</span> <span data-tr="FEFO Algoritmas&#305;" data-en="FEFO Algorithm">FEFO Algoritmas&#305;</span> <span class="dd-arrow">&#8594;</span></a>
           <a href="#features"><span class="dd-icon">&#9670;</span> <span data-tr="Envanter Y&#246;netimi" data-en="Inventory Management">Envanter Y&#246;netimi</span> <span class="dd-arrow">&#8594;</span></a>
           <a href="#roller"><span class="dd-icon">&#9670;</span> <span data-tr="Rol Sistemi" data-en="Role System">Rol Sistemi</span> <span class="dd-arrow">&#8594;</span></a>
         </div>
@@ -865,8 +897,10 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
         <div class="dropdown">
           <a href="#features"><span class="dd-icon">&#128247;</span> <span data-tr="Kamera Tarama" data-en="Camera Scan">Kamera Tarama</span> <span class="dd-arrow">&#8594;</span></a>
           <a href="#features"><span class="dd-icon">&#128197;</span> <span data-tr="SKT Takibi" data-en="Expiry Tracking">SKT Takibi</span> <span class="dd-arrow">&#8594;</span></a>
+          <a href="#features"><span class="dd-icon">&#128230;</span> <span data-tr="Parti Sistemi" data-en="Batch System">Parti Sistemi</span> <span class="dd-arrow">&#8594;</span></a>
           <a href="#features"><span class="dd-icon">&#128202;</span> <span data-tr="Canl&#305; Dashboard" data-en="Live Dashboard">Canl&#305; Dashboard</span> <span class="dd-arrow">&#8594;</span></a>
           <a href="#features"><span class="dd-icon">&#128266;</span> <span data-tr="Ses Sistemi" data-en="Sound System">Ses Sistemi</span> <span class="dd-arrow">&#8594;</span></a>
+          <a href="#features"><span class="dd-icon">&#128244;</span> <span data-tr="Stok &#199;&#305;k&#305;&#351;&#305;" data-en="Stock Exit">Stok &#199;&#305;k&#305;&#351;&#305;</span> <span class="dd-arrow">&#8594;</span></a>
         </div>
       </div>
       <div class="nav-item">
@@ -1023,12 +1057,65 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
     <a href="https://barkod-pro-production.up.railway.app" class="btn btn-a" data-tr="Canl&#305; Dene" data-en="Try Live">Canl&#305; Dene <span class="btn-arr">&rarr;</span></a>
   </div>
   <div class="feat-grid">
-    <div class="fc" data-r="up" style="transition-delay:.0s"><div class="fc-glow"></div><div class="fc-num">01/06</div><span class="fc-icon">&#128247;</span><div class="fc-name" data-tr="Kamera Tarama" data-en="Camera Scan">Kamera Tarama</div><div class="fc-desc" data-tr="Taray&#305;c&#305; kameras&#305; ile EAN-13 dahil t&#252;m barkod formatlar&#305;n&#305; ger&#231;ek zamanl&#305; okuma. 3 tutarl&#305; okuma algoritmas&#305; ile maksimum do&#287;ruluk." data-en="Real-time reading of all barcode formats including EAN-13 via browser camera. Maximum accuracy with 3-consistent-read algorithm.">Taray&#305;c&#305; kameras&#305; ile EAN-13 dahil t&#252;m barkod formatlar&#305;n&#305; ger&#231;ek zamanl&#305; okuma. 3 tutarl&#305; okuma algoritmas&#305; ile maksimum do&#287;ruluk.</div></div>
-    <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">02/06</div><span class="fc-icon">&#128197;</span><div class="fc-name" data-tr="SKT Takibi" data-en="Expiry Tracking">SKT Takibi</div><div class="fc-desc" data-tr="Son kullanma tarihi ge&#231;mi&#351; &#252;r&#252;nler i&#231;in sesli ve g&#246;rsel alarmlar. 7 g&#252;nl&#252;k &#246;nceden uyar&#305; sistemi ile g&#305;da israf&#305; &#246;nlenir." data-en="Audio and visual alarms for expired products. 7-day advance warning system prevents food waste.">Son kullanma tarihi ge&#231;mi&#351; &#252;r&#252;nler i&#231;in sesli ve g&#246;rsel alarmlar. 7 g&#252;nl&#252;k &#246;nceden uyar&#305; sistemi ile g&#305;da israf&#305; &#246;nlenir.</div></div>
-    <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">03/06</div><span class="fc-icon">&#127758;</span><div class="fc-name">Open Food Facts</div><div class="fc-desc" data-tr="Bilinmeyen barkodlar Open Food Facts API'sinden otomatik sorgulan&#305;r, &#252;r&#252;n bilgileri an&#305;nda sisteme eklenir." data-en="Unknown barcodes are automatically queried from the Open Food Facts API, product info is instantly added to the system.">Bilinmeyen barkodlar Open Food Facts API'sinden otomatik sorgulan&#305;r, &#252;r&#252;n bilgileri an&#305;nda sisteme eklenir.</div></div>
-    <a href="#roller" style="text-decoration:none;color:inherit" class="fc" data-r="up"><div class="fc-glow"></div><div class="fc-num">04/06</div><span class="fc-icon">&#128101;</span><div class="fc-name" data-tr="Rol Sistemi" data-en="Role System">Rol Sistemi</div><div class="fc-desc" data-tr="Admin, m&#252;d&#252;r, kasiyer ve g&#246;r&#252;nt&#252;leyici rolleri. Her rol kendi yetki seviyesine g&#246;re eri&#351;im sa&#287;lar." data-en="Admin, manager, cashier and viewer roles. Each role provides access according to its permission level.">Admin, m&#252;d&#252;r, kasiyer ve g&#246;r&#252;nt&#252;leyici rolleri. Her rol kendi yetki seviyesine g&#246;re eri&#351;im sa&#287;lar.</div></a>
-    <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">05/06</div><span class="fc-icon">&#128202;</span><div class="fc-name" data-tr="Canl&#305; Dashboard" data-en="Live Dashboard">Canl&#305; Dashboard</div><div class="fc-desc" data-tr="Ger&#231;ek zamanl&#305; envanter istatistikleri, kritik stok uyar&#305;lar&#305;, hareket ge&#231;mi&#351;i ve raporlar tek ekranda." data-en="Real-time inventory statistics, critical stock alerts, movement history and reports on a single screen.">Ger&#231;ek zamanl&#305; envanter istatistikleri, kritik stok uyar&#305;lar&#305;, hareket ge&#231;mi&#351;i ve raporlar tek ekranda.</div></div>
-    <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">06/06</div><span class="fc-icon">&#128266;</span><div class="fc-name" data-tr="Ses Sistemi" data-en="Sound System">Ses Sistemi</div><div class="fc-desc" data-tr="Web Audio API ile ba&#351;ar&#305;l&#305; okuma, hata ve SKT uyar&#305; sesleri. Her durum i&#231;in farkl&#305; ses tonu ile anl&#305;k geri bildirim." data-en="Success, error and expiry warning sounds via Web Audio API. Instant feedback with different tones for each state.">Web Audio API ile ba&#351;ar&#305;l&#305; okuma, hata ve SKT uyar&#305; sesleri. Her durum i&#231;in farkl&#305; ses tonu ile anl&#305;k geri bildirim.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.0s"><div class="fc-glow"></div><div class="fc-num">01/09</div><span class="fc-icon">&#128247;</span><div class="fc-name" data-tr="Kamera Tarama" data-en="Camera Scan">Kamera Tarama</div><div class="fc-desc" data-tr="Taray&#305;c&#305; kameras&#305; ile EAN-13 dahil t&#252;m barkod formatlar&#305;n&#305; ger&#231;ek zamanl&#305; okuma. 3 tutarl&#305; okuma algoritmas&#305; ile maksimum do&#287;ruluk." data-en="Real-time reading of all barcode formats including EAN-13 via browser camera. Maximum accuracy with 3-consistent-read algorithm.">Taray&#305;c&#305; kameras&#305; ile EAN-13 dahil t&#252;m barkod formatlar&#305;n&#305; ger&#231;ek zamanl&#305; okuma. 3 tutarl&#305; okuma algoritmas&#305; ile maksimum do&#287;ruluk.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">02/09</div><span class="fc-icon">&#128197;</span><div class="fc-name" data-tr="SKT Takibi" data-en="Expiry Tracking">SKT Takibi</div><div class="fc-desc" data-tr="Son kullanma tarihi ge&#231;mi&#351; &#252;r&#252;nler i&#231;in sesli ve g&#246;rsel alarmlar. 7 g&#252;nl&#252;k &#246;nceden uyar&#305; sistemi ile g&#305;da israf&#305; &#246;nlenir." data-en="Audio and visual alarms for expired products. 7-day advance warning system prevents food waste.">Son kullanma tarihi ge&#231;mi&#351; &#252;r&#252;nler i&#231;in sesli ve g&#246;rsel alarmlar. 7 g&#252;nl&#252;k &#246;nceden uyar&#305; sistemi ile g&#305;da israf&#305; &#246;nlenir.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">03/09</div><span class="fc-icon">&#127758;</span><div class="fc-name">Open Food Facts</div><div class="fc-desc" data-tr="Bilinmeyen barkodlar Open Food Facts API'sinden otomatik sorgulan&#305;r, &#252;r&#252;n bilgileri an&#305;nda sisteme eklenir." data-en="Unknown barcodes are automatically queried from the Open Food Facts API, product info is instantly added to the system.">Bilinmeyen barkodlar Open Food Facts API'sinden otomatik sorgulan&#305;r, &#252;r&#252;n bilgileri an&#305;nda sisteme eklenir.</div></div>
+    <a href="#roller" style="text-decoration:none;color:inherit" class="fc" data-r="up"><div class="fc-glow"></div><div class="fc-num">04/09</div><span class="fc-icon">&#128101;</span><div class="fc-name" data-tr="Rol Sistemi" data-en="Role System">Rol Sistemi</div><div class="fc-desc" data-tr="Admin, m&#252;d&#252;r, kasiyer ve g&#246;r&#252;nt&#252;leyici rolleri. Her rol kendi yetki seviyesine g&#246;re eri&#351;im sa&#287;lar." data-en="Admin, manager, cashier and viewer roles. Each role provides access according to its permission level.">Admin, m&#252;d&#252;r, kasiyer ve g&#246;r&#252;nt&#252;leyici rolleri. Her rol kendi yetki seviyesine g&#246;re eri&#351;im sa&#287;lar.</div></a>
+    <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">05/09</div><span class="fc-icon">&#128202;</span><div class="fc-name" data-tr="Canl&#305; Dashboard" data-en="Live Dashboard">Canl&#305; Dashboard</div><div class="fc-desc" data-tr="Ger&#231;ek zamanl&#305; envanter istatistikleri, kritik stok uyar&#305;lar&#305;, hareket ge&#231;mi&#351;i ve raporlar tek ekranda." data-en="Real-time inventory statistics, critical stock alerts, movement history and reports on a single screen.">Ger&#231;ek zamanl&#305; envanter istatistikleri, kritik stok uyar&#305;lar&#305;, hareket ge&#231;mi&#351;i ve raporlar tek ekranda.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">06/09</div><span class="fc-icon">&#128266;</span><div class="fc-name" data-tr="Ses Sistemi" data-en="Sound System">Ses Sistemi</div><div class="fc-desc" data-tr="Web Audio API ile ba&#351;ar&#305;l&#305; okuma, hata ve SKT uyar&#305; sesleri. Her durum i&#231;in farkl&#305; ses tonu ile anl&#305;k geri bildirim." data-en="Success, error and expiry warning sounds via Web Audio API. Instant feedback with different tones for each state.">Web Audio API ile ba&#351;ar&#305;l&#305; okuma, hata ve SKT uyar&#305; sesleri. Her durum i&#231;in farkl&#305; ses tonu ile anl&#305;k geri bildirim.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.0s"><div class="fc-glow"></div><div class="fc-num">07/09</div><span class="fc-icon">&#128230;</span><div class="fc-name" data-tr="Parti Sistemi" data-en="Batch System">Parti Sistemi</div><div class="fc-desc" data-tr="Her &#252;r&#252;n i&#231;in birden fazla parti (lot) tan&#305;mlanabilir. Her partinin kendi SKT ve adedi tutulur; P1, P2... olarak s&#305;ral&#305; numaralanarak tam takip sa&#287;lan&#305;r." data-en="Multiple batches per product, each with its own expiry and quantity. Sequentially numbered P1, P2... for complete tracking.">Her &#252;r&#252;n i&#231;in birden fazla parti (lot) tan&#305;mlanabilir. Her partinin kendi SKT ve adedi tutulur; P1, P2... olarak s&#305;ral&#305; numaralanarak tam takip sa&#287;lan&#305;r.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">08/09</div><span class="fc-icon">&#9889;</span><div class="fc-name" data-tr="FEFO Algoritmas&#305;" data-en="FEFO Algorithm">FEFO Algoritmas&#305;</div><div class="fc-desc" data-tr="First Expiry First Out &mdash; en yak&#305;n SKT&rsquo;li parti otomatik &#246;nce azalt&#305;l&#305;r. &#304;ki partili stok sorununu &#231;&#246;zer, isrfa s&#305;f&#305;r tolerans." data-en="First Expiry First Out &mdash; nearest expiry batch decremented first automatically. Solves the two-batch stock problem, zero waste tolerance.">First Expiry First Out &mdash; en yak&#305;n SKT&rsquo;li parti otomatik &#246;nce azalt&#305;l&#305;r. &#304;ki partili stok sorununu &#231;&#246;zer, isrfa s&#305;f&#305;r tolerans.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">09/09</div><span class="fc-icon">&#128244;</span><div class="fc-name" data-tr="Stok &#199;&#305;k&#305;&#351;&#305;" data-en="Stock Exit">Stok &#199;&#305;k&#305;&#351;&#305;</div><div class="fc-desc" data-tr="Stok&#231;ular hangi &#252;r&#252;n&#252;n raftan kald&#305;r&#305;ld&#305;&#287;&#305;n&#305; sebep se&#231;erek sisteme girebilir. Hasarl&#305;, s&#252;resi dolmu&#351; veya t&#252;kenen &#252;r&#252;nler kay&#305;t alt&#305;nda." data-en="Staff log stock removal with reason selection. Damaged, expired or depleted items are tracked with full history.">Stok&#231;ular hangi &#252;r&#252;n&#252;n raftan kald&#305;r&#305;ld&#305;&#287;&#305;n&#305; sebep se&#231;erek sisteme girebilir. Hasarl&#305;, s&#252;resi dolmu&#351; veya t&#252;kenen &#252;r&#252;nler kay&#305;t alt&#305;nda.</div></div>
+  </div>
+</section>
+
+<section id="parti">
+  <div data-r="up">
+    <div class="s-eyebrow" data-tr="// 03.2 &mdash; &#199;&#246;z&#252;m" data-en="// 03.2 &mdash; Solution">// 03.2 &mdash; &#199;&#246;z&#252;m</div>
+    <div class="s-title" data-tr="&#304;K&#304; PART&#304;L&#304; STOK<br><span style='color:var(--a)'>SORUNU</span>" data-en="THE TWO-BATCH<br><span style='color:var(--a)'>STOCK PROBLEM</span>">&#304;K&#304; PART&#304;L&#304; STOK<br><span style="color:var(--a)">SORUNU</span></div>
+  </div>
+  <div class="parti-layout">
+    <div class="parti-txt">
+      <div class="p-point" data-r="up" style="transition-delay:.05s">
+        <div class="p-num">01</div>
+        <div class="p-body"><strong data-tr="Problem:" data-en="Problem:">Problem:</strong> <span data-tr="Ayn&#305; &#252;r&#252;n&#252;n iki farkl&#305; partisi stokta bulundu&#287;unda klasik sistemler hangi partinin &#246;nce t&#252;kenece&#287;ini bilemez. SKT yak&#305;n olan parti beklerken di&#287;eri sat&#305;l&#305;r." data-en="When two batches of the same product are in stock, classic systems can't determine which should be consumed first. The sooner-expiring batch waits while the other sells.">Ayn&#305; &#252;r&#252;n&#252;n iki farkl&#305; partisi stokta bulundu&#287;unda klasik sistemler hangi partinin &#246;nce t&#252;kenece&#287;ini bilemez. SKT yak&#305;n olan parti beklerken di&#287;eri sat&#305;l&#305;r.</span></div>
+      </div>
+      <div class="p-point" data-r="up" style="transition-delay:.12s">
+        <div class="p-num">02</div>
+        <div class="p-body"><strong data-tr="FEFO &#199;&#246;z&#252;m&#252;:" data-en="FEFO Solution:">FEFO &#199;&#246;z&#252;m&#252;:</strong> <span data-tr="NexStock barkod okutuldu&#287;unda veya stok &#231;&#305;k&#305;&#351;&#305; yap&#305;ld&#305;&#287;&#305;nda SQLite sorgusunda partileri SKT&rsquo;ye g&#246;re s&#305;ralar ve en yak&#305;n tarihli partiden ba&#351;layarak azalt&#305;r." data-en="When NexStock scans a barcode or processes a stock exit, it sorts batches by expiry date in SQL and decrements from the nearest-expiry batch first.">NexStock barkod okutuldu&#287;unda veya stok &#231;&#305;k&#305;&#351;&#305; yap&#305;ld&#305;&#287;&#305;nda SQLite sorgusunda partileri SKT&rsquo;ye g&#246;re s&#305;ralar ve en yak&#305;n tarihli partiden ba&#351;layarak azalt&#305;r.</span></div>
+      </div>
+      <div class="p-point" data-r="up" style="transition-delay:.19s">
+        <div class="p-num">03</div>
+        <div class="p-body"><strong data-tr="Parti Y&#246;netimi:" data-en="Batch Management:">Parti Y&#246;netimi:</strong> <span data-tr="Her parti P1, P2, P3&hellip; olarak s&#305;ral&#305; numaralanır. SKT d&#252;zenlenebilir, parti silinebilir &mdash; kalan partiler otomatik yeniden numaralanır." data-en="Each batch is sequentially numbered P1, P2, P3... Expiry dates can be edited, batches deleted &mdash; remaining batches auto-renumber.">Her parti P1, P2, P3&hellip; olarak s&#305;ral&#305; numaralanır. SKT d&#252;zenlenebilir, parti silinebilir &mdash; kalan partiler otomatik yeniden numaralanır.</span></div>
+      </div>
+      <div class="p-point" data-r="up" style="transition-delay:.26s">
+        <div class="p-num">04</div>
+        <div class="p-body"><strong data-tr="Sonu&#231;:" data-en="Result:">Sonu&#231;:</strong> <span data-tr="Son kullanma tarihi ge&#231;mi&#351; &#252;r&#252;n raflarda asla kalmaz. G&#305;da israf&#305; s&#305;f&#305;ra yakla&#351;&#305;r. Her barkod okutmas&#305; otomatik FEFO uygular." data-en="No expired product ever stays on shelves. Food waste approaches zero. Every barcode scan automatically applies FEFO.">Son kullanma tarihi ge&#231;mi&#351; &#252;r&#252;n raflarda asla kalmaz. G&#305;da israf&#305; s&#305;f&#305;ra yakla&#351;&#305;r. Her barkod okutmas&#305; otomatik FEFO uygular.</span></div>
+      </div>
+    </div>
+    <div class="fefo-demo" data-r="up" style="transition-delay:.15s">
+      <div class="fefo-top-label"><div class="fefo-dot"></div> <span data-tr="CANLI S&#304;M&#220;LASYON" data-en="LIVE SIMULATION">CANLI S&#304;M&#220;LASYON</span> &mdash; FEFO</div>
+      <div class="batch-cards">
+        <div class="batch-card bc-active" id="fefo-bc1">
+          <div class="bc-left">
+            <div class="bc-no">P1</div>
+            <div class="bc-skt">SKT: <em data-tr="01 Nis 2026" data-en="01 Apr 2026">01 Nis 2026</em></div>
+          </div>
+          <div class="bc-qty" id="fefo-qty1">10 adet</div>
+          <div class="bc-badge" data-tr="&#9650; &#214;NCE T&#220;KEN&#304;R" data-en="&#9650; FIRST OUT">&#9650; &#214;NCE T&#220;KEN&#304;R</div>
+        </div>
+        <div class="batch-card" id="fefo-bc2">
+          <div class="bc-left">
+            <div class="bc-no">P2</div>
+            <div class="bc-skt">SKT: <em data-tr="15 Haz 2026" data-en="15 Jun 2026">15 Haz 2026</em></div>
+          </div>
+          <div class="bc-qty" id="fefo-qty2">20 adet</div>
+          <div class="bc-badge" data-tr="BEKLEMEDE" data-en="WAITING">BEKLEMEDE</div>
+        </div>
+      </div>
+      <div class="fefo-event-bar" id="fefo-ev" data-tr="BARKOD OKUTULDU &mdash; P1 AZALTILDI" data-en="BARCODE SCANNED &mdash; P1 DECREMENTED">BARKOD OKUTULDU &mdash; P1 AZALTILDI</div>
+      <div class="fefo-note" data-tr="SKT&rsquo;si olmayan partiler en sona b&#305;rak&#305;l&#305;r. Parti bitti&#287;inde sistem otomatik olarak bir sonraki partiye ge&#231;er." data-en="Batches without an expiry date are placed last. When a batch is depleted, the system automatically moves to the next one.">SKT&rsquo;si olmayan partiler en sona b&#305;rak&#305;l&#305;r. Parti bitti&#287;inde sistem otomatik olarak bir sonraki partiye ge&#231;er.</div>
+    </div>
   </div>
 </section>
 
@@ -1639,6 +1726,70 @@ document.querySelectorAll('.cmp-table tbody tr').forEach(function(row){
     row.style.transform='';
   });
 });
+
+/* ═══ FEFO SIMULATION ════════════════════════════════════ */
+(function(){
+  var bc1=document.getElementById('fefo-bc1');
+  var bc2=document.getElementById('fefo-bc2');
+  var q1el=document.getElementById('fefo-qty1');
+  var q2el=document.getElementById('fefo-qty2');
+  var ev=document.getElementById('fefo-ev');
+  if(!bc1) return;
+  var q1=10,q2=20,phase1=true;
+
+  function step(){
+    if(phase1){
+      // Trigger event
+      var lang=document.documentElement.getAttribute('data-lang')||'tr';
+      ev.textContent=lang==='en'?'BARCODE SCANNED — P1 DECREMENTED':'BARKOD OKUTULDU — P1 AZALTILDI';
+      ev.classList.add('show');
+      setTimeout(function(){
+        q1--;
+        if(q1<0){q1=0;}
+        q1el.textContent=q1+' adet';
+        q1el.classList.add('flash');
+        setTimeout(function(){q1el.classList.remove('flash');},600);
+        if(q1<=0){
+          // Switch to P2
+          phase1=false;
+          bc1.classList.remove('bc-active');
+          bc2.classList.add('bc-active');
+          var b1=bc1.querySelector('.bc-badge');
+          var b2=bc2.querySelector('.bc-badge');
+          if(b1){b1.dataset.tr='TÜKENDİ';b1.dataset.en='DEPLETED';b1.textContent='TÜKENDİ';}
+          if(b2){b2.dataset.tr='▲ ÖNCE TÜKENİR';b2.dataset.en='▲ FIRST OUT';b2.textContent='▲ ÖNCE TÜKENİR';}
+        }
+        setTimeout(function(){ev.classList.remove('show');},1400);
+      },350);
+    } else {
+      // Consume P2
+      var lang=document.documentElement.getAttribute('data-lang')||'tr';
+      ev.textContent=lang==='en'?'BARCODE SCANNED — P2 DECREMENTED':'BARKOD OKUTULDU — P2 AZALTILDI';
+      ev.classList.add('show');
+      setTimeout(function(){
+        q2--;
+        if(q2<0){q2=0;}
+        q2el.textContent=q2+' adet';
+        q2el.classList.add('flash');
+        setTimeout(function(){q2el.classList.remove('flash');},600);
+        if(q2<=2){
+          // Reset
+          setTimeout(function(){
+            q1=10;q2=20;phase1=true;
+            q1el.textContent='10 adet';q2el.textContent='20 adet';
+            bc1.classList.add('bc-active');bc2.classList.remove('bc-active');
+            var b1=bc1.querySelector('.bc-badge');
+            var b2=bc2.querySelector('.bc-badge');
+            if(b1){b1.dataset.tr='▲ ÖNCE TÜKENİR';b1.dataset.en='▲ FIRST OUT';b1.textContent='▲ ÖNCE TÜKENİR';}
+            if(b2){b2.dataset.tr='BEKLEMEDE';b2.dataset.en='WAITING';b2.textContent='BEKLEMEDE';}
+          },800);
+        }
+        setTimeout(function(){ev.classList.remove('show');},1400);
+      },350);
+    }
+  }
+  setInterval(step,2800);
+})();
 
 /* ═══ PARALLAX ELEMENTS ══════════════════════════════════ */
 (function(){
