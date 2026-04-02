@@ -782,6 +782,9 @@ function setLang(lang){
   document.title = lang === 'en' ? 'NexStock — FAQ' : 'NexStock — SSS';
 }
 
+/* ═══ LANG INIT ════════════════════════════════════════ */
+(function(){var s=localStorage.getItem('nexstock_lang');if(s)setLang(s);})();
+
 // Hamburger
 (function(){
   var ham=document.getElementById('navHamburger');
