@@ -3,19 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NexStock — Akıllı Envanter Sistemi</title>
+<title>NexStock — SSS</title>
 <link rel="icon" type="image/png" href="/firarlogo.png">
 <link rel="apple-touch-icon" href="/firarlogo.png">
-<meta name="description" content="NexStock — Barkod tabanlı akıllı envanter yönetim sistemi. SKT takibi, parti sistemi, FEFO algoritması. DFC Türkiye 2026 — Hortor.">
-<meta property="og:title" content="NexStock — Akıllı Envanter Sistemi">
-<meta property="og:description" content="Barkod tara, stokunu bil. SKT takibi, parti yönetimi, anlık uyarılar.">
+<meta name="description" content="NexStock SSS — Sıkça sorulan sorular. NexStock nedir, nasıl çalışır, ücretsiz mi?">
+<meta property="og:title" content="NexStock — SSS">
+<meta property="og:description" content="NexStock hakkında sıkça sorulan sorular ve cevapları.">
 <meta property="og:image" content="https://nexstock.net/og-image.png">
-<meta property="og:url" content="https://nexstock.net">
+<meta property="og:url" content="https://nexstock.net/sss.html">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="NexStock — Akıllı Envanter Sistemi">
+<meta name="twitter:title" content="NexStock — SSS">
 <meta name="twitter:image" content="https://nexstock.net/og-image.png">
-<link rel="canonical" href="https://nexstock.net">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -228,124 +227,6 @@ nav.stuck{background:rgba(4,4,4,.97);border-bottom-color:var(--border)}
 }
 .nav-demo-arr:hover svg{transform:translateX(3px)}
 
-/* ═══ HERO ═══ */
-.hero{
-  min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;
-  padding:0 52px 90px;position:relative;overflow:hidden;z-index:1;
-}
-.hero-inner{opacity:0;transform:translateY(30px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1.2s cubic-bezier(.16,1,.3,1)}
-.hero.visible .hero-inner{opacity:1;transform:translateY(0)}
-.hero-logo-img{position:absolute;right:6%;top:50%;transform:translateY(-50%);width:clamp(180px,22vw,320px);opacity:.15;filter:drop-shadow(0 0 40px rgba(165,216,255,.3));pointer-events:none;z-index:0;animation:heroLogoIn 1.5s 0.5s cubic-bezier(.16,1,.3,1) forwards;opacity:0}
-.hero-logo-img img{width:100%;height:auto}
-@keyframes heroLogoIn{0%{opacity:0;transform:translateY(-50%) scale(.9)}100%{opacity:.2;transform:translateY(-50%) scale(1)}}
-
-.h-grid{
-  position:absolute;inset:-100%;
-  background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
-  background-size:80px 80px;animation:gGrid 50s linear infinite;pointer-events:none;
-}
-@keyframes gGrid{0%{transform:translate(0,0)}100%{transform:translate(80px,80px)}}
-
-/* Floating orbs */
-.hero-orb{
-  position:absolute;border-radius:50%;pointer-events:none;
-  filter:blur(80px);opacity:.08;
-  animation:orbFloat 20s ease-in-out infinite alternate;
-}
-.hero-orb:nth-child(1){width:500px;height:500px;background:var(--accent);top:-10%;right:-5%;animation-delay:0s}
-.hero-orb:nth-child(2){width:400px;height:400px;background:#a78bfa;bottom:-10%;left:-5%;animation-delay:-7s}
-.hero-orb:nth-child(3){width:300px;height:300px;background:#60a5fa;top:40%;left:50%;animation-delay:-14s}
-@keyframes orbFloat{
-  0%{transform:translate(0,0) scale(1)}
-  33%{transform:translate(40px,-30px) scale(1.1)}
-  66%{transform:translate(-20px,40px) scale(.95)}
-  100%{transform:translate(30px,20px) scale(1.05)}
-}
-
-.scan{
-  position:absolute;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
-  animation:scanDrop 8s ease-in-out infinite;pointer-events:none;z-index:2;
-}
-@keyframes scanDrop{0%{top:-2px;opacity:0}5%{opacity:1}95%{opacity:1}100%{top:100%;opacity:0}}
-
-.corner{position:absolute;width:60px;height:60px;pointer-events:none;z-index:2;opacity:.25}
-.corner.tl{top:100px;left:52px;border-top:1px solid #fff;border-left:1px solid #fff}
-.corner.tr{top:100px;right:52px;border-top:1px solid #fff;border-right:1px solid #fff}
-.corner.bl{bottom:80px;left:52px;border-bottom:1px solid #fff;border-left:1px solid #fff}
-.corner.br{bottom:80px;right:52px;border-bottom:1px solid #fff;border-right:1px solid #fff}
-
-.h-eyebrow{
-  font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--a);
-  letter-spacing:5px;text-transform:uppercase;margin-bottom:32px;
-  display:flex;align-items:center;gap:16px;padding-top:100px;
-  opacity:0;animation:fadeUp .8s .1s forwards;
-}
-.cursor-blink{width:8px;height:16px;background:var(--a);display:inline-block;animation:cblink 1s infinite}
-@keyframes cblink{0%,100%{opacity:1}50%{opacity:0}}
-
-.h-title{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(5rem,13vw,14rem);
-  line-height:.86;letter-spacing:-2px;position:relative;z-index:1;
-}
-.tl-wrap{overflow:hidden;display:block}
-.tl-inner{display:block;transform:translateY(115%);opacity:0}
-.hero.visible .tl-inner{animation:titleUp 1s cubic-bezier(.16,1,.3,1) forwards}
-.hero.visible .tl-wrap:nth-child(1) .tl-inner{animation-delay:.15s}
-.hero.visible .tl-wrap:nth-child(2) .tl-inner{animation-delay:.3s}
-.hero.visible .tl-wrap:nth-child(3) .tl-inner{animation-delay:.45s}
-@keyframes titleUp{to{transform:translateY(0);opacity:1}}
-
-.t-amber{color:var(--a)}
-.t-out{-webkit-text-stroke:2px var(--a);color:transparent}
-.t-dim{color:rgba(255,255,255,.12)}
-
-.glitch{position:relative}
-.glitch::before,.glitch::after{content:attr(data-g);position:absolute;top:0;left:0;width:100%;pointer-events:none}
-.glitch::before{color:rgba(100,180,255,.5);animation:gb 6s 2.5s infinite}
-.glitch::after{color:rgba(255,100,100,.3);animation:ga 6s 2.5s infinite}
-@keyframes gb{0%,93%,100%{clip-path:inset(0 0 100% 0);transform:none}94%{clip-path:inset(10% 0 60% 0);transform:translate(-3px,1px)}96%{clip-path:inset(40% 0 30% 0);transform:translate(2px,-1px)}98%{clip-path:inset(70% 0 5% 0);transform:translate(-1px,1px)}}
-@keyframes ga{0%,94%,100%{clip-path:inset(0 0 100% 0);transform:none}95%{clip-path:inset(60% 0 10% 0);transform:translate(2px,-1px)}97%{clip-path:inset(20% 0 50% 0);transform:translate(-2px,1px)}}
-
-.h-bottom{
-  display:flex;justify-content:space-between;align-items:flex-end;margin-top:52px;
-  opacity:0;animation:fadeUp .9s .9s forwards;
-}
-.h-desc{max-width:380px;font-size:.95rem;line-height:1.85;color:#666;font-weight:400}
-.h-desc strong{color:var(--text)}
-.h-btns{display:flex;gap:14px}
-.btn{
-  position:relative;display:inline-flex;align-items:center;gap:8px;
-  padding:18px 40px;font-family:'Syne',sans-serif;font-weight:800;
-  font-size:.85rem;letter-spacing:2px;text-transform:uppercase;
-  text-decoration:none;cursor:none;overflow:hidden;
-  transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s;
-}
-.btn-a{background:var(--a);color:#080808;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px))}
-.btn-a::before{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 20%,rgba(255,255,255,.25) 50%,transparent 80%);transform:translateX(-100%);transition:transform .6s}
-.btn-a:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(255,255,255,.3)}
-.btn-a:hover::before{transform:translateX(100%)}
-.btn-o{background:transparent;color:var(--text);border:1px solid var(--border);transition:all .3s cubic-bezier(.16,1,.3,1)}
-.btn-o:hover{border-color:var(--a);color:var(--a);transform:translateY(-4px);box-shadow:0 16px 40px rgba(255,255,255,.1)}
-.btn-arr{display:inline-block;transition:transform .3s}
-.btn-a:hover .btn-arr{transform:translateX(5px)}
-
-.scroll-h{position:absolute;bottom:40px;left:52px;display:flex;align-items:center;gap:14px;opacity:0;animation:fadeUp .6s 1.6s forwards}
-.scroll-track{width:1px;height:80px;background:var(--border);position:relative;overflow:hidden}
-.scroll-track::after{content:'';position:absolute;top:0;left:0;width:100%;height:50%;background:linear-gradient(to bottom,var(--a),transparent);animation:scrollPulse 2.5s ease-in-out infinite}
-@keyframes scrollPulse{0%{transform:translateY(-100%)}100%{transform:translateY(250%)}}
-.scroll-txt{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:4px;text-transform:uppercase;writing-mode:vertical-rl}
-@keyframes fadeUp{from{opacity:0;transform:translateY(50px)}to{opacity:1;transform:translateY(0)}}
-
-/* ═══ TICKER ═══ */
-.ticker{background:var(--a);padding:16px 0;overflow:hidden;white-space:nowrap;position:relative;z-index:1}
-.ticker-t{display:inline-flex;animation:tkr 22s linear infinite}
-.ticker:hover .ticker-t{animation-play-state:paused}
-.ti{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:4px;color:#080808;padding:0 44px}
-.ts{opacity:.3;color:#080808}
-@keyframes tkr{to{transform:translateX(-50%)}}
-
 /* ═══ SECTIONS ═══ */
 section{padding:140px 52px;position:relative;z-index:1}
 .s-eyebrow{
@@ -362,137 +243,50 @@ section{padding:140px 52px;position:relative;z-index:1}
 [data-r=left]{transform:translateX(-60px)}
 [data-r=right]{transform:translateX(60px)}
 [data-r=scale]{transform:scale(.88)}
-[data-r=flip]{transform:perspective(600px) rotateX(15deg);transform-origin:top}
 [data-r].on{opacity:1;transform:none}
 
-/* Staggered children */
-[data-r].on [data-stagger]{transition-delay:calc(var(--i,0) * .08s)}
-
-/* ═══ FEATURES ═══ */
-.feat-hdr{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:72px}
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
-.fc{
-  background:var(--bg);padding:48px 38px;position:relative;overflow:hidden;cursor:none;
-  transition:background .35s;
+/* ═══ FAQ ═══ */
+#faq{padding:140px 52px;position:relative;z-index:1}
+.faq-grid{max-width:800px;margin:60px auto 0;display:flex;flex-direction:column;gap:1px;background:var(--border)}
+.faq-item{background:var(--bg);overflow:hidden}
+.faq-q{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:24px 28px;cursor:pointer;transition:background .3s,color .3s;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;
+  color:var(--muted);letter-spacing:.5px;
 }
-.fc:hover{background:var(--bg2)}
-.fc-glow{
-  position:absolute;width:300px;height:300px;border-radius:50%;
-  background:radial-gradient(circle,rgba(255,255,255,.06),transparent 70%);
-  pointer-events:none;transform:translate(-50%,-50%);
-  opacity:0;transition:opacity .4s;
-}
-.fc:hover .fc-glow{opacity:1}
-.fc::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,var(--a3),var(--a),var(--a2));
-  transform:scaleX(0);transform-origin:left;
-  transition:transform .55s cubic-bezier(.16,1,.3,1);
-}
-.fc:hover::after{transform:scaleX(1)}
-.fc-num{position:absolute;top:20px;right:24px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);letter-spacing:2px}
-.fc-icon{
-  font-size:2.8rem;display:block;margin-bottom:28px;
-  transition:transform .5s cubic-bezier(.16,1,.3,1),filter .3s;
-}
-.fc:hover .fc-icon{transform:scale(1.25) rotate(8deg);filter:drop-shadow(0 0 16px rgba(255,255,255,.4))}
-.fc-name{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:2px;margin-bottom:14px}
-.fc-desc{font-size:.88rem;color:#666;line-height:1.8}
-
-/* ═══ TEAM ═══ */
-#team{padding:100px 52px;position:relative;z-index:1}
-.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:56px}
-.team-card{
-  background:var(--bg2);border:1px solid var(--border);border-radius:16px;
-  padding:44px 28px;text-align:center;position:relative;overflow:hidden;
-  transition:all .4s cubic-bezier(.16,1,.3,1);
-}
-.team-card::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.04),transparent 70%);
-  opacity:0;transition:opacity .4s;
-}
-.team-card:hover::before{opacity:1}
-.team-card:hover{border-color:rgba(255,255,255,.15);transform:translateY(-8px);box-shadow:0 20px 50px rgba(0,0,0,.5)}
-.team-avatar{
-  width:80px;height:80px;border-radius:50%;
-  background:linear-gradient(135deg,var(--bg3),var(--bg));
-  border:2px solid var(--border);
+.faq-q:hover{background:rgba(255,255,255,.02);color:var(--text)}
+.faq-item.open .faq-q{color:var(--a);background:rgba(255,255,255,.02)}
+.faq-toggle{
+  width:28px;height:28px;border-radius:50%;border:1px solid var(--border);
   display:flex;align-items:center;justify-content:center;
-  margin:0 auto 20px;
-  font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--a);letter-spacing:2px;
+  font-size:.7rem;color:var(--muted);flex-shrink:0;
   transition:all .4s cubic-bezier(.16,1,.3,1);
 }
-.team-card:hover .team-avatar{border-color:rgba(255,255,255,.3);transform:scale(1.08);box-shadow:0 8px 24px rgba(0,0,0,.4)}
-.team-name{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:8px}
-.team-role{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.faq-item.open .faq-toggle{transform:rotate(45deg);border-color:var(--a);color:var(--a);background:rgba(255,255,255,.04)}
+.faq-a{
+  max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.16,1,.3,1),padding .3s;
+}
+.faq-item.open .faq-a{max-height:300px}
+.faq-a-inner{
+  padding:0 28px 24px;font-size:.84rem;color:#666;line-height:1.9;
+  border-left:2px solid var(--a);margin-left:28px;padding-left:20px;
+}
 
-/* ═══ DEMO VIDEO ═══ */
-#demo{padding:140px 52px;position:relative;z-index:1;overflow:hidden}
-.demo-wrap{
-  display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;margin-top:60px;
+/* ═══ BTN ═══ */
+.btn{
+  position:relative;display:inline-flex;align-items:center;gap:8px;
+  padding:18px 40px;font-family:'Syne',sans-serif;font-weight:800;
+  font-size:.85rem;letter-spacing:2px;text-transform:uppercase;
+  text-decoration:none;cursor:none;overflow:hidden;
+  transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s;
 }
-.demo-txt{color:#666;font-size:.95rem;line-height:1.9}
-.demo-txt strong{color:var(--text)}
-.demo-steps{list-style:none;padding:0;margin-top:32px;counter-reset:steps}
-.demo-steps li{
-  counter-increment:steps;position:relative;
-  padding:18px 0 18px 56px;border-bottom:1px solid rgba(255,255,255,.04);
-  font-family:'JetBrains Mono',monospace;font-size:.78rem;
-  color:var(--muted);letter-spacing:1px;transition:color .3s,padding-left .3s;
-}
-.demo-steps li:hover{color:var(--text);padding-left:64px}
-.demo-steps li::before{
-  content:counter(steps,decimal-leading-zero);
-  position:absolute;left:0;top:18px;
-  font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--a);
-  line-height:1;opacity:.4;transition:opacity .3s;
-}
-.demo-steps li:hover::before{opacity:1}
-.demo-frame{
-  position:relative;background:var(--bg2);border:1px solid var(--border);
-  aspect-ratio:16/9;overflow:hidden;
-}
-.demo-frame::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(165,216,255,.03),transparent 50%);
-  z-index:1;pointer-events:none;
-}
-.demo-frame iframe{width:100%;height:100%;border:none}
-.demo-frame-placeholder{
-  position:absolute;inset:0;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:16px;
-  background:var(--bg2);
-}
-.demo-play{
-  width:72px;height:72px;border-radius:50%;border:2px solid var(--a);
-  background:transparent;display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:all .4s cubic-bezier(.16,1,.3,1);
-  position:relative;overflow:hidden;
-}
-.demo-play::before{
-  content:'';position:absolute;inset:0;border-radius:50%;
-  background:var(--a);transform:scale(0);transition:transform .4s cubic-bezier(.16,1,.3,1);
-}
-.demo-play:hover{transform:scale(1.1);box-shadow:0 0 40px rgba(165,216,255,.2)}
-.demo-play:hover::before{transform:scale(1)}
-.demo-play-tri{
-  width:0;height:0;border:12px solid transparent;border-left:20px solid var(--a);
-  margin-left:5px;position:relative;z-index:1;transition:border-color .3s;
-}
-.demo-play:hover .demo-play-tri{border-left-color:#080808}
-.demo-play-lbl{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase}
-.demo-scan{
-  position:absolute;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--accent),transparent);
-  animation:demoScan 3s ease-in-out infinite;pointer-events:none;z-index:2;
-}
-@keyframes demoScan{0%{top:0;opacity:0}10%{opacity:.5}90%{opacity:.5}100%{top:100%;opacity:0}}
-.demo-corner{position:absolute;width:20px;height:20px;z-index:2;pointer-events:none}
-.demo-corner.dc-tl{top:8px;left:8px;border-top:2px solid var(--a);border-left:2px solid var(--a)}
-.demo-corner.dc-tr{top:8px;right:8px;border-top:2px solid var(--a);border-right:2px solid var(--a)}
-.demo-corner.dc-bl{bottom:8px;left:8px;border-bottom:2px solid var(--a);border-left:2px solid var(--a)}
-.demo-corner.dc-br{bottom:8px;right:8px;border-bottom:2px solid var(--a);border-right:2px solid var(--a)}
+.btn-a{background:var(--a);color:#080808;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px))}
+.btn-a::before{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 20%,rgba(255,255,255,.25) 50%,transparent 80%);transform:translateX(-100%);transition:transform .6s}
+.btn-a:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(255,255,255,.3)}
+.btn-a:hover::before{transform:translateX(100%)}
+.btn-arr{display:inline-block;transition:transform .3s}
+.btn-a:hover .btn-arr{transform:translateX(5px)}
 
 /* ═══ LANG TOGGLE ═══ */
 .lang-toggle{
@@ -549,36 +343,23 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
 
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:900px){
-  nav,section,footer,#team{padding-left:24px;padding-right:24px}
+  nav,section,footer{padding-left:24px;padding-right:24px}
   nav.stuck{padding-left:24px;padding-right:24px}
   .nav-items{display:none}
   .nav-hamburger{display:flex}
-  .hero{padding:0 24px 80px}
-  .corner{display:none}
-  .h-bottom{flex-direction:column;align-items:flex-start;gap:32px}
-  .h-desc{max-width:100%;font-size:.92rem}
-  .h-btns{width:100%}
-  .h-btns .btn{flex:1;text-align:center;justify-content:center;padding:14px 16px;font-size:.8rem}
-  .feat-grid{grid-template-columns:1fr}
-  .team-grid{grid-template-columns:1fr 1fr}
+  #faq{padding-left:24px;padding-right:24px}
   footer{flex-direction:column;gap:28px;text-align:center}
   body{cursor:auto}
   .cursor-dot,.cursor-ring{display:none}
-  .scroll-h{display:none}
-  .demo-wrap{grid-template-columns:1fr;gap:40px}
   .lang-toggle{display:none}
-  #demo{padding-left:24px;padding-right:24px}
-  /* disable smooth scroll on mobile */
   #smooth-wrapper{position:static;overflow:visible}
   section{padding-top:80px;padding-bottom:80px}
 }
 @media(max-width:520px){
-  .h-title{font-size:clamp(3.2rem,14vw,5rem);line-height:.9}
   section{padding-top:60px;padding-bottom:60px}
   .s-title{font-size:clamp(2.4rem,9vw,4rem)}
-  .h-btns{flex-direction:column}
-  .team-grid{grid-template-columns:1fr;gap:16px}
-  .team-card{padding:32px 20px}
+  .faq-q{font-size:.82rem;padding:18px 20px}
+  .faq-a-inner{margin-left:20px;padding-left:16px}
 }
 </style>
 </head>
@@ -641,128 +422,40 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
 <div id="smooth-wrapper">
 <div id="smooth-content">
 
-<section class="hero" id="hero-section">
-  <div class="hero-orb"></div>
-  <div class="hero-orb"></div>
-  <div class="hero-orb"></div>
-  <div class="h-grid"></div>
-  <div class="scan"></div>
-  <div class="corner tl"></div><div class="corner tr"></div>
-  <div class="corner bl"></div><div class="corner br"></div>
-  <div class="hero-inner">
-    <div class="h-eyebrow">
-      <span class="cursor-blink"></span>
-      <span data-tr="DFC Türkiye Yarışması &mdash; 2026" data-en="DFC Turkey Competition &mdash; 2026">DFC T&uuml;rkiye Yar&#305;&#351;mas&#305; &mdash; 2026</span>
-    </div>
-    <div class="h-title">
-      <span class="tl-wrap"><span class="tl-inner glitch t-amber" data-g="NEXSTOCK">NEXSTOCK</span></span>
-      <span class="tl-wrap"><span class="tl-inner t-out" data-tr="ENVANTERİN" data-en="THE FUTURE">ENVANTER&#304;N</span></span>
-      <span class="tl-wrap"><span class="tl-inner t-dim" data-tr="GELECEĞİ." data-en="OF INVENTORY.">GELECE&#286;&#304;.</span></span>
-    </div>
-    <div class="h-bottom">
-      <div class="h-desc" data-tr="DFC FIDS metodolojisi ile geliştirilen <strong>akıllı barkod ve envanter</strong> yönetim sistemi. Gerçek sorunlara, gerçek çözümler." data-en="A <strong>smart barcode and inventory</strong> management system developed with the DFC FIDS methodology. Real solutions for real problems.">
-        DFC FIDS metodolojisi ile geli&#351;tirilen <strong>ak&#305;ll&#305; barkod ve envanter</strong> y&#246;netim sistemi.
-        Ger&#231;ek sorunlara, ger&#231;ek &#231;&#246;z&#252;mler.
-      </div>
-      <div class="h-btns">
-        <a href="https://nexstock.tech" class="btn btn-a" id="mainBtn" data-tr="Uygulamayı Dene" data-en="Try the App">Uygulamay&#305; Dene <span class="btn-arr">&rarr;</span></a>
-        <a href="/hakkinda.html" class="btn btn-o" data-tr="Daha Fazla" data-en="Learn More">Daha Fazla</a>
-      </div>
-    </div>
-  </div>
-  <div class="scroll-h">
-    <div class="scroll-track"></div>
-    <div class="scroll-txt">Scroll</div>
-  </div>
+<section style="padding:140px 52px 60px;text-align:center">
+  <div class="s-eyebrow" style="justify-content:center">// Sıkça Sorulan Sorular</div>
+  <div class="s-title">S<span style="color:var(--a)">S</span>S</div>
 </section>
 
-<div class="ticker">
-  <div class="ticker-t">
-    <span class="ti">FEEL</span><span class="ti ts">&#10022;</span>
-    <span class="ti">IMAGINE</span><span class="ti ts">&#10022;</span>
-    <span class="ti">DO</span><span class="ti ts">&#10022;</span>
-    <span class="ti">SHARE</span><span class="ti ts">&#10022;</span>
-    <span class="ti">DESIGN FOR CHANGE</span><span class="ti ts">&#10022;</span>
-    <span class="ti">NEXSTOCK</span><span class="ti ts">&#10022;</span>
-    <span class="ti">FEEL</span><span class="ti ts">&#10022;</span>
-    <span class="ti">IMAGINE</span><span class="ti ts">&#10022;</span>
-    <span class="ti">DO</span><span class="ti ts">&#10022;</span>
-    <span class="ti">SHARE</span><span class="ti ts">&#10022;</span>
-    <span class="ti">DESIGN FOR CHANGE</span><span class="ti ts">&#10022;</span>
-    <span class="ti">NEXSTOCK</span><span class="ti ts">&#10022;</span>
+<section id="faq">
+  <div style="text-align:center" data-r="up">
+    <div class="s-eyebrow" style="justify-content:center" data-tr="// 08 — Sık Sorulan Sorular" data-en="// 08 — FAQ">// 08 &mdash; S&#305;k Sorulan Sorular</div>
+    <div class="s-title" data-tr="MERAK<br><span style='color:var(--a)'>EDİLENLER</span>" data-en="FREQUENTLY<br><span style='color:var(--a)'>ASKED</span>">MERAK<br><span style="color:var(--a)">ED&#304;LENLER</span></div>
   </div>
-</div>
-
-<section id="features">
-  <div class="feat-hdr" data-r="up">
-    <div>
-      <div class="s-eyebrow" data-tr="// Özellikler" data-en="// Features">// Özellikler</div>
-      <div class="s-title" data-tr="NEDEN<br><span style='color:var(--a)'>NEXSTOCK?</span>" data-en="WHY<br><span style='color:var(--a)'>NEXSTOCK?</span>">NEDEN<br><span style="color:var(--a)">NEXSTOCK?</span></div>
+  <div class="faq-grid">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span data-tr="NexStock nedir ve ne işe yarar?" data-en="What is NexStock and what does it do?">NexStock nedir ve ne i&#351;e yarar?</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a"><div class="faq-a-inner" data-tr="NexStock, barkod tarama ile envanter yönetimini kolaylaştıran bir web uygulamasıdır. Ürün stok takibi, son kullanma tarihi kontrolü ve rol bazlı erişim gibi özellikler sunar." data-en="NexStock is a web application that simplifies inventory management through barcode scanning. It offers features like stock tracking, expiry date monitoring, and role-based access control.">NexStock, barkod tarama ile envanter y&#246;netimini kolayla&#351;t&#305;ran bir web uygulamas&#305;d&#305;r. &#220;r&#252;n stok takibi, son kullanma tarihi kontrol&#252; ve rol bazl&#305; eri&#351;im gibi &#246;zellikler sunar.</div></div>
     </div>
-    <a href="/ozellikler.html" class="btn btn-a" data-tr="Tüm Özellikler" data-en="All Features">Tüm Özellikler <span class="btn-arr">→</span></a>
-  </div>
-  <div class="feat-grid" style="grid-template-columns:repeat(3,1fr)">
-    <div class="fc" data-r="up" style="transition-delay:.0s"><div class="fc-glow"></div><div class="fc-num">01/09</div><span class="fc-icon">📷</span><div class="fc-name" data-tr="Kamera Tarama" data-en="Camera Scan">Kamera Tarama</div><div class="fc-desc" data-tr="Tarayıcı kamerası ile EAN-13 dahil tüm barkod formatlarını gerçek zamanlı okuma." data-en="Real-time reading of all barcode formats including EAN-13 via browser camera.">Taray&#305;c&#305; kameras&#305; ile EAN-13 dahil t&#252;m barkod formatlar&#305;n&#305; ger&#231;ek zamanl&#305; okuma.</div></div>
-    <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">07/09</div><span class="fc-icon">📦</span><div class="fc-name" data-tr="Parti Sistemi" data-en="Batch System">Parti Sistemi</div><div class="fc-desc" data-tr="Aynı ürünün farklı tarihli partilerini ayrı ayrı takip et, stok karışıklığını önle." data-en="Track different-dated batches of the same product separately, prevent stock confusion.">Ayn&#305; &#252;r&#252;n&#252;n farkl&#305; tarihli partilerini ayr&#305; ayr&#305; takip et, stok kar&#305;&#351;&#305;kl&#305;&#287;&#305;n&#305; &#246;nle.</div></div>
-    <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">08/09</div><span class="fc-icon">⚡</span><div class="fc-name" data-tr="FEFO Algoritması" data-en="FEFO Algorithm">FEFO Algoritmas&#305;</div><div class="fc-desc" data-tr="En yakın tarihli ürünü otomatik öne al. First Expiry First Out ile sıfır manuel kontrol." data-en="Automatically prioritize nearest-expiry products. Zero manual control with First Expiry First Out.">En yak&#305;n tarihli &#252;r&#252;n&#252; otomatik &#246;ne al. First Expiry First Out ile s&#305;f&#305;r manuel kontrol.</div></div>
-  </div>
-</section>
-
-<section id="demo">
-  <div data-r="up">
-    <div class="s-eyebrow" data-tr="// Demo" data-en="// Demo">// Demo</div>
-    <div class="s-title" data-tr="NASIL<br><span style='color:var(--a)'>ÇALIŞIR?</span>" data-en="HOW DOES<br><span style='color:var(--a)'>IT WORK?</span>">NASIL<br><span style="color:var(--a)">&#199;ALI&#350;IR?</span></div>
-  </div>
-  <div class="demo-wrap">
-    <div data-r="left">
-      <div class="demo-txt" data-tr="NexStock ile envanter yönetimi <strong>3 basit adımda</strong> tamamlanır. Barkodu tarat, bilgileri gör ve stokunu yönet." data-en="Inventory management with NexStock is done in <strong>3 simple steps</strong>. Scan the barcode, view info, and manage your stock.">NexStock ile envanter y&#246;netimi <strong>3 basit ad&#305;mda</strong> tamamlan&#305;r. Barkodu tarat, bilgileri g&#246;r ve stokunu y&#246;net.</div>
-      <ol class="demo-steps">
-        <li data-tr="Kamerayı barkodun üzerine tut" data-en="Point the camera at the barcode">Kameray&#305; barkodun &#252;zerine tut</li>
-        <li data-tr="Ürün bilgisi otomatik olarak getirilir" data-en="Product info is fetched automatically">&#220;r&#252;n bilgisi otomatik olarak getirilir</li>
-        <li data-tr="Stok miktarı, SKT ve detayları yönet" data-en="Manage stock quantity, expiry date &amp; details">Stok miktar&#305;, SKT ve detaylar&#305; y&#246;net</li>
-      </ol>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span data-tr="Hangi barkod formatlarını destekliyor?" data-en="Which barcode formats are supported?">Hangi barkod formatlar&#305;n&#305; destekliyor?</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a"><div class="faq-a-inner" data-tr="EAN-13, EAN-8, UPC-A, UPC-E ve Code-128 gibi yaygın barkod formatlarının tümünü QuaggaJS kütüphanesi ile gerçek zamanlı olarak okuyabilir." data-en="It can read all common barcode formats like EAN-13, EAN-8, UPC-A, UPC-E, and Code-128 in real-time using the QuaggaJS library.">EAN-13, EAN-8, UPC-A, UPC-E ve Code-128 gibi yayg&#305;n barkod formatlar&#305;n&#305;n t&#252;m&#252;n&#252; QuaggaJS k&#252;t&#252;phanesi ile ger&#231;ek zamanl&#305; olarak okuyabilir.</div></div>
     </div>
-    <div data-r="right">
-      <div class="demo-frame">
-        <div class="demo-scan"></div>
-        <div class="demo-corner dc-tl"></div><div class="demo-corner dc-tr"></div>
-        <div class="demo-corner dc-bl"></div><div class="demo-corner dc-br"></div>
-        <div class="demo-frame-placeholder" id="demoPlaceholder">
-          <div class="demo-play" onclick="loadDemo()">
-            <span class="demo-play-tri"></span>
-          </div>
-          <span class="demo-play-lbl" data-tr="Canlı Demo Başlat" data-en="Launch Live Demo">Canl&#305; Demo Ba&#351;lat</span>
-        </div>
-      </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span data-tr="Ücretsiz mi?" data-en="Is it free?">&#220;cretsiz mi?</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a"><div class="faq-a-inner" data-tr="Evet! NexStock tamamen ücretsiz ve açık kaynak bir projedir. DFC Türkiye Yarışması kapsamında geliştirilmiştir." data-en="Yes! NexStock is completely free and open source. It was developed as part of the DFC Turkey Competition.">Evet! NexStock tamamen &#252;cretsiz ve a&#231;&#305;k kaynak bir projedir. DFC T&#252;rkiye Yar&#305;&#351;mas&#305; kapsam&#305;nda geli&#351;tirilmi&#351;tir.</div></div>
     </div>
-  </div>
-</section>
-
-<section id="team">
-  <div data-r="up">
-    <div class="s-eyebrow" data-tr="// Ekip" data-en="// Team">// Ekip</div>
-    <div class="s-title" data-tr="ARKASINDA<br><span style='color:var(--a)'>KİMLER VAR?</span>" data-en="WHO IS<br><span style='color:var(--a)'>BEHIND IT?</span>">ARKASINDA<br><span style="color:var(--a)">K&#304;MLER VAR?</span></div>
-    <div class="team-grid">
-      <div class="team-card" data-r="up" style="transition-delay:.0s">
-        <div class="team-avatar">AT</div>
-        <div class="team-name">Abd&#252;lkadir Tural</div>
-        <div class="team-role" data-tr="Yazılım &amp; İletişim" data-en="Software &amp; Communication">Yaz&#305;l&#305;m &amp; &#304;leti&#351;im</div>
-      </div>
-      <div class="team-card" data-r="up" style="transition-delay:.1s">
-        <div class="team-avatar">AN</div>
-        <div class="team-name">Arda Numano&#287;lu</div>
-        <div class="team-role" data-tr="Yazılım &amp; Marketing" data-en="Software &amp; Marketing">Yaz&#305;l&#305;m &amp; Marketing</div>
-      </div>
-      <div class="team-card" data-r="up" style="transition-delay:.15s">
-        <div class="team-avatar">YB</div>
-        <div class="team-name">Yi&#287;it Ege Bulut</div>
-        <div class="team-role" data-tr="Yazıcı" data-en="Writer">Yaz&#305;c&#305;</div>
-      </div>
-      <div class="team-card" data-r="up" style="transition-delay:.2s">
-        <div class="team-avatar">YA</div>
-        <div class="team-name">Yusuf Ata Aksoy</div>
-        <div class="team-role">Debugger</div>
-      </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span data-tr="Telefonda çalışıyor mu?" data-en="Does it work on mobile?">Telefonda &#231;al&#305;&#351;&#305;yor mu?</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a"><div class="faq-a-inner" data-tr="Evet, NexStock responsive tasarım ile geliştirilmiştir. Hem telefon hem de tablet üzerinden barkod tarama ve envanter yönetimi yapabilirsiniz." data-en="Yes, NexStock is built with responsive design. You can scan barcodes and manage inventory from both phones and tablets.">Evet, NexStock responsive tasar&#305;m ile geli&#351;tirilmi&#351;tir. Hem telefon hem de tablet &#252;zerinden barkod tarama ve envanter y&#246;netimi yapabilirsiniz.</div></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span data-tr="DFC FIDS modeli ne anlama geliyor?" data-en="What does the DFC FIDS model mean?">DFC FIDS modeli ne anlama geliyor?</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a"><div class="faq-a-inner" data-tr="FIDS, Feel (Hisset) - Imagine (Hayal Et) - Do (Yap) - Share (Paylaş) adımlarından oluşan bir tasarım düşüncesi metodolojisidir. NexStock bu 4 adımla geliştirilmiştir." data-en="FIDS stands for Feel - Imagine - Do - Share, a design thinking methodology. NexStock was developed following these 4 steps.">FIDS, Feel (Hisset) - Imagine (Hayal Et) - Do (Yap) - Share (Payla&#351;) ad&#305;mlar&#305;ndan olu&#351;an bir tasar&#305;m d&#252;&#351;&#252;ncesi metodolojisidir. NexStock bu 4 ad&#305;mla geli&#351;tirilmi&#351;tir.</div></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span data-tr="Verilerim güvende mi?" data-en="Is my data safe?">Verilerim g&#252;vende mi?</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a"><div class="faq-a-inner" data-tr="Evet. Veriler SQLite veritabanında saklanır ve rol bazlı erişim kontrolü ile koruma altındadır. Yetkisiz erişim engellenir." data-en="Yes. Data is stored in an SQLite database and protected by role-based access control. Unauthorized access is prevented.">Evet. Veriler SQLite veritaban&#305;nda saklan&#305;r ve rol bazl&#305; eri&#351;im kontrol&#252; ile koruma alt&#305;ndad&#305;r. Yetkisiz eri&#351;im engellenir.</div></div>
     </div>
   </div>
 </section>
@@ -881,7 +574,6 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
       var pp = Math.max(0, Math.min((prog - p.delay*.4)/.6, 1));
       if(pp<=0) continue;
       var a = pp * .6;
-
       lctx.beginPath();
       lctx.arc(p.x, p.y, p.r * pp, 0, Math.PI*2);
       lctx.fillStyle = 'rgba(165,216,255,'+a+')';
@@ -934,7 +626,6 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
         loader.classList.add('phase-out');
         window._stopLoaderCanvas && window._stopLoaderCanvas();
         document.getElementById('nav').classList.add('visible');
-        document.getElementById('hero-section').classList.add('visible');
         setTimeout(function(){ loader.style.display='none'; }, 1300);
       }, 400);
     }
@@ -1008,7 +699,7 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
     requestAnimationFrame(loop);
   })();
 
-  document.querySelectorAll('a,button,.fc,.team-card,.demo-play,.lang-btn').forEach(function(el){
+  document.querySelectorAll('a,button,.faq-q,.lang-btn').forEach(function(el){
     el.addEventListener('mouseenter',function(){document.body.classList.add('cursor-hover');});
     el.addEventListener('mouseleave',function(){document.body.classList.remove('cursor-hover');});
   });
@@ -1030,67 +721,22 @@ document.querySelectorAll('.btn,.nav-demo').forEach(function(btn){
   btn.addEventListener('mouseleave',function(){btn.style.transform='';});
 });
 
-/* ═══ FEATURE CARD GLOW ══════════════════════════════════ */
-document.querySelectorAll('.fc').forEach(function(card){
-  var glow=card.querySelector('.fc-glow');
-  card.addEventListener('mousemove',function(e){
-    var r=card.getBoundingClientRect();
-    glow.style.left=(e.clientX-r.left)+'px';
-    glow.style.top=(e.clientY-r.top)+'px';
-  });
-});
-
 /* ═══ SCROLL REVEAL ══════════════════════════════════════ */
 (function(){
   var io=new IntersectionObserver(function(entries){
     entries.forEach(function(en){
-      if(en.isIntersecting){
-        en.target.classList.add('on');
-        en.target.querySelectorAll('[data-c]').forEach(animCount);
-      }
+      if(en.isIntersecting) en.target.classList.add('on');
     });
   },{threshold:.08, rootMargin:'0px 0px -40px 0px'});
   document.querySelectorAll('[data-r]').forEach(function(el){io.observe(el);});
 })();
 
-/* ═══ COUNTER ════════════════════════════════════════════ */
-function animCount(el){
-  if(el._done) return; el._done=true;
-  var target=+el.dataset.c,dur=2000,t0=performance.now();
-  (function tick(now){
-    var p=Math.min((now-t0)/dur,1);
-    var eased=1-Math.pow(1-p,4);
-    el.textContent=Math.floor(eased*target);
-    if(p<1) requestAnimationFrame(tick); else el.textContent=target;
-  })(t0);
-}
-
-/* ═══ TEAM CARD TILT ══════════════════════════════════════ */
-document.querySelectorAll('.team-card').forEach(function(card){
-  card.addEventListener('mousemove',function(e){
-    var r=card.getBoundingClientRect();
-    var x=((e.clientX-r.left)/r.width-.5)*8;
-    var y=((e.clientY-r.top)/r.height-.5)*8;
-    card.style.transform='perspective(800px) rotateY('+x+'deg) rotateX('+(-y)+'deg) translateY(-8px)';
-  });
-  card.addEventListener('mouseleave',function(){card.style.transform='';});
-});
-
-/* ═══ DEMO LOADER ════════════════════════════════════════ */
-function loadDemo(){
-  var ph = document.getElementById('demoPlaceholder');
-  var frame = ph.parentElement;
-  ph.style.opacity='0';
-  setTimeout(function(){
-    ph.style.display='none';
-    var iframe = document.createElement('iframe');
-    iframe.src = 'https://nexstock.tech/tarama';
-    iframe.allow = 'camera;microphone';
-    iframe.style.opacity='0';
-    iframe.style.transition='opacity .6s';
-    frame.appendChild(iframe);
-    setTimeout(function(){iframe.style.opacity='1';},100);
-  },300);
+/* ═══ FAQ ACCORDION ══════════════════════════════════════ */
+function toggleFaq(q){
+  var item = q.closest('.faq-item');
+  var wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(function(el){el.classList.remove('open');});
+  if(!wasOpen) item.classList.add('open');
 }
 
 /* ═══ LANGUAGE SYSTEM (TR/EN) ════════════════════════════ */
@@ -1108,30 +754,12 @@ function setLang(lang){
       el.placeholder=val;
     } else {
       el.innerHTML = val;
-      if(arrow) el.appendChild(document.createTextNode(' ')), el.innerHTML += ' <span class="btn-arr">&rarr;</span>';
+      if(arrow) el.innerHTML += ' <span class="btn-arr">&rarr;</span>';
     }
   });
   document.documentElement.lang = lang;
-  document.title = lang === 'en' ? 'NexStock — Smart Inventory System' : 'NexStock — Akıllı Envanter Sistemi';
+  document.title = lang === 'en' ? 'NexStock — FAQ' : 'NexStock — SSS';
 }
-
-/* ═══ PARALLAX ELEMENTS ══════════════════════════════════ */
-(function(){
-  var orbs = document.querySelectorAll('.hero-orb');
-  var corners = document.querySelectorAll('.corner');
-  window.addEventListener('mousemove', function(e){
-    var x = (e.clientX / window.innerWidth - .5) * 2;
-    var y = (e.clientY / window.innerHeight - .5) * 2;
-    orbs.forEach(function(orb, i){
-      var f = (i+1) * 8;
-      orb.style.transform = 'translate('+x*f+'px,'+y*f+'px)';
-    });
-    corners.forEach(function(c, i){
-      var f = (i+1) * 3;
-      c.style.transform = 'translate('+x*f+'px,'+y*f+'px)';
-    });
-  }, {passive:true});
-})();
 
 // Hamburger
 (function(){

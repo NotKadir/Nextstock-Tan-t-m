@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexStock — Özellikler</title>
+<link rel="icon" type="image/png" href="/firarlogo.png">
+<link rel="apple-touch-icon" href="/firarlogo.png">
+<meta name="description" content="NexStock özellikleri — Kamera tarama, SKT takibi, FEFO algoritması, parti sistemi, rol yönetimi ve daha fazlası.">
+<meta property="og:title" content="NexStock — Özellikler">
+<meta property="og:description" content="NexStock'un tüm özelliklerini keşfedin. Barkod tarama, parti sistemi, FEFO algoritması ve rol yönetimi.">
+<meta property="og:image" content="https://nexstock.net/og-image.png">
+<meta property="og:url" content="https://nexstock.net/ozellikler.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NexStock — Özellikler">
+<meta name="twitter:image" content="https://nexstock.net/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --a:#ffffff;--a2:#e5e5e5;--a3:#a3a3a3;
+  --bg:#060606;--bg2:#0e0e0e;--bg3:#181818;
+  --border:#222;--text:#f5f5f5;--sub:#d4d4d4;
+  --muted:#8a8a8a;--accent:rgba(165,216,255,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:auto}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;overflow-x:hidden;cursor:none}
+
+/* ═══ SMOOTH SCROLL WRAPPER ═══ */
+#smooth-wrapper{position:fixed;top:0;left:0;width:100%;height:100%;overflow:hidden}
+#smooth-content{will-change:transform}
+
+/* ═══ LOADER ═══ */
+#loader{
+  position:fixed;inset:0;z-index:9500;
+  background:#030308;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+#loader.phase-out{
+  animation:loaderOut 1.2s cubic-bezier(.7,0,.3,1) forwards;
+}
+@keyframes loaderOut{
+  0%{clip-path:inset(0 0 0 0)}
+  100%{clip-path:inset(0 0 100% 0)}
+}
+
+#loader-canvas{position:absolute;inset:0;width:100%;height:100%}
+
+.ld-wrap{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;align-items:center;gap:0;
+}
+
+.ld-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3.5rem,9vw,8rem);
+  letter-spacing:20px;text-indent:20px;
+  color:rgba(255,255,255,0);
+  position:relative;
+  overflow:hidden;
+}
+.ld-logo.in{animation:ldReveal 1s .3s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes ldReveal{
+  0%{opacity:0;letter-spacing:40px;filter:blur(12px);color:rgba(255,255,255,0)}
+  60%{filter:blur(0);color:rgba(255,255,255,.9)}
+  100%{opacity:1;letter-spacing:14px;color:rgba(255,255,255,.88)}
+}
+.ld-logo .ld-shine{
+  position:absolute;top:0;left:-100%;width:60%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);
+  animation:ldShine 2s 1.2s ease-in-out forwards;
+}
+@keyframes ldShine{to{left:200%}}
+
+.ld-rule{
+  width:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);
+  margin:20px 0 24px;
+  animation:ldRule .8s 1s cubic-bezier(.16,1,.3,1) forwards;
+}
+@keyframes ldRule{to{width:260px}}
+
+.ld-status{display:flex;align-items:center;gap:14px;opacity:0;animation:ldFade .5s 1.2s forwards}
+@keyframes ldFade{to{opacity:1}}
+.ld-pct{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;letter-spacing:2px;
+  color:rgba(255,255,255,.35);
+  min-width:38px;text-align:right;
+}
+.ld-bar-wrap{width:180px;height:1px;background:rgba(255,255,255,.06);position:relative;overflow:hidden;border-radius:1px}
+.ld-bar{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--accent),#fff,var(--accent));
+  transition:width .08s linear;
+  box-shadow:0 0 12px var(--accent);
+}
+.ld-msg{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.48rem;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,.18);min-width:140px;
+}
+
+.ld-tag{
+  position:absolute;bottom:28px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.5rem;letter-spacing:5px;text-transform:uppercase;
+  color:rgba(255,255,255,.08);
+  opacity:0;animation:ldFade .4s 1.4s forwards;
+}
+
+/* Loader scanlines */
+#loader::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 3px);
+  z-index:2;
+}
+
+/* ═══ CURSOR ═══ */
+.cursor-dot{
+  width:6px;height:6px;background:#fff;border-radius:50%;
+  position:fixed;pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width .25s,height .25s,background .25s;
+  box-shadow:0 0 8px rgba(255,255,255,.6);
+  mix-blend-mode:difference;
+}
+.cursor-ring{
+  width:36px;height:36px;
+  border:1px solid rgba(255,255,255,.4);border-radius:50%;
+  position:fixed;pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:width .35s cubic-bezier(.16,1,.3,1),height .35s cubic-bezier(.16,1,.3,1),border-color .3s,opacity .3s;
+}
+body.cursor-hover .cursor-dot{width:0;height:0}
+body.cursor-hover .cursor-ring{width:64px;height:64px;border-color:rgba(255,255,255,.6)}
+
+/* ═══ NOISE ═══ */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:8000;
+  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+  opacity:.45;
+}
+
+/* ═══ CANVAS ═══ */
+#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5}
+
+/* ═══ NAV ═══ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;padding:0 52px;
+  display:flex;justify-content:space-between;align-items:stretch;
+  opacity:0;transform:translateY(-20px);
+  background:rgba(6,6,6,.85);backdrop-filter:blur(24px) saturate(1.2);
+  border-bottom:1px solid rgba(255,255,255,.04);height:64px;
+  transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1),background .4s,border .4s;
+}
+nav.visible{opacity:1;transform:translateY(0)}
+nav.stuck{background:rgba(4,4,4,.97);border-bottom-color:var(--border)}
+.nav-left{display:flex;align-items:center;gap:48px}
+.logo{
+  font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:4px;
+  color:var(--text);cursor:none;user-select:none;text-decoration:none;
+  display:flex;align-items:center;transition:letter-spacing .3s;
+}
+.logo:hover{letter-spacing:6px}
+.logo em{color:var(--a);font-style:normal}
+
+.nav-items{display:flex;align-items:stretch;gap:0}
+.nav-item{position:relative;display:flex;align-items:center}
+.nav-item > a,.nav-item > span{
+  display:flex;align-items:center;gap:5px;padding:0 18px;height:64px;
+  color:var(--muted);text-decoration:none;
+  font-size:.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  white-space:nowrap;border-bottom:2px solid transparent;
+  transition:all .25s;cursor:none;
+}
+.nav-item > a:hover,.nav-item > span:hover,.nav-item:hover > a,.nav-item:hover > span{
+  color:var(--text);background:rgba(255,255,255,.03);border-bottom-color:var(--a);
+}
+
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-ig{display:flex;align-items:center;justify-content:center;width:38px;height:38px;color:var(--muted);border:1px solid var(--border);border-radius:6px;transition:color .2s,border-color .2s}
+.nav-ig:hover{color:#fff;border-color:rgba(255,255,255,.3)}
+.nav-cta-wrap{display:flex;align-items:stretch;margin:10px 0 10px 8px}
+.nav-demo{
+  display:flex;align-items:center;gap:10px;padding:0 24px;height:44px;
+  background:var(--a);color:#080808;
+  font-family:'Syne',sans-serif;font-size:.75rem;font-weight:800;
+  letter-spacing:2px;text-transform:uppercase;text-decoration:none;cursor:none;
+  transition:all .3s cubic-bezier(.16,1,.3,1);
+  white-space:nowrap;position:relative;overflow:hidden;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+}
+.nav-demo::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(110deg,transparent 20%,rgba(255,255,255,.25) 50%,transparent 80%);
+  transform:translateX(-100%);transition:transform .6s;
+}
+.nav-demo:hover{background:#e5e5e5;transform:translateY(-2px);box-shadow:0 12px 30px rgba(255,255,255,.2)}
+.nav-demo:hover::before{transform:translateX(100%)}
+.nav-demo-arr{
+  display:flex;align-items:center;justify-content:center;
+  width:44px;height:44px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));
+  cursor:none;transition:all .35s cubic-bezier(.16,1,.3,1);text-decoration:none;
+  position:relative;overflow:hidden;margin-left:6px;
+}
+.nav-demo-arr::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.08),transparent);
+  transition:opacity .3s;opacity:0;
+}
+.nav-demo-arr:hover::after{opacity:1}
+.nav-demo-arr:hover{
+  background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.3);
+  transform:translateY(-2px);box-shadow:0 8px 20px rgba(255,255,255,.08);
+}
+.nav-demo-arr svg{
+  width:16px;height:16px;stroke:var(--text);stroke-width:2;fill:none;
+  stroke-linecap:round;stroke-linejoin:round;
+  transition:transform .35s cubic-bezier(.16,1,.3,1);position:relative;z-index:1;
+}
+.nav-demo-arr:hover svg{transform:translateX(3px)}
+
+/* ═══ SECTIONS ═══ */
+section{padding:140px 52px;position:relative;z-index:1}
+.s-eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--a);
+  letter-spacing:4px;text-transform:uppercase;margin-bottom:18px;
+  display:flex;align-items:center;gap:14px;
+}
+.s-eyebrow::before{content:'';display:block;width:36px;height:1px;background:var(--a)}
+.s-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,5.5vw,5.8rem);line-height:1;letter-spacing:1px}
+
+/* ═══ REVEAL ═══ */
+[data-r]{opacity:0;transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+[data-r=up]{transform:translateY(60px)}
+[data-r=left]{transform:translateX(-60px)}
+[data-r=right]{transform:translateX(60px)}
+[data-r=scale]{transform:scale(.88)}
+[data-r=flip]{transform:perspective(600px) rotateX(15deg);transform-origin:top}
+[data-r].on{opacity:1;transform:none}
+[data-r].on [data-stagger]{transition-delay:calc(var(--i,0) * .08s)}
+
+/* ═══ FEATURES ═══ */
+.feat-hdr{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:72px}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.fc{
+  background:var(--bg);padding:48px 38px;position:relative;overflow:hidden;cursor:none;
+  transition:background .35s;
+}
+.fc:hover{background:var(--bg2)}
+.fc-glow{
+  position:absolute;width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.06),transparent 70%);
+  pointer-events:none;transform:translate(-50%,-50%);
+  opacity:0;transition:opacity .4s;
+}
+.fc:hover .fc-glow{opacity:1}
+.fc::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--a3),var(--a),var(--a2));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .55s cubic-bezier(.16,1,.3,1);
+}
+.fc:hover::after{transform:scaleX(1)}
+.fc-num{position:absolute;top:20px;right:24px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);letter-spacing:2px}
+.fc-icon{
+  font-size:2.8rem;display:block;margin-bottom:28px;
+  transition:transform .5s cubic-bezier(.16,1,.3,1),filter .3s;
+}
+.fc:hover .fc-icon{transform:scale(1.25) rotate(8deg);filter:drop-shadow(0 0 16px rgba(255,255,255,.4))}
+.fc-name{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:2px;margin-bottom:14px}
+.fc-desc{font-size:.88rem;color:#666;line-height:1.8}
+
+/* ═══ PARTİ / FEFO ═══ */
+#parti{border-top:1px solid var(--border)}
+.parti-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-top:72px}
+.p-point{display:flex;gap:18px;margin-bottom:32px;align-items:flex-start}
+.p-num{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:3px;min-width:26px;padding-top:3px}
+.p-body{font-size:.9rem;color:#888;line-height:1.9}
+.p-body strong{color:var(--a);font-weight:700}
+
+.fefo-demo{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:32px;position:sticky;top:120px}
+.fefo-top-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:3px;color:var(--muted);margin-bottom:24px;display:flex;align-items:center;gap:8px}
+.fefo-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;animation:fPulse 1.5s ease-in-out infinite}
+@keyframes fPulse{0%,100%{opacity:1}50%{opacity:.3}}
+.batch-cards{display:flex;flex-direction:column;gap:10px}
+.batch-card{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border:1px solid var(--border);border-radius:10px;background:var(--bg);position:relative;overflow:hidden;transition:border-color .4s,background .4s}
+.batch-card::before{content:'';position:absolute;inset:0;background:rgba(165,216,255,.04);opacity:0;transition:opacity .4s}
+.batch-card.bc-active{border-color:rgba(165,216,255,.45);background:rgba(165,216,255,.05)}
+.batch-card.bc-active::before{opacity:1}
+.bc-no{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:3px;line-height:1}
+.bc-skt{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);margin-top:4px}
+.bc-skt em{color:var(--accent);font-style:normal}
+.bc-qty{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:600;transition:color .3s}
+.bc-qty.flash{color:#4ade80}
+.bc-badge{position:absolute;top:10px;right:12px;font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:2px;padding:3px 8px;border-radius:4px;background:rgba(165,216,255,.12);color:var(--accent);opacity:0;transition:opacity .4s}
+.batch-card.bc-active .bc-badge{opacity:1}
+.fefo-event-bar{margin-top:18px;padding:12px 16px;background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.18);border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:2px;color:#4ade80;opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s;text-align:center}
+.fefo-event-bar.show{opacity:1;transform:translateY(0)}
+.fefo-note{margin-top:20px;font-size:.78rem;color:var(--muted);line-height:1.7;border-top:1px solid var(--border);padding-top:16px}
+.fefo-note span{color:var(--accent)}
+
+/* ═══ STATS ═══ */
+.stats-s{
+  background:var(--a);padding:100px 52px;position:relative;overflow:hidden;z-index:1;
+}
+.stats-s::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(0,0,0,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.06) 1px,transparent 1px);
+  background-size:50px 50px;
+}
+.stats-s::after{
+  content:'NEXSTOCK';position:absolute;font-family:'Bebas Neue',sans-serif;
+  font-size:22rem;color:rgba(0,0,0,.04);top:50%;left:50%;
+  transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;letter-spacing:-5px;
+}
+.stats-g{display:grid;grid-template-columns:repeat(4,1fr);gap:52px;text-align:center;position:relative}
+.stn{font-family:'Bebas Neue',sans-serif;font-size:6rem;line-height:1;letter-spacing:-3px;color:#080808}
+.stl{font-size:.82rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(8,8,8,.5);margin-top:10px}
+
+/* ═══ TECH ═══ */
+.tech-l{display:flex;flex-wrap:wrap;gap:10px;margin-top:56px}
+.tp{
+  border:1px solid var(--border);padding:12px 26px;
+  font-family:'JetBrains Mono',monospace;font-size:.8rem;
+  color:var(--muted);letter-spacing:1.5px;cursor:none;
+  position:relative;overflow:hidden;transition:color .3s,border-color .3s;
+}
+.tp::before{
+  content:'';position:absolute;inset:0;background:var(--a);
+  transform:translateY(101%);transition:transform .4s cubic-bezier(.16,1,.3,1);z-index:0;
+}
+.tp span{position:relative;z-index:1;transition:color .3s}
+.tp:hover{border-color:var(--a)}
+.tp:hover span{color:#080808}
+.tp:hover::before{transform:translateY(0)}
+.tp.hot{background:#fff;border-color:#fff}
+.tp.hot span{color:#080808;font-weight:700}
+.tp.hot::before{display:none}
+
+/* ═══ ROLES ═══ */
+#roller{padding:140px 52px;position:relative;z-index:1;overflow:hidden}
+#roller::before{
+  content:'';position:absolute;top:0;right:-200px;width:500px;height:500px;
+  background:radial-gradient(circle,rgba(165,216,255,.04),transparent 70%);
+  pointer-events:none;
+}
+.rol-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:60px;background:var(--border)}
+.rol-card{
+  background:var(--bg);padding:40px 28px;position:relative;overflow:hidden;
+  transition:background .4s,transform .4s cubic-bezier(.16,1,.3,1);cursor:default;
+}
+.rol-card:hover{background:var(--bg3);transform:translateY(-4px)}
+.rol-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--a),var(--a2));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .5s cubic-bezier(.16,1,.3,1);
+}
+.rol-card:hover::after{transform:scaleX(1)}
+.rol-icon{font-size:2.2rem;margin-bottom:16px;display:block;transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.rol-card:hover .rol-icon{transform:scale(1.15) rotate(5deg)}
+.rol-name{
+  font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:2px;
+  color:var(--text);margin-bottom:8px;
+}
+.rol-desc{font-size:.82rem;color:#666;line-height:1.7;margin-bottom:16px}
+.rol-perms{list-style:none;padding:0}
+.rol-perms li{
+  font-family:'JetBrains Mono',monospace;font-size:.65rem;
+  color:var(--muted);letter-spacing:1px;
+  padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);
+  display:flex;align-items:center;gap:8px;
+  transition:color .2s;
+}
+.rol-perms li:last-child{border-bottom:none}
+.rol-card:hover .rol-perms li{color:var(--sub)}
+.rol-check{color:#4ade80;font-size:.7rem}
+.rol-x{color:#e05252;font-size:.7rem}
+.rol-badge-tag{
+  display:inline-block;margin-top:14px;padding:4px 12px;
+  border:1px solid var(--border);font-family:'JetBrains Mono',monospace;
+  font-size:.6rem;letter-spacing:2px;text-transform:uppercase;
+  color:var(--a);transition:all .35s cubic-bezier(.16,1,.3,1);
+}
+.rol-card:hover .rol-badge-tag{background:var(--a);color:#080808;border-color:var(--a)}
+
+/* ═══ COMPARISON ═══ */
+#compare{padding:140px 52px;position:relative;z-index:1;background:var(--bg2)}
+.cmp-scroll-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.cmp-table{
+  width:100%;border-collapse:collapse;margin-top:60px;
+  font-family:'JetBrains Mono',monospace;font-size:.8rem;
+}
+.cmp-table thead th{
+  padding:20px 24px;text-align:left;
+  font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:2px;
+  border-bottom:2px solid var(--a);color:var(--text);
+}
+.cmp-table thead th:first-child{color:var(--muted);font-size:1rem}
+.cmp-table thead th:last-child{color:var(--a)}
+.cmp-table tbody td{
+  padding:18px 24px;border-bottom:1px solid rgba(255,255,255,.04);
+  color:var(--muted);transition:all .3s;vertical-align:middle;
+}
+.cmp-table tbody tr{transition:background .3s}
+.cmp-table tbody tr:hover{background:rgba(255,255,255,.02)}
+.cmp-table tbody tr:hover td{color:var(--sub)}
+.cmp-table tbody td:first-child{
+  font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;
+  color:var(--text);letter-spacing:0;
+}
+.cmp-yes{color:#4ade80;font-weight:700;font-size:.9rem}
+.cmp-no{color:#e05252;font-weight:700;font-size:.9rem}
+.cmp-partial{color:#fbbf24;font-weight:700;font-size:.9rem}
+.cmp-table tbody td:last-child{position:relative}
+.cmp-table tbody tr:hover td:last-child::after{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--a);animation:cmpPulse .3s forwards;
+}
+@keyframes cmpPulse{from{height:0}to{height:100%}}
+.cmp-verdict{
+  display:flex;gap:40px;margin-top:48px;padding:36px;
+  border:1px solid var(--border);background:var(--bg);
+  align-items:center;
+}
+.cmp-verdict-icon{font-size:3rem;animation:cmpBounce 2s ease-in-out infinite}
+@keyframes cmpBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.cmp-verdict-txt{font-size:.9rem;color:#666;line-height:1.8}
+.cmp-verdict-txt strong{color:var(--a)}
+
+/* ═══ BTN ═══ */
+.btn{
+  position:relative;display:inline-flex;align-items:center;gap:8px;
+  padding:18px 40px;font-family:'Syne',sans-serif;font-weight:800;
+  font-size:.85rem;letter-spacing:2px;text-transform:uppercase;
+  text-decoration:none;cursor:none;overflow:hidden;
+  transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s;
+}
+.btn-a{background:var(--a);color:#080808;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px))}
+.btn-a::before{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 20%,rgba(255,255,255,.25) 50%,transparent 80%);transform:translateX(-100%);transition:transform .6s}
+.btn-a:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(255,255,255,.3)}
+.btn-a:hover::before{transform:translateX(100%)}
+.btn-arr{display:inline-block;transition:transform .3s}
+.btn-a:hover .btn-arr{transform:translateX(5px)}
+
+/* ═══ LANG TOGGLE ═══ */
+.lang-toggle{
+  display:flex;align-items:center;gap:0;
+  border:1px solid var(--border);height:32px;margin-right:16px;
+  overflow:hidden;
+}
+.lang-btn{
+  padding:0 12px;height:100%;border:none;background:transparent;
+  font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+  cursor:pointer;transition:all .3s;position:relative;
+}
+.lang-btn.active{background:var(--a);color:#080808}
+.lang-btn:hover:not(.active){color:var(--text);background:rgba(255,255,255,.04)}
+
+/* ═══ FOOTER ═══ */
+footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}
+.fl{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:4px}
+.fl em{color:var(--a);font-style:normal}
+.fi{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted);text-align:center;line-height:2}
+.flinks{display:flex;gap:28px}
+.flinks a{color:var(--muted);text-decoration:none;font-size:.85rem;transition:color .25s}
+.flinks a:hover{color:var(--a)}
+
+/* ═══ HAMBURGER ═══ */
+.nav-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;z-index:600}
+.nav-hamburger span{display:block;width:24px;height:1.5px;background:var(--text);transition:all .3s cubic-bezier(.16,1,.3,1)}
+.nav-hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.nav-hamburger.open span:nth-child(2){opacity:0}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+.nav-mobile{
+  position:fixed;inset:64px 0 0 0;
+  background:rgba(4,4,4,.98);backdrop-filter:blur(24px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px;
+  z-index:490;opacity:0;pointer-events:none;
+  transform:translateY(-12px);
+  transition:opacity .35s,transform .35s cubic-bezier(.16,1,.3,1);
+}
+.nav-mobile.open{opacity:1;pointer-events:all;transform:translateY(0)}
+.nav-mobile a{
+  font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:4px;
+  color:var(--muted);text-decoration:none;transition:color .2s;
+}
+.nav-mobile a:hover{color:var(--a)}
+.nav-mobile .btn{font-size:1rem;letter-spacing:3px;padding:14px 36px}
+
+/* ═══ TOUCH DEVICE FIXES ═══ */
+@media(hover:none) and (pointer:coarse){
+  body{cursor:auto !important}
+  .cursor-dot,.cursor-ring{display:none !important}
+}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:900px){
+  nav,section,footer{padding-left:24px;padding-right:24px}
+  nav.stuck{padding-left:24px;padding-right:24px}
+  .nav-items{display:none}
+  .nav-hamburger{display:flex}
+  .feat-grid{grid-template-columns:1fr}
+  .parti-layout{grid-template-columns:1fr}
+  .rol-grid{grid-template-columns:1fr 1fr}
+  .stats-g{grid-template-columns:1fr 1fr;gap:36px}
+  .stats-s{padding:60px 24px}
+  footer{flex-direction:column;gap:28px;text-align:center}
+  body{cursor:auto}
+  .cursor-dot,.cursor-ring{display:none}
+  .cmp-table{font-size:.65rem}
+  .cmp-table thead th,.cmp-table tbody td{padding:12px 14px}
+  .cmp-verdict{flex-direction:column;text-align:center;gap:20px}
+  .lang-toggle{display:none}
+  #compare{padding-left:24px;padding-right:24px}
+  #smooth-wrapper{position:static;overflow:visible}
+  section{padding-top:80px;padding-bottom:80px}
+}
+@media(max-width:520px){
+  .rol-grid{grid-template-columns:1fr}
+  .stats-g{grid-template-columns:1fr 1fr}
+  section{padding-top:60px;padding-bottom:60px}
+  .s-title{font-size:clamp(2.4rem,9vw,4rem)}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <canvas id="loader-canvas"></canvas>
+  <div class="ld-wrap">
+    <div class="ld-logo" id="ld-logo">NEXSTOCK<span class="ld-shine"></span></div>
+    <div class="ld-rule"></div>
+    <div class="ld-status">
+      <div class="ld-pct" id="ld-pct">0%</div>
+      <div class="ld-bar-wrap"><div class="ld-bar" id="ld-bar"></div></div>
+      <div class="ld-msg" id="ld-msg">INITIALIZING</div>
+    </div>
+  </div>
+  <div class="ld-tag">DFC T&Uuml;RKİYE 2026 &mdash; HORTOR</div>
+</div>
+
+<div class="cursor-dot" id="cDot"></div>
+<div class="cursor-ring" id="cRing"></div>
+<canvas id="bgCanvas"></canvas>
+
+<nav id="nav">
+  <div class="nav-left">
+    <a href="/" class="logo">Nex<em>Stock</em></a>
+    <div class="nav-items">
+      <div class="nav-item"><a href="/ozellikler.html" data-tr="Özellikler" data-en="Features">Özellikler</a></div>
+      <div class="nav-item"><a href="/hakkinda.html" data-tr="Hakkında" data-en="About">Hakkında</a></div>
+      <div class="nav-item"><a href="/sss.html" data-tr="SSS" data-en="FAQ">SSS</a></div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="tr" onclick="setLang('tr')">TR</button>
+      <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+    </div>
+    <a href="https://www.instagram.com/nex.stock.dfc/" target="_blank" class="nav-ig" title="Instagram">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+    </a>
+    <div class="nav-cta-wrap">
+      <a href="https://nexstock.tech" class="nav-demo" data-tr="Uygulamayı Aç" data-en="Open App">Uygulamayı Aç</a>
+      <a href="https://nexstock.tech" class="nav-demo-arr"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+    </div>
+  </div>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menü">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-mobile" id="navMobile">
+  <a href="/" data-tr="Ana Sayfa" data-en="Home">Ana Sayfa</a>
+  <a href="/ozellikler.html" data-tr="Özellikler" data-en="Features">Özellikler</a>
+  <a href="/hakkinda.html" data-tr="Hakkında" data-en="About">Hakkında</a>
+  <a href="/sss.html" data-tr="SSS" data-en="FAQ">SSS</a>
+  <a href="https://nexstock.tech" class="btn btn-a">Uygulamayı Aç →</a>
+</div>
+
+<!-- SMOOTH SCROLL WRAPPER -->
+<div id="smooth-wrapper">
+<div id="smooth-content">
+
+<section id="features">
+  <div class="feat-hdr" data-r="up">
+    <div>
+      <div class="s-eyebrow" data-tr="// 03 &mdash; Proje" data-en="// 03 &mdash; Project">// 03 &mdash; Proje</div>
+      <div class="s-title" data-tr="NEXSTOCK<br><span style='color:var(--a)'>ÖZELLİKLERİ</span>" data-en="NEXSTOCK<br><span style='color:var(--a)'>FEATURES</span>">NEXSTOCK<br><span style="color:var(--a)">&#214;ZELL&#304;KLER&#304;</span></div>
+    </div>
+    <a href="https://nexstock.tech" class="btn btn-a" data-tr="Canlı Dene" data-en="Try Live">Canlı Dene <span class="btn-arr">&rarr;</span></a>
+  </div>
+  <div class="feat-grid">
+    <div class="fc" data-r="up" style="transition-delay:.0s"><div class="fc-glow"></div><div class="fc-num">01/09</div><span class="fc-icon">&#128247;</span><div class="fc-name" data-tr="Kamera Tarama" data-en="Camera Scan">Kamera Tarama</div><div class="fc-desc" data-tr="Tarayıcı kamerası ile EAN-13 dahil tüm barkod formatlarını gerçek zamanlı okuma. 3 tutarlı okuma algoritması ile maksimum doğruluk." data-en="Real-time reading of all barcode formats including EAN-13 via browser camera. Maximum accuracy with 3-consistent-read algorithm.">Taray&#305;c&#305; kameras&#305; ile EAN-13 dahil t&#252;m barkod formatlar&#305;n&#305; ger&#231;ek zamanl&#305; okuma. 3 tutarl&#305; okuma algoritmas&#305; ile maksimum do&#287;ruluk.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">02/09</div><span class="fc-icon">&#128197;</span><div class="fc-name" data-tr="SKT Takibi" data-en="Expiry Tracking">SKT Takibi</div><div class="fc-desc" data-tr="Son kullanma tarihi geçmiş ürünler için sesli ve görsel alarmlar. 7 günlük önceden uyarı sistemi ile gıda israfı önlenir." data-en="Audio and visual alarms for expired products. 7-day advance warning system prevents food waste.">Son kullanma tarihi ge&#231;mi&#351; &#252;r&#252;nler i&#231;in sesli ve g&#246;rsel alarmlar. 7 g&#252;nl&#252;k &#246;nceden uyar&#305; sistemi ile g&#305;da israf&#305; &#246;nlenir.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">03/09</div><span class="fc-icon">&#127758;</span><div class="fc-name">Open Food Facts</div><div class="fc-desc" data-tr="Bilinmeyen barkodlar Open Food Facts API'sinden otomatik sorgulanır, ürün bilgileri anında sisteme eklenir." data-en="Unknown barcodes are automatically queried from the Open Food Facts API, product info is instantly added to the system.">Bilinmeyen barkodlar Open Food Facts API'sinden otomatik sorgulan&#305;r, &#252;r&#252;n bilgileri an&#305;nda sisteme eklenir.</div></div>
+    <a href="#roller" style="text-decoration:none;color:inherit" class="fc" data-r="up"><div class="fc-glow"></div><div class="fc-num">04/09</div><span class="fc-icon">&#128101;</span><div class="fc-name" data-tr="Rol Sistemi" data-en="Role System">Rol Sistemi</div><div class="fc-desc" data-tr="Admin, müdür, kasiyer ve görüntüleyici rolleri. Her rol kendi yetki seviyesine göre erişim sağlar." data-en="Admin, manager, cashier and viewer roles. Each role provides access according to its permission level.">Admin, m&#252;d&#252;r, kasiyer ve g&#246;r&#252;nt&#252;leyici rolleri. Her rol kendi yetki seviyesine g&#246;re eri&#351;im sa&#287;lar.</div></a>
+    <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">05/09</div><span class="fc-icon">&#128202;</span><div class="fc-name" data-tr="Canlı Dashboard" data-en="Live Dashboard">Canlı Dashboard</div><div class="fc-desc" data-tr="Gerçek zamanlı envanter istatistikleri, kritik stok uyarıları, hareket geçmişi ve raporlar tek ekranda." data-en="Real-time inventory statistics, critical stock alerts, movement history and reports on a single screen.">Ger&#231;ek zamanl&#305; envanter istatistikleri, kritik stok uyar&#305;lar&#305;, hareket ge&#231;mi&#351;i ve raporlar tek ekranda.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">06/09</div><span class="fc-icon">&#128266;</span><div class="fc-name" data-tr="Ses Sistemi" data-en="Sound System">Ses Sistemi</div><div class="fc-desc" data-tr="Web Audio API ile başarılı okuma, hata ve SKT uyarı sesleri. Her durum için farklı ses tonu ile anlık geri bildirim." data-en="Success, error and expiry warning sounds via Web Audio API. Instant feedback with different tones for each state.">Web Audio API ile ba&#351;ar&#305;l&#305; okuma, hata ve SKT uyar&#305; sesleri. Her durum i&#231;in farkl&#305; ses tonu ile anl&#305;k geri bildirim.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.0s"><div class="fc-glow"></div><div class="fc-num">07/09</div><span class="fc-icon">&#128230;</span><div class="fc-name" data-tr="Parti Sistemi" data-en="Batch System">Parti Sistemi</div><div class="fc-desc" data-tr="Her ürün için birden fazla parti (lot) tanımlanabilir. Her partinin kendi SKT ve adedi tutulur; P1, P2... olarak sıralı numaralanarak tam takip sağlanır." data-en="Multiple batches per product, each with its own expiry and quantity. Sequentially numbered P1, P2... for complete tracking.">Her &#252;r&#252;n i&#231;in birden fazla parti (lot) tan&#305;mlanabilir. Her partinin kendi SKT ve adedi tutulur; P1, P2... olarak s&#305;ral&#305; numaralanarak tam takip sa&#287;lan&#305;r.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">08/09</div><span class="fc-icon">&#9889;</span><div class="fc-name" data-tr="FEFO Algoritması" data-en="FEFO Algorithm">FEFO Algoritmas&#305;</div><div class="fc-desc" data-tr="First Expiry First Out — en yakın SKT'li parti otomatik önce azaltılır. İki partili stok sorununu çözer, isrfa sıfır tolerans." data-en="First Expiry First Out — nearest expiry batch decremented first automatically. Solves the two-batch stock problem, zero waste tolerance.">First Expiry First Out &mdash; en yak&#305;n SKT&rsquo;li parti otomatik &#246;nce azalt&#305;l&#305;r. &#304;ki partili stok sorununu &#231;&#246;zer, isrfa s&#305;f&#305;r tolerans.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">09/09</div><span class="fc-icon">&#128244;</span><div class="fc-name" data-tr="Stok Çıkışı" data-en="Stock Exit">Stok &#199;&#305;k&#305;&#351;&#305;</div><div class="fc-desc" data-tr="Stokçular hangi ürünün raftan kaldırıldığını sebep seçerek sisteme girebilir. Hasarlı, süresi dolmuş veya tükenen ürünler kayıt altında." data-en="Staff log stock removal with reason selection. Damaged, expired or depleted items are tracked with full history.">Stok&#231;ular hangi &#252;r&#252;n&#252;n raftan kald&#305;r&#305;ld&#305;&#287;&#305;n&#305; sebep se&#231;erek sisteme girebilir. Hasarl&#305;, s&#252;resi dolmu&#351; veya t&#252;kenen &#252;r&#252;nler kay&#305;t alt&#305;nda.</div></div>
+  </div>
+</section>
+
+<section id="parti">
+  <div data-r="up">
+    <div class="s-eyebrow" data-tr="// 03.2 — Çözüm" data-en="// 03.2 — Solution">// 03.2 &mdash; &#199;&#246;z&#252;m</div>
+    <div class="s-title" data-tr="İKİ PARTİLİ STOK<br><span style='color:var(--a)'>SORUNU</span>" data-en="THE TWO-BATCH<br><span style='color:var(--a)'>STOCK PROBLEM</span>">&#304;K&#304; PART&#304;L&#304; STOK<br><span style="color:var(--a)">SORUNU</span></div>
+  </div>
+  <div class="parti-layout">
+    <div class="parti-txt">
+      <div class="p-point" data-r="up" style="transition-delay:.05s">
+        <div class="p-num">01</div>
+        <div class="p-body"><strong data-tr="Problem:" data-en="Problem:">Problem:</strong> <span data-tr="Aynı ürünün iki farklı partisi stokta bulunduğunda klasik sistemler hangi partinin önce tükeneceğini bilemez. SKT yakın olan parti beklerken diğeri satılır." data-en="When two batches of the same product are in stock, classic systems can't determine which should be consumed first. The sooner-expiring batch waits while the other sells.">Ayn&#305; &#252;r&#252;n&#252;n iki farkl&#305; partisi stokta bulundu&#287;unda klasik sistemler hangi partinin &#246;nce t&#252;kenece&#287;ini bilemez. SKT yak&#305;n olan parti beklerken di&#287;eri sat&#305;l&#305;r.</span></div>
+      </div>
+      <div class="p-point" data-r="up" style="transition-delay:.12s">
+        <div class="p-num">02</div>
+        <div class="p-body"><strong data-tr="FEFO Çözümü:" data-en="FEFO Solution:">FEFO &#199;&#246;z&#252;m&#252;:</strong> <span data-tr="NexStock barkod okutulduğunda veya stok çıkışı yapıldığında SQLite sorgusunda partileri SKT'ye göre sıralar ve en yakın tarihli partiden başlayarak azaltır." data-en="When NexStock scans a barcode or processes a stock exit, it sorts batches by expiry date in SQL and decrements from the nearest-expiry batch first.">NexStock barkod okutuldu&#287;unda veya stok &#231;&#305;k&#305;&#351;&#305; yap&#305;ld&#305;&#287;&#305;nda SQLite sorgusunda partileri SKT&rsquo;ye g&#246;re s&#305;ralar ve en yak&#305;n tarihli partiden ba&#351;layarak azalt&#305;r.</span></div>
+      </div>
+      <div class="p-point" data-r="up" style="transition-delay:.19s">
+        <div class="p-num">03</div>
+        <div class="p-body"><strong data-tr="Parti Yönetimi:" data-en="Batch Management:">Parti Y&#246;netimi:</strong> <span data-tr="Her parti P1, P2, P3… olarak sıralı numaralanır. SKT düzenlenebilir, parti silinebilir — kalan partiler otomatik yeniden numaralanır." data-en="Each batch is sequentially numbered P1, P2, P3... Expiry dates can be edited, batches deleted — remaining batches auto-renumber.">Her parti P1, P2, P3&hellip; olarak s&#305;ral&#305; numaralanır. SKT d&#252;zenlenebilir, parti silinebilir &mdash; kalan partiler otomatik yeniden numaralanır.</span></div>
+      </div>
+      <div class="p-point" data-r="up" style="transition-delay:.26s">
+        <div class="p-num">04</div>
+        <div class="p-body"><strong data-tr="Sonuç:" data-en="Result:">Sonu&#231;:</strong> <span data-tr="Son kullanma tarihi geçmiş ürün raflarda asla kalmaz. Gıda israfı sıfıra yaklaşır. Her barkod okutması otomatik FEFO uygular." data-en="No expired product ever stays on shelves. Food waste approaches zero. Every barcode scan automatically applies FEFO.">Son kullanma tarihi ge&#231;mi&#351; &#252;r&#252;n raflarda asla kalmaz. G&#305;da israf&#305; s&#305;f&#305;ra yakla&#351;&#305;r. Her barkod okutmas&#305; otomatik FEFO uygular.</span></div>
+      </div>
+    </div>
+    <div class="fefo-demo" data-r="up" style="transition-delay:.15s">
+      <div class="fefo-top-label"><div class="fefo-dot"></div> <span data-tr="CANLI SİMÜLASYON" data-en="LIVE SIMULATION">CANLI S&#304;M&#220;LASYON</span> &mdash; FEFO</div>
+      <div class="batch-cards">
+        <div class="batch-card bc-active" id="fefo-bc1">
+          <div class="bc-left">
+            <div class="bc-no">P1</div>
+            <div class="bc-skt">SKT: <em data-tr="01 Nis 2026" data-en="01 Apr 2026">01 Nis 2026</em></div>
+          </div>
+          <div class="bc-qty" id="fefo-qty1">10 adet</div>
+          <div class="bc-badge" data-tr="▲ ÖNCE TÜKENİR" data-en="▲ FIRST OUT">&#9650; &#214;NCE T&#220;KEN&#304;R</div>
+        </div>
+        <div class="batch-card" id="fefo-bc2">
+          <div class="bc-left">
+            <div class="bc-no">P2</div>
+            <div class="bc-skt">SKT: <em data-tr="15 Haz 2026" data-en="15 Jun 2026">15 Haz 2026</em></div>
+          </div>
+          <div class="bc-qty" id="fefo-qty2">20 adet</div>
+          <div class="bc-badge" data-tr="BEKLEMEDE" data-en="WAITING">BEKLEMEDE</div>
+        </div>
+      </div>
+      <div class="fefo-event-bar" id="fefo-ev" data-tr="BARKOD OKUTULDU — P1 AZALTILDI" data-en="BARCODE SCANNED — P1 DECREMENTED">BARKOD OKUTULDU &mdash; P1 AZALTILDI</div>
+      <div class="fefo-note" data-tr="SKT'si olmayan partiler en sona bırakılır. Parti bittiğinde sistem otomatik olarak bir sonraki partiye geçer." data-en="Batches without an expiry date are placed last. When a batch is depleted, the system automatically moves to the next one.">SKT&rsquo;si olmayan partiler en sona b&#305;rak&#305;l&#305;r. Parti bitti&#287;inde sistem otomatik olarak bir sonraki partiye ge&#231;er.</div>
+    </div>
+  </div>
+</section>
+
+<section id="roller">
+  <div data-r="up">
+    <div class="s-eyebrow" data-tr="// 03.5 — Yetkilendirme" data-en="// 03.5 — Authorization">// 03.5 &mdash; Yetkilendirme</div>
+    <div class="s-title" data-tr="ROL<br><span style='color:var(--a)'>SİSTEMİ</span>" data-en="ROLE<br><span style='color:var(--a)'>SYSTEM</span>">ROL<br><span style="color:var(--a)">S&#304;STEM&#304;</span></div>
+  </div>
+  <div class="rol-grid">
+    <div class="rol-card" data-r="up" style="transition-delay:.0s">
+      <span class="rol-icon">&#128081;</span>
+      <div class="rol-name">Admin</div>
+      <div class="rol-desc" data-tr="Sistemin tam kontrolü. Tüm yetkilere sahip tek rol." data-en="Full system control. The only role with all permissions.">Sistemin tam kontrol&#252;. T&#252;m yetkilere sahip tek rol.</div>
+      <ul class="rol-perms">
+        <li><span class="rol-check">&#10003;</span> <span data-tr="Kullanıcı yönetimi" data-en="User management">Kullan&#305;c&#305; y&#246;netimi</span></li>
+        <li><span class="rol-check">&#10003;</span> <span data-tr="Ürün ekleme / silme" data-en="Add / delete products">&#220;r&#252;n ekleme / silme</span></li>
+        <li><span class="rol-check">&#10003;</span> <span data-tr="Raporlar &amp; istatistik" data-en="Reports &amp; statistics">Raporlar &amp; istatistik</span></li>
+        <li><span class="rol-check">&#10003;</span> <span data-tr="Tüm tarama yetkisi" data-en="Full scan access">T&#252;m tarama yetkisi</span></li>
+      </ul>
+      <span class="rol-badge-tag" data-tr="Tam Yetki" data-en="Full Access">Tam Yetki</span>
+    </div>
+    <div class="rol-card" data-r="up" style="transition-delay:.08s">
+      <span class="rol-icon">&#128188;</span>
+      <div class="rol-name" data-tr="Müdür" data-en="Manager">M&#252;d&#252;r</div>
+      <div class="rol-desc" data-tr="Envanter yönetimi ve raporlama yetkilerine sahip." data-en="Has inventory management and reporting permissions.">Envanter y&#246;netimi ve raporlama yetkilerine sahip.</div>
+      <ul class="rol-perms">
+        <li><span class="rol-x">&#10007;</span> <span data-tr="Kullanıcı yönetimi" data-en="User management">Kullan&#305;c&#305; y&#246;netimi</span></li>
+        <li><span class="rol-check">&#10003;</span> <span data-tr="Ürün ekleme / düzenleme" data-en="Add / edit products">&#220;r&#252;n ekleme / d&#252;zenleme</span></li>
+        <li><span class="rol-check">&#10003;</span> <span data-tr="Raporlar &amp; istatistik" data-en="Reports &amp; statistics">Raporlar &amp; istatistik</span></li>
+        <li><span class="rol-check">&#10003;</span> <span data-tr="Tüm tarama yetkisi" data-en="Full scan access">T&#252;m tarama yetkisi</span></li>
+      </ul>
+      <span class="rol-badge-tag" data-tr="Yönetici" data-en="Manager">Y&#246;netici</span>
+    </div>
+    <div class="rol-card" data-r="up" style="transition-delay:.16s">
+      <span class="rol-icon">&#128179;</span>
+      <div class="rol-name" data-tr="Kasiyer" data-en="Cashier">Kasiyer</div>
+      <div class="rol-desc" data-tr="Günlük tarama ve stok işlemleri yapabilir." data-en="Can perform daily scanning and stock operations.">G&#252;nl&#252;k tarama ve stok i&#351;lemleri yapabilir.</div>
+      <ul class="rol-perms">
+        <li><span class="rol-x">&#10007;</span> <span data-tr="Kullanıcı yönetimi" data-en="User management">Kullan&#305;c&#305; y&#246;netimi</span></li>
+        <li><span class="rol-x">&#10007;</span> <span data-tr="Ürün silme" data-en="Delete products">&#220;r&#252;n silme</span></li>
+        <li><span class="rol-x">&#10007;</span> <span data-tr="Raporlar" data-en="Reports">Raporlar</span></li>
+        <li><span class="rol-check">&#10003;</span> <span data-tr="Barkod tarama" data-en="Barcode scanning">Barkod tarama</span></li>
+      </ul>
+      <span class="rol-badge-tag" data-tr="Operatör" data-en="Operator">Operat&#246;r</span>
+    </div>
+    <div class="rol-card" data-r="up" style="transition-delay:.24s">
+      <span class="rol-icon">&#128065;</span>
+      <div class="rol-name" data-tr="Görüntüleyici" data-en="Viewer">G&#246;r&#252;nt&#252;leyici</div>
+      <div class="rol-desc" data-tr="Sadece verileri görüntüleyebilir, değişiklik yapamaz." data-en="Can only view data, cannot make changes.">Sadece verileri g&#246;r&#252;nt&#252;leyebilir, de&#287;i&#351;iklik yapamaz.</div>
+      <ul class="rol-perms">
+        <li><span class="rol-x">&#10007;</span> <span data-tr="Kullanıcı yönetimi" data-en="User management">Kullan&#305;c&#305; y&#246;netimi</span></li>
+        <li><span class="rol-x">&#10007;</span> <span data-tr="Ürün işlemleri" data-en="Product operations">&#220;r&#252;n i&#351;lemleri</span></li>
+        <li><span class="rol-x">&#10007;</span> <span data-tr="Raporlar" data-en="Reports">Raporlar</span></li>
+        <li><span class="rol-check">&#10003;</span> <span data-tr="Salt okunur erişim" data-en="Read-only access">Salt okunur eri&#351;im</span></li>
+      </ul>
+      <span class="rol-badge-tag" data-tr="İzleyici" data-en="Viewer">&#304;zleyici</span>
+    </div>
+  </div>
+</section>
+
+<div class="stats-s" data-r="scale">
+  <div class="stats-g">
+    <div><div class="stn" data-c="70">0</div><div class="stl" data-tr="Ülkede DFC" data-en="Countries with DFC">&#220;lkede DFC</div></div>
+    <div><div class="stn" data-c="2">0</div><div class="stl" data-tr="Milyon+ Katılımcı" data-en="Million+ Participants">Milyon+ Kat&#305;l&#305;mc&#305;</div></div>
+    <div><div class="stn" data-c="4">0</div><div class="stl" data-tr="FIDS Adımı" data-en="FIDS Steps">FIDS Ad&#305;m&#305;</div></div>
+    <div><div class="stn">&#8734;</div><div class="stl" data-tr="Değişim Potansiyeli" data-en="Change Potential">De&#287;i&#351;im Potansiyeli</div></div>
+  </div>
+</div>
+
+<section id="tech">
+  <div data-r="up">
+    <div class="s-eyebrow" data-tr="// 05 — Teknoloji" data-en="// 05 — Technology">// 05 &mdash; Teknoloji</div>
+    <div class="s-title" data-tr="NASIL<br><span style='color:var(--a)'>YAPILDI?</span>" data-en="HOW WAS IT<br><span style='color:var(--a)'>BUILT?</span>">NASIL<br><span style="color:var(--a)">YAPILDI?</span></div>
+    <div class="tech-l">
+      <div class="tp hot"><span>Python</span></div><div class="tp hot"><span>Flask</span></div>
+      <div class="tp hot"><span>SQLite</span></div><div class="tp hot"><span>Tkinter</span></div>
+      <div class="tp"><span>QuaggaJS</span></div><div class="tp"><span>OpenCV</span></div>
+      <div class="tp"><span>zxing-cpp</span></div><div class="tp"><span>Web Audio API</span></div>
+      <div class="tp"><span>Open Food Facts API</span></div><div class="tp"><span>Render</span></div>
+      <div class="tp"><span>Vercel</span></div><div class="tp"><span>GitHub</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="compare">
+  <div style="text-align:center" data-r="up">
+    <div class="s-eyebrow" style="justify-content:center" data-tr="// 07 — Karşılaştırma" data-en="// 07 — Comparison">// 07 &mdash; Kar&#351;&#305;la&#351;t&#305;rma</div>
+    <div class="s-title" data-tr="MANUEL YÖNETİM<br><span style='color:var(--a)'>vs NEXSTOCK</span>" data-en="MANUAL MANAGEMENT<br><span style='color:var(--a)'>vs NEXSTOCK</span>">MANUEL Y&#214;NET&#304;M<br><span style="color:var(--a)">vs NEXSTOCK</span></div>
+  </div>
+  <div class="cmp-scroll-wrap">
+    <table class="cmp-table" data-r="up">
+      <thead>
+        <tr>
+          <th data-tr="Özellik" data-en="Feature">&#214;zellik</th>
+          <th data-tr="Manuel" data-en="Manual">Manuel</th>
+          <th>NexStock</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td data-tr="Barkod Tarama" data-en="Barcode Scanning">Barkod Tarama</td><td><span class="cmp-no">&#10007;</span></td><td><span class="cmp-yes" data-tr="✓ Kamera + QuaggaJS" data-en="✓ Camera + QuaggaJS">&#10003; Kamera + QuaggaJS</span></td></tr>
+        <tr><td data-tr="SKT Takibi" data-en="Expiry Tracking">SKT Takibi</td><td><span class="cmp-partial" data-tr="~ Elle kontrol" data-en="~ Manual check">~ Elle kontrol</span></td><td><span class="cmp-yes" data-tr="✓ Otomatik uyarı" data-en="✓ Auto alerts">&#10003; Otomatik uyar&#305;</span></td></tr>
+        <tr><td data-tr="Sesli Uyarı" data-en="Sound Alerts">Sesli Uyar&#305;</td><td><span class="cmp-no">&#10007;</span></td><td><span class="cmp-yes">&#10003; Web Audio API</span></td></tr>
+        <tr><td data-tr="Ürün Tanıma" data-en="Product Recognition">&#220;r&#252;n Tan&#305;ma</td><td><span class="cmp-no">&#10007;</span></td><td><span class="cmp-yes">&#10003; Open Food Facts</span></td></tr>
+        <tr><td data-tr="Rol Bazlı Erişim" data-en="Role-Based Access">Rol Bazl&#305; Eri&#351;im</td><td><span class="cmp-no">&#10007;</span></td><td><span class="cmp-yes" data-tr="✓ 4 Farklı Rol" data-en="✓ 4 Different Roles">&#10003; 4 Farkl&#305; Rol</span></td></tr>
+        <tr><td data-tr="Gerçek Zamanlı Raporlar" data-en="Real-Time Reports">Ger&#231;ek Zamanl&#305; Raporlar</td><td><span class="cmp-partial" data-tr="~ Excel ile" data-en="~ With Excel">~ Excel ile</span></td><td><span class="cmp-yes" data-tr="✓ Canlı Dashboard" data-en="✓ Live Dashboard">&#10003; Canl&#305; Dashboard</span></td></tr>
+        <tr><td data-tr="Maliyet" data-en="Cost">Maliyet</td><td><span class="cmp-partial" data-tr="~ Yüksek (yazılım lisansı)" data-en="~ High (software license)">~ Y&#252;ksek (yaz&#305;l&#305;m lisans&#305;)</span></td><td><span class="cmp-yes" data-tr="✓ Ücretsiz &amp; Açık Kaynak" data-en="✓ Free &amp; Open Source">&#10003; &#220;cretsiz &amp; A&#231;&#305;k Kaynak</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="cmp-verdict" data-r="up">
+    <div class="cmp-verdict-icon">&#128640;</div>
+    <div class="cmp-verdict-txt" data-tr="NexStock, geleneksel envanter yönetiminin tüm eksikliklerini <strong>tek bir platformda</strong> çözer. Üstelik tamamen <strong>ücretsiz ve açık kaynak</strong>." data-en="NexStock solves all shortcomings of traditional inventory management <strong>in one platform</strong>. Plus it's completely <strong>free and open source</strong>.">NexStock, geleneksel envanter y&#246;netiminin t&#252;m eksikliklerini <strong>tek bir platformda</strong> &#231;&#246;zer. &#220;stelik tamamen <strong>&#252;cretsiz ve a&#231;&#305;k kaynak</strong>.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="fl">Nex<em>Stock</em></div>
+  <div class="fi" data-tr="DFC Türkiye Yarışması &mdash; 2026<br>FIDS Modeli ile Geliştirildi" data-en="DFC Turkey Competition &mdash; 2026<br>Developed with the FIDS Model">DFC T&#252;rkiye Yar&#305;&#351;mas&#305; &mdash; 2026<br>FIDS Modeli ile Geli&#351;tirildi</div>
+  <div class="flinks">
+    <a href="https://dfcturkiye.org" target="_blank" data-tr="DFC Türkiye" data-en="DFC Turkey">DFC T&#252;rkiye</a>
+    <a href="https://nexstock.tech" target="_blank" data-tr="Uygulama" data-en="App">Uygulama</a>
+    <a href="https://www.instagram.com/nex.stock.dfc/" target="_blank">Instagram</a>
+  </div>
+</footer>
+
+</div><!-- /smooth-content -->
+</div><!-- /smooth-wrapper -->
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   SMOOTH SCROLL ENGINE (Lenis-style inertia)
+   ═══════════════════════════════════════════════════════════ */
+(function(){
+  var wrapper = document.getElementById('smooth-wrapper');
+  var content = document.getElementById('smooth-content');
+  if(!wrapper || !content) return;
+
+  var isMobile = window.innerWidth <= 900;
+  if(isMobile) return;
+
+  var current = 0, target = 0, ease = 0.08;
+  var docH = 0;
+
+  function setHeight(){
+    docH = content.scrollHeight;
+    document.body.style.height = docH + 'px';
+  }
+  setHeight();
+  window.addEventListener('resize', setHeight);
+
+  var ro = new ResizeObserver(setHeight);
+  ro.observe(content);
+
+  window.addEventListener('scroll', function(){ target = window.scrollY; }, {passive:true});
+
+  function lerp(a,b,t){ return a + (b - a) * t; }
+
+  function smoothLoop(){
+    current = lerp(current, target, ease);
+    if(Math.abs(current - target) < 0.5) current = target;
+    content.style.transform = 'translate3d(0,' + (-current) + 'px,0)';
+    requestAnimationFrame(smoothLoop);
+  }
+  smoothLoop();
+
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var id = this.getAttribute('href');
+      if(id === '#') return;
+      var el = document.querySelector(id);
+      if(el){
+        e.preventDefault();
+        var rect = el.getBoundingClientRect();
+        target = current + rect.top;
+        window.scrollTo(0, target);
+      }
+    });
+  });
+})();
+
+/* ═══ LOADER CANVAS ═══════════════════════════════════════ */
+(function(){
+  var lc = document.getElementById('loader-canvas');
+  var lctx = lc.getContext('2d');
+  var W, H, CX, CY;
+
+  function resize(){ W=lc.width=window.innerWidth; H=lc.height=window.innerHeight; CX=W/2; CY=H/2; }
+  resize();
+
+  var particles = [];
+  for(var i=0;i<120;i++){
+    var angle = Math.random()*Math.PI*2;
+    var dist = 60 + Math.random()*Math.min(W,H)*0.4;
+    particles.push({
+      x: CX + Math.cos(angle)*dist,
+      y: CY + Math.sin(angle)*dist*0.5,
+      r: 1 + Math.random()*2.5,
+      delay: Math.random(),
+      speed: .3 + Math.random()*.7,
+      angle: angle
+    });
+  }
+
+  var startT = null, DUR = 2400, running = true;
+
+  function draw(ts){
+    if(!startT) startT = ts;
+    var prog = Math.min((ts-startT)/DUR, 1);
+    var eased = 1 - Math.pow(1-prog, 3);
+
+    lctx.clearRect(0,0,W,H);
+
+    var bg = lctx.createRadialGradient(CX,CY,0,CX,CY,Math.max(W,H)*.65);
+    bg.addColorStop(0,'#0a0a14');
+    bg.addColorStop(1,'#030308');
+    lctx.fillStyle = bg;
+    lctx.fillRect(0,0,W,H);
+
+    var g = lctx.createRadialGradient(CX,CY,0,CX,CY,160+eased*100);
+    g.addColorStop(0,'rgba(165,216,255,'+(eased*.1)+')');
+    g.addColorStop(1,'rgba(165,216,255,0)');
+    lctx.fillStyle = g;
+    lctx.beginPath(); lctx.arc(CX,CY,300,0,Math.PI*2); lctx.fill();
+
+    for(var i=0;i<particles.length;i++){
+      var p = particles[i];
+      var pp = Math.max(0, Math.min((prog - p.delay*.4)/.6, 1));
+      if(pp<=0) continue;
+      var a = pp * .6;
+
+      lctx.beginPath();
+      lctx.arc(p.x, p.y, p.r * pp, 0, Math.PI*2);
+      lctx.fillStyle = 'rgba(165,216,255,'+a+')';
+      lctx.fill();
+    }
+
+    lctx.strokeStyle = 'rgba(165,216,255,'+(eased*.06)+')';
+    lctx.lineWidth = .4;
+    for(var a2=0;a2<particles.length;a2+=2){
+      for(var b=a2+1;b<particles.length;b+=3){
+        var dx=particles[a2].x-particles[b].x;
+        var dy=particles[a2].y-particles[b].y;
+        if(Math.sqrt(dx*dx+dy*dy)<90){
+          lctx.beginPath();
+          lctx.moveTo(particles[a2].x, particles[a2].y);
+          lctx.lineTo(particles[b].x, particles[b].y);
+          lctx.stroke();
+        }
+      }
+    }
+
+    if(running) requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+  window._stopLoaderCanvas = function(){ running=false; };
+
+  setTimeout(function(){ document.getElementById('ld-logo').classList.add('in'); }, 100);
+})();
+
+/* ═══ LOADER PROGRESS ════════════════════════════════════ */
+(function(){
+  var ldBar=document.getElementById('ld-bar');
+  var ldPct=document.getElementById('ld-pct');
+  var ldMsg=document.getElementById('ld-msg');
+  var loader=document.getElementById('loader');
+  var msgs=['INITIALIZING','LOADING ASSETS','BUILDING WORLD','CALIBRATING','SYSTEM READY'];
+  var pct=0;
+
+  var ldInterval=setInterval(function(){
+    pct += Math.random()*12 + 4;
+    if(pct>100) pct=100;
+    ldBar.style.width = pct+'%';
+    ldPct.textContent = Math.floor(pct)+'%';
+    ldMsg.textContent = msgs[Math.min(Math.floor(pct/22),4)];
+    if(pct>=100){
+      clearInterval(ldInterval);
+      ldMsg.textContent='SYSTEM READY';
+      ldPct.textContent='100%';
+      setTimeout(function(){
+        loader.classList.add('phase-out');
+        window._stopLoaderCanvas && window._stopLoaderCanvas();
+        document.getElementById('nav').classList.add('visible');
+        setTimeout(function(){ loader.style.display='none'; }, 1300);
+      }, 400);
+    }
+  }, 80);
+})();
+
+/* ═══ CANVAS BG (constellation) ══════════════════════════ */
+(function(){
+  var canvas=document.getElementById('bgCanvas');
+  var ctx=canvas.getContext('2d');
+  var W,H,dots=[];
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  resize();
+  window.addEventListener('resize',resize);
+
+  function Dot(){this.reset();}
+  Dot.prototype.reset=function(){
+    this.x=Math.random()*W;this.y=Math.random()*H;
+    this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;
+    this.r=Math.random()*1.5+.5;this.a=Math.random()*.4+.1;
+  };
+  Dot.prototype.update=function(){
+    this.x+=this.vx;this.y+=this.vy;
+    if(this.x<0||this.x>W)this.vx*=-1;
+    if(this.y<0||this.y>H)this.vy*=-1;
+  };
+  Dot.prototype.draw=function(){
+    ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,'+this.a+')';ctx.fill();
+  };
+  for(var i=0;i<70;i++) dots.push(new Dot());
+
+  var mX=-1e3,mY=-1e3;
+  window.addEventListener('mousemove',function(e){mX=e.clientX;mY=e.clientY;});
+
+  function loop(){
+    ctx.clearRect(0,0,W,H);
+    dots.forEach(function(d){d.update();d.draw();});
+    for(var i=0;i<dots.length;i++){
+      for(var j=i+1;j<dots.length;j++){
+        var dx=dots[i].x-dots[j].x,dy=dots[i].y-dots[j].y,dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<110){
+          ctx.beginPath();ctx.moveTo(dots[i].x,dots[i].y);ctx.lineTo(dots[j].x,dots[j].y);
+          ctx.strokeStyle='rgba(255,255,255,'+((1-dist/110)*.1)+')';ctx.lineWidth=.5;ctx.stroke();
+        }
+      }
+      var dx2=dots[i].x-mX,dy2=dots[i].y-mY,d2=Math.sqrt(dx2*dx2+dy2*dy2);
+      if(d2<160){
+        ctx.beginPath();ctx.moveTo(dots[i].x,dots[i].y);ctx.lineTo(mX,mY);
+        ctx.strokeStyle='rgba(255,255,255,'+((1-d2/160)*.2)+')';ctx.lineWidth=.7;ctx.stroke();
+      }
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+/* ═══ CURSOR ════════════════════════════════════════════ */
+(function(){
+  if(window.matchMedia('(hover:none) and (pointer:coarse)').matches)return;
+  var dot=document.getElementById('cDot'),ring=document.getElementById('cRing');
+  var mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',function(e){
+    mx=e.clientX;my=e.clientY;
+    dot.style.left=mx+'px';dot.style.top=my+'px';
+    dot.style.display='block';ring.style.display='block';
+  });
+  (function loop(){
+    rx+=(mx-rx)*.09;ry+=(my-ry)*.09;
+    ring.style.left=rx+'px';ring.style.top=ry+'px';
+    requestAnimationFrame(loop);
+  })();
+
+  document.querySelectorAll('a,button,.fc,.rol-card,.tp,.cmp-table tbody tr,.lang-btn').forEach(function(el){
+    el.addEventListener('mouseenter',function(){document.body.classList.add('cursor-hover');});
+    el.addEventListener('mouseleave',function(){document.body.classList.remove('cursor-hover');});
+  });
+})();
+
+/* ═══ NAV SCROLL ═════════════════════════════════════════ */
+window.addEventListener('scroll',function(){
+  document.getElementById('nav').classList.toggle('stuck',window.scrollY>60);
+},{passive:true});
+
+/* ═══ MAGNETIC BUTTONS ═══════════════════════════════════ */
+document.querySelectorAll('.btn,.nav-demo').forEach(function(btn){
+  btn.addEventListener('mousemove',function(e){
+    var r=btn.getBoundingClientRect();
+    var x=(e.clientX-r.left-r.width/2)*.18;
+    var y=(e.clientY-r.top-r.height/2)*.18;
+    btn.style.transform='translate('+x+'px,'+y+'px)';
+  });
+  btn.addEventListener('mouseleave',function(){btn.style.transform='';});
+});
+
+/* ═══ FEATURE CARD GLOW ══════════════════════════════════ */
+document.querySelectorAll('.fc').forEach(function(card){
+  var glow=card.querySelector('.fc-glow');
+  if(!glow) return;
+  card.addEventListener('mousemove',function(e){
+    var r=card.getBoundingClientRect();
+    glow.style.left=(e.clientX-r.left)+'px';
+    glow.style.top=(e.clientY-r.top)+'px';
+  });
+});
+
+/* ═══ SCROLL REVEAL ══════════════════════════════════════ */
+(function(){
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){
+        en.target.classList.add('on');
+        en.target.querySelectorAll('[data-c]').forEach(animCount);
+      }
+    });
+  },{threshold:.08, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('[data-r]').forEach(function(el){io.observe(el);});
+})();
+
+/* ═══ COUNTER ════════════════════════════════════════════ */
+function animCount(el){
+  if(el._done) return; el._done=true;
+  var target=+el.dataset.c,dur=2000,t0=performance.now();
+  (function tick(now){
+    var p=Math.min((now-t0)/dur,1);
+    var eased=1-Math.pow(1-p,4);
+    el.textContent=Math.floor(eased*target);
+    if(p<1) requestAnimationFrame(tick); else el.textContent=target;
+  })(t0);
+}
+
+/* ═══ STATS COUNTER ══════════════════════════════════════ */
+(function(){
+  var sio=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting) en.target.querySelectorAll('[data-c]').forEach(animCount);
+    });
+  },{threshold:.2});
+  document.querySelectorAll('.stats-s').forEach(function(el){sio.observe(el);});
+})();
+
+/* ═══ ROL CARD TILT ═══════════════════════════════════════ */
+document.querySelectorAll('.rol-card').forEach(function(card){
+  card.addEventListener('mousemove',function(e){
+    var r=card.getBoundingClientRect();
+    var x=((e.clientX-r.left)/r.width-.5)*10;
+    var y=((e.clientY-r.top)/r.height-.5)*10;
+    card.style.transform='perspective(600px) rotateY('+x+'deg) rotateX('+(-y)+'deg) translateY(-4px)';
+  });
+  card.addEventListener('mouseleave',function(){card.style.transform='';});
+});
+
+/* ═══ COMPARISON TABLE HOVER ═════════════════════════════ */
+document.querySelectorAll('.cmp-table tbody tr').forEach(function(row){
+  row.addEventListener('mouseenter',function(){
+    row.style.transform='translateX(4px)';
+  });
+  row.addEventListener('mouseleave',function(){
+    row.style.transform='';
+  });
+});
+
+/* ═══ FEFO SIMULATION ════════════════════════════════════ */
+(function(){
+  var bc1=document.getElementById('fefo-bc1');
+  var bc2=document.getElementById('fefo-bc2');
+  var q1el=document.getElementById('fefo-qty1');
+  var q2el=document.getElementById('fefo-qty2');
+  var ev=document.getElementById('fefo-ev');
+  if(!bc1) return;
+  var q1=10,q2=20,phase1=true;
+
+  function step(){
+    if(phase1){
+      ev.textContent='BARKOD OKUTULDU — P1 AZALTILDI';
+      ev.classList.add('show');
+      setTimeout(function(){
+        q1--;
+        if(q1<0){q1=0;}
+        q1el.textContent=q1+' adet';
+        q1el.classList.add('flash');
+        setTimeout(function(){q1el.classList.remove('flash');},600);
+        if(q1<=0){
+          phase1=false;
+          bc1.classList.remove('bc-active');
+          bc2.classList.add('bc-active');
+          var b1=bc1.querySelector('.bc-badge');
+          var b2=bc2.querySelector('.bc-badge');
+          if(b1){b1.textContent='TÜKENDİ';}
+          if(b2){b2.textContent='▲ ÖNCE TÜKENİR';}
+        }
+        setTimeout(function(){ev.classList.remove('show');},1400);
+      },350);
+    } else {
+      ev.textContent='BARKOD OKUTULDU — P2 AZALTILDI';
+      ev.classList.add('show');
+      setTimeout(function(){
+        q2--;
+        if(q2<0){q2=0;}
+        q2el.textContent=q2+' adet';
+        q2el.classList.add('flash');
+        setTimeout(function(){q2el.classList.remove('flash');},600);
+        if(q2<=2){
+          setTimeout(function(){
+            q1=10;q2=20;phase1=true;
+            q1el.textContent='10 adet';q2el.textContent='20 adet';
+            bc1.classList.add('bc-active');bc2.classList.remove('bc-active');
+            var b1=bc1.querySelector('.bc-badge');
+            var b2=bc2.querySelector('.bc-badge');
+            if(b1){b1.textContent='▲ ÖNCE TÜKENİR';}
+            if(b2){b2.textContent='BEKLEMEDE';}
+          },800);
+        }
+        setTimeout(function(){ev.classList.remove('show');},1400);
+      },350);
+    }
+  }
+  setInterval(step,2800);
+})();
+
+/* ═══ LANGUAGE SYSTEM (TR/EN) ════════════════════════════ */
+var currentLang = 'tr';
+function setLang(lang){
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+  document.querySelectorAll('[data-'+lang+']').forEach(function(el){
+    var val = el.getAttribute('data-'+lang);
+    if(!val) return;
+    var arrow = el.querySelector('.btn-arr');
+    if(el.tagName==='INPUT'||el.tagName==='TEXTAREA'){
+      el.placeholder=val;
+    } else {
+      el.innerHTML = val;
+      if(arrow) el.innerHTML += ' <span class="btn-arr">&rarr;</span>';
+    }
+  });
+  document.documentElement.lang = lang;
+  document.title = lang === 'en' ? 'NexStock — Features' : 'NexStock — Özellikler';
+}
+
+// Hamburger
+(function(){
+  var ham=document.getElementById('navHamburger');
+  var mob=document.getElementById('navMobile');
+  if(!ham||!mob)return;
+  ham.addEventListener('click',function(){
+    var open=mob.classList.toggle('open');
+    ham.classList.toggle('open',open);
+    document.body.style.overflow=open?'hidden':'';
+  });
+  mob.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click',function(){
+      mob.classList.remove('open');
+      ham.classList.remove('open');
+      document.body.style.overflow='';
+    });
+  });
+})();
+</script>
+</body>
+</html>

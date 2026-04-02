@@ -3,19 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NexStock — Akıllı Envanter Sistemi</title>
+<title>NexStock — Hakkında</title>
 <link rel="icon" type="image/png" href="/firarlogo.png">
 <link rel="apple-touch-icon" href="/firarlogo.png">
-<meta name="description" content="NexStock — Barkod tabanlı akıllı envanter yönetim sistemi. SKT takibi, parti sistemi, FEFO algoritması. DFC Türkiye 2026 — Hortor.">
-<meta property="og:title" content="NexStock — Akıllı Envanter Sistemi">
-<meta property="og:description" content="Barkod tara, stokunu bil. SKT takibi, parti yönetimi, anlık uyarılar.">
+<meta name="description" content="NexStock hakkında — DFC nedir, FIDS modeli ve NexStock'un hikayesi.">
+<meta property="og:title" content="NexStock — Hakkında">
+<meta property="og:description" content="Design for Change (DFC) nedir? FIDS metodolojisi ile geliştirilen NexStock'un hikayesi.">
 <meta property="og:image" content="https://nexstock.net/og-image.png">
-<meta property="og:url" content="https://nexstock.net">
+<meta property="og:url" content="https://nexstock.net/hakkinda.html">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="NexStock — Akıllı Envanter Sistemi">
+<meta name="twitter:title" content="NexStock — Hakkında">
 <meta name="twitter:image" content="https://nexstock.net/og-image.png">
-<link rel="canonical" href="https://nexstock.net">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -228,124 +227,6 @@ nav.stuck{background:rgba(4,4,4,.97);border-bottom-color:var(--border)}
 }
 .nav-demo-arr:hover svg{transform:translateX(3px)}
 
-/* ═══ HERO ═══ */
-.hero{
-  min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;
-  padding:0 52px 90px;position:relative;overflow:hidden;z-index:1;
-}
-.hero-inner{opacity:0;transform:translateY(30px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1.2s cubic-bezier(.16,1,.3,1)}
-.hero.visible .hero-inner{opacity:1;transform:translateY(0)}
-.hero-logo-img{position:absolute;right:6%;top:50%;transform:translateY(-50%);width:clamp(180px,22vw,320px);opacity:.15;filter:drop-shadow(0 0 40px rgba(165,216,255,.3));pointer-events:none;z-index:0;animation:heroLogoIn 1.5s 0.5s cubic-bezier(.16,1,.3,1) forwards;opacity:0}
-.hero-logo-img img{width:100%;height:auto}
-@keyframes heroLogoIn{0%{opacity:0;transform:translateY(-50%) scale(.9)}100%{opacity:.2;transform:translateY(-50%) scale(1)}}
-
-.h-grid{
-  position:absolute;inset:-100%;
-  background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
-  background-size:80px 80px;animation:gGrid 50s linear infinite;pointer-events:none;
-}
-@keyframes gGrid{0%{transform:translate(0,0)}100%{transform:translate(80px,80px)}}
-
-/* Floating orbs */
-.hero-orb{
-  position:absolute;border-radius:50%;pointer-events:none;
-  filter:blur(80px);opacity:.08;
-  animation:orbFloat 20s ease-in-out infinite alternate;
-}
-.hero-orb:nth-child(1){width:500px;height:500px;background:var(--accent);top:-10%;right:-5%;animation-delay:0s}
-.hero-orb:nth-child(2){width:400px;height:400px;background:#a78bfa;bottom:-10%;left:-5%;animation-delay:-7s}
-.hero-orb:nth-child(3){width:300px;height:300px;background:#60a5fa;top:40%;left:50%;animation-delay:-14s}
-@keyframes orbFloat{
-  0%{transform:translate(0,0) scale(1)}
-  33%{transform:translate(40px,-30px) scale(1.1)}
-  66%{transform:translate(-20px,40px) scale(.95)}
-  100%{transform:translate(30px,20px) scale(1.05)}
-}
-
-.scan{
-  position:absolute;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
-  animation:scanDrop 8s ease-in-out infinite;pointer-events:none;z-index:2;
-}
-@keyframes scanDrop{0%{top:-2px;opacity:0}5%{opacity:1}95%{opacity:1}100%{top:100%;opacity:0}}
-
-.corner{position:absolute;width:60px;height:60px;pointer-events:none;z-index:2;opacity:.25}
-.corner.tl{top:100px;left:52px;border-top:1px solid #fff;border-left:1px solid #fff}
-.corner.tr{top:100px;right:52px;border-top:1px solid #fff;border-right:1px solid #fff}
-.corner.bl{bottom:80px;left:52px;border-bottom:1px solid #fff;border-left:1px solid #fff}
-.corner.br{bottom:80px;right:52px;border-bottom:1px solid #fff;border-right:1px solid #fff}
-
-.h-eyebrow{
-  font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--a);
-  letter-spacing:5px;text-transform:uppercase;margin-bottom:32px;
-  display:flex;align-items:center;gap:16px;padding-top:100px;
-  opacity:0;animation:fadeUp .8s .1s forwards;
-}
-.cursor-blink{width:8px;height:16px;background:var(--a);display:inline-block;animation:cblink 1s infinite}
-@keyframes cblink{0%,100%{opacity:1}50%{opacity:0}}
-
-.h-title{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(5rem,13vw,14rem);
-  line-height:.86;letter-spacing:-2px;position:relative;z-index:1;
-}
-.tl-wrap{overflow:hidden;display:block}
-.tl-inner{display:block;transform:translateY(115%);opacity:0}
-.hero.visible .tl-inner{animation:titleUp 1s cubic-bezier(.16,1,.3,1) forwards}
-.hero.visible .tl-wrap:nth-child(1) .tl-inner{animation-delay:.15s}
-.hero.visible .tl-wrap:nth-child(2) .tl-inner{animation-delay:.3s}
-.hero.visible .tl-wrap:nth-child(3) .tl-inner{animation-delay:.45s}
-@keyframes titleUp{to{transform:translateY(0);opacity:1}}
-
-.t-amber{color:var(--a)}
-.t-out{-webkit-text-stroke:2px var(--a);color:transparent}
-.t-dim{color:rgba(255,255,255,.12)}
-
-.glitch{position:relative}
-.glitch::before,.glitch::after{content:attr(data-g);position:absolute;top:0;left:0;width:100%;pointer-events:none}
-.glitch::before{color:rgba(100,180,255,.5);animation:gb 6s 2.5s infinite}
-.glitch::after{color:rgba(255,100,100,.3);animation:ga 6s 2.5s infinite}
-@keyframes gb{0%,93%,100%{clip-path:inset(0 0 100% 0);transform:none}94%{clip-path:inset(10% 0 60% 0);transform:translate(-3px,1px)}96%{clip-path:inset(40% 0 30% 0);transform:translate(2px,-1px)}98%{clip-path:inset(70% 0 5% 0);transform:translate(-1px,1px)}}
-@keyframes ga{0%,94%,100%{clip-path:inset(0 0 100% 0);transform:none}95%{clip-path:inset(60% 0 10% 0);transform:translate(2px,-1px)}97%{clip-path:inset(20% 0 50% 0);transform:translate(-2px,1px)}}
-
-.h-bottom{
-  display:flex;justify-content:space-between;align-items:flex-end;margin-top:52px;
-  opacity:0;animation:fadeUp .9s .9s forwards;
-}
-.h-desc{max-width:380px;font-size:.95rem;line-height:1.85;color:#666;font-weight:400}
-.h-desc strong{color:var(--text)}
-.h-btns{display:flex;gap:14px}
-.btn{
-  position:relative;display:inline-flex;align-items:center;gap:8px;
-  padding:18px 40px;font-family:'Syne',sans-serif;font-weight:800;
-  font-size:.85rem;letter-spacing:2px;text-transform:uppercase;
-  text-decoration:none;cursor:none;overflow:hidden;
-  transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s;
-}
-.btn-a{background:var(--a);color:#080808;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px))}
-.btn-a::before{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 20%,rgba(255,255,255,.25) 50%,transparent 80%);transform:translateX(-100%);transition:transform .6s}
-.btn-a:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(255,255,255,.3)}
-.btn-a:hover::before{transform:translateX(100%)}
-.btn-o{background:transparent;color:var(--text);border:1px solid var(--border);transition:all .3s cubic-bezier(.16,1,.3,1)}
-.btn-o:hover{border-color:var(--a);color:var(--a);transform:translateY(-4px);box-shadow:0 16px 40px rgba(255,255,255,.1)}
-.btn-arr{display:inline-block;transition:transform .3s}
-.btn-a:hover .btn-arr{transform:translateX(5px)}
-
-.scroll-h{position:absolute;bottom:40px;left:52px;display:flex;align-items:center;gap:14px;opacity:0;animation:fadeUp .6s 1.6s forwards}
-.scroll-track{width:1px;height:80px;background:var(--border);position:relative;overflow:hidden}
-.scroll-track::after{content:'';position:absolute;top:0;left:0;width:100%;height:50%;background:linear-gradient(to bottom,var(--a),transparent);animation:scrollPulse 2.5s ease-in-out infinite}
-@keyframes scrollPulse{0%{transform:translateY(-100%)}100%{transform:translateY(250%)}}
-.scroll-txt{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:4px;text-transform:uppercase;writing-mode:vertical-rl}
-@keyframes fadeUp{from{opacity:0;transform:translateY(50px)}to{opacity:1;transform:translateY(0)}}
-
-/* ═══ TICKER ═══ */
-.ticker{background:var(--a);padding:16px 0;overflow:hidden;white-space:nowrap;position:relative;z-index:1}
-.ticker-t{display:inline-flex;animation:tkr 22s linear infinite}
-.ticker:hover .ticker-t{animation-play-state:paused}
-.ti{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:4px;color:#080808;padding:0 44px}
-.ts{opacity:.3;color:#080808}
-@keyframes tkr{to{transform:translateX(-50%)}}
-
 /* ═══ SECTIONS ═══ */
 section{padding:140px 52px;position:relative;z-index:1}
 .s-eyebrow{
@@ -364,135 +245,140 @@ section{padding:140px 52px;position:relative;z-index:1}
 [data-r=scale]{transform:scale(.88)}
 [data-r=flip]{transform:perspective(600px) rotateX(15deg);transform-origin:top}
 [data-r].on{opacity:1;transform:none}
-
-/* Staggered children */
 [data-r].on [data-stagger]{transition-delay:calc(var(--i,0) * .08s)}
 
-/* ═══ FEATURES ═══ */
-.feat-hdr{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:72px}
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
-.fc{
-  background:var(--bg);padding:48px 38px;position:relative;overflow:hidden;cursor:none;
+/* ═══ DFC ═══ */
+.dfc-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:100px;align-items:center}
+.dfc-card{
+  background:var(--bg2);border:1px solid var(--border);padding:56px;
+  position:relative;overflow:hidden;
+  transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s;
+}
+.dfc-card:hover{transform:translateY(-8px);box-shadow:0 40px 80px rgba(255,255,255,.06)}
+.dfc-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--a) 40%,var(--a2) 60%,transparent);
+  animation:linePulse 4s ease-in-out infinite;
+}
+.dfc-card::after{
+  content:'NEX';position:absolute;font-family:'Bebas Neue',sans-serif;
+  font-size:14rem;color:rgba(255,255,255,.02);right:-20px;bottom:-30px;
+  line-height:1;pointer-events:none;
+}
+@keyframes linePulse{0%,100%{opacity:.3}50%{opacity:1}}
+.dfc-q{font-size:1.25rem;line-height:1.8;font-weight:400;color:var(--text);margin-bottom:28px}
+.dfc-q em{color:var(--a);font-style:normal;font-weight:700}
+.dfc-attr{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--muted);letter-spacing:1px}
+.dfc-body{color:#666;font-size:1rem;line-height:1.9;font-weight:400;margin-top:32px}
+.dfc-body strong{color:var(--text)}
+.ctrs{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:56px;background:var(--border)}
+.ctr{
+  background:var(--bg);padding:28px 22px;position:relative;overflow:hidden;
   transition:background .35s;
 }
-.fc:hover{background:var(--bg2)}
-.fc-glow{
-  position:absolute;width:300px;height:300px;border-radius:50%;
-  background:radial-gradient(circle,rgba(255,255,255,.06),transparent 70%);
-  pointer-events:none;transform:translate(-50%,-50%);
+.ctr:hover{background:var(--bg2)}
+.ctr::after{
+  content:'';position:absolute;left:0;bottom:0;right:0;height:2px;
+  background:var(--a);transform:scaleX(0);transform-origin:left;
+  transition:transform .5s cubic-bezier(.16,1,.3,1);
+}
+.ctr:hover::after{transform:scaleX(1)}
+.c-n{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:var(--a);line-height:1;display:block}
+.c-l{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:6px;display:block}
+
+/* ═══ FIDS ═══ */
+.fids-bg{background:var(--bg2)}
+.fids-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:70px;background:var(--border)}
+.f-card{
+  background:var(--bg);padding:56px 36px;position:relative;overflow:hidden;cursor:none;
+  transition:background .4s;
+}
+.f-card:hover{background:var(--bg3)}
+.f-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 120%,rgba(255,255,255,.05),transparent 70%);
   opacity:0;transition:opacity .4s;
 }
-.fc:hover .fc-glow{opacity:1}
-.fc::after{
+.f-card:hover::before{opacity:1}
+.f-card::after{
   content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,var(--a3),var(--a),var(--a2));
+  background:linear-gradient(90deg,var(--a),var(--a2));
   transform:scaleX(0);transform-origin:left;
-  transition:transform .55s cubic-bezier(.16,1,.3,1);
+  transition:transform .6s cubic-bezier(.16,1,.3,1);
 }
-.fc:hover::after{transform:scaleX(1)}
-.fc-num{position:absolute;top:20px;right:24px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);letter-spacing:2px}
-.fc-icon{
-  font-size:2.8rem;display:block;margin-bottom:28px;
-  transition:transform .5s cubic-bezier(.16,1,.3,1),filter .3s;
+.f-card:hover::after{transform:scaleX(1)}
+.f-bg-num{
+  font-family:'Bebas Neue',sans-serif;font-size:7rem;line-height:1;
+  color:rgba(255,255,255,.035);position:absolute;top:10px;right:14px;
+  transition:all .5s cubic-bezier(.16,1,.3,1);pointer-events:none;
 }
-.fc:hover .fc-icon{transform:scale(1.25) rotate(8deg);filter:drop-shadow(0 0 16px rgba(255,255,255,.4))}
-.fc-name{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:2px;margin-bottom:14px}
-.fc-desc{font-size:.88rem;color:#666;line-height:1.8}
+.f-card:hover .f-bg-num{color:rgba(255,255,255,.07);transform:scale(1.1) rotate(-5deg)}
+.f-letter{
+  font-family:'Bebas Neue',sans-serif;font-size:4.5rem;color:var(--a);
+  line-height:1;margin-bottom:6px;
+  transition:transform .4s cubic-bezier(.16,1,.3,1),letter-spacing .4s;
+}
+.f-card:hover .f-letter{transform:translateX(8px);letter-spacing:4px}
+.f-word{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:24px}
+.f-ttl{font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:14px}
+.f-body{font-size:.87rem;color:#666;line-height:1.8}
+.f-tag{
+  display:inline-block;margin-top:24px;padding:5px 14px;
+  border:1px solid var(--border);font-family:'JetBrains Mono',monospace;
+  font-size:.68rem;color:var(--a);letter-spacing:1.5px;
+  transition:all .35s cubic-bezier(.16,1,.3,1);
+}
+.f-card:hover .f-tag{background:var(--a);color:#080808;border-color:var(--a);transform:translateX(5px)}
 
-/* ═══ TEAM ═══ */
-#team{padding:100px 52px;position:relative;z-index:1}
-.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:56px}
-.team-card{
-  background:var(--bg2);border:1px solid var(--border);border-radius:16px;
-  padding:44px 28px;text-align:center;position:relative;overflow:hidden;
-  transition:all .4s cubic-bezier(.16,1,.3,1);
+/* ═══ STRIP ═══ */
+.strip{
+  padding:28px 0;overflow:hidden;
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  position:relative;z-index:1;
 }
-.team-card::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.04),transparent 70%);
-  opacity:0;transition:opacity .4s;
+.strip-t{display:inline-flex;gap:0;animation:strp 20s linear infinite}
+.strip:hover .strip-t{animation-play-state:paused}
+.strip-t.rev{animation-direction:reverse}
+.si{
+  font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:4px;
+  color:var(--muted);padding:0 36px;white-space:nowrap;transition:color .3s;
 }
-.team-card:hover::before{opacity:1}
-.team-card:hover{border-color:rgba(255,255,255,.15);transform:translateY(-8px);box-shadow:0 20px 50px rgba(0,0,0,.5)}
-.team-avatar{
-  width:80px;height:80px;border-radius:50%;
-  background:linear-gradient(135deg,var(--bg3),var(--bg));
-  border:2px solid var(--border);
-  display:flex;align-items:center;justify-content:center;
-  margin:0 auto 20px;
-  font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--a);letter-spacing:2px;
-  transition:all .4s cubic-bezier(.16,1,.3,1);
-}
-.team-card:hover .team-avatar{border-color:rgba(255,255,255,.3);transform:scale(1.08);box-shadow:0 8px 24px rgba(0,0,0,.4)}
-.team-name{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:8px}
-.team-role{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.si:hover{color:var(--a)}
+.sd{color:var(--a3);opacity:.3;padding:0 4px}
+@keyframes strp{to{transform:translateX(-50%)}}
 
-/* ═══ DEMO VIDEO ═══ */
-#demo{padding:140px 52px;position:relative;z-index:1;overflow:hidden}
-.demo-wrap{
-  display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;margin-top:60px;
+/* ═══ STATS ═══ */
+.stats-s{
+  background:var(--a);padding:100px 52px;position:relative;overflow:hidden;z-index:1;
 }
-.demo-txt{color:#666;font-size:.95rem;line-height:1.9}
-.demo-txt strong{color:var(--text)}
-.demo-steps{list-style:none;padding:0;margin-top:32px;counter-reset:steps}
-.demo-steps li{
-  counter-increment:steps;position:relative;
-  padding:18px 0 18px 56px;border-bottom:1px solid rgba(255,255,255,.04);
-  font-family:'JetBrains Mono',monospace;font-size:.78rem;
-  color:var(--muted);letter-spacing:1px;transition:color .3s,padding-left .3s;
-}
-.demo-steps li:hover{color:var(--text);padding-left:64px}
-.demo-steps li::before{
-  content:counter(steps,decimal-leading-zero);
-  position:absolute;left:0;top:18px;
-  font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--a);
-  line-height:1;opacity:.4;transition:opacity .3s;
-}
-.demo-steps li:hover::before{opacity:1}
-.demo-frame{
-  position:relative;background:var(--bg2);border:1px solid var(--border);
-  aspect-ratio:16/9;overflow:hidden;
-}
-.demo-frame::before{
+.stats-s::before{
   content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(165,216,255,.03),transparent 50%);
-  z-index:1;pointer-events:none;
+  background-image:linear-gradient(rgba(0,0,0,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.06) 1px,transparent 1px);
+  background-size:50px 50px;
 }
-.demo-frame iframe{width:100%;height:100%;border:none}
-.demo-frame-placeholder{
-  position:absolute;inset:0;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:16px;
-  background:var(--bg2);
+.stats-s::after{
+  content:'NEXSTOCK';position:absolute;font-family:'Bebas Neue',sans-serif;
+  font-size:22rem;color:rgba(0,0,0,.04);top:50%;left:50%;
+  transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;letter-spacing:-5px;
 }
-.demo-play{
-  width:72px;height:72px;border-radius:50%;border:2px solid var(--a);
-  background:transparent;display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:all .4s cubic-bezier(.16,1,.3,1);
-  position:relative;overflow:hidden;
+.stats-g{display:grid;grid-template-columns:repeat(4,1fr);gap:52px;text-align:center;position:relative}
+.stn{font-family:'Bebas Neue',sans-serif;font-size:6rem;line-height:1;letter-spacing:-3px;color:#080808}
+.stl{font-size:.82rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(8,8,8,.5);margin-top:10px}
+
+/* ═══ BTN ═══ */
+.btn{
+  position:relative;display:inline-flex;align-items:center;gap:8px;
+  padding:18px 40px;font-family:'Syne',sans-serif;font-weight:800;
+  font-size:.85rem;letter-spacing:2px;text-transform:uppercase;
+  text-decoration:none;cursor:none;overflow:hidden;
+  transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s;
 }
-.demo-play::before{
-  content:'';position:absolute;inset:0;border-radius:50%;
-  background:var(--a);transform:scale(0);transition:transform .4s cubic-bezier(.16,1,.3,1);
-}
-.demo-play:hover{transform:scale(1.1);box-shadow:0 0 40px rgba(165,216,255,.2)}
-.demo-play:hover::before{transform:scale(1)}
-.demo-play-tri{
-  width:0;height:0;border:12px solid transparent;border-left:20px solid var(--a);
-  margin-left:5px;position:relative;z-index:1;transition:border-color .3s;
-}
-.demo-play:hover .demo-play-tri{border-left-color:#080808}
-.demo-play-lbl{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase}
-.demo-scan{
-  position:absolute;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--accent),transparent);
-  animation:demoScan 3s ease-in-out infinite;pointer-events:none;z-index:2;
-}
-@keyframes demoScan{0%{top:0;opacity:0}10%{opacity:.5}90%{opacity:.5}100%{top:100%;opacity:0}}
-.demo-corner{position:absolute;width:20px;height:20px;z-index:2;pointer-events:none}
-.demo-corner.dc-tl{top:8px;left:8px;border-top:2px solid var(--a);border-left:2px solid var(--a)}
-.demo-corner.dc-tr{top:8px;right:8px;border-top:2px solid var(--a);border-right:2px solid var(--a)}
-.demo-corner.dc-bl{bottom:8px;left:8px;border-bottom:2px solid var(--a);border-left:2px solid var(--a)}
-.demo-corner.dc-br{bottom:8px;right:8px;border-bottom:2px solid var(--a);border-right:2px solid var(--a)}
+.btn-a{background:var(--a);color:#080808;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px))}
+.btn-a::before{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 20%,rgba(255,255,255,.25) 50%,transparent 80%);transform:translateX(-100%);transition:transform .6s}
+.btn-a:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(255,255,255,.3)}
+.btn-a:hover::before{transform:translateX(100%)}
+.btn-arr{display:inline-block;transition:transform .3s}
+.btn-a:hover .btn-arr{transform:translateX(5px)}
 
 /* ═══ LANG TOGGLE ═══ */
 .lang-toggle{
@@ -549,36 +435,27 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
 
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:900px){
-  nav,section,footer,#team{padding-left:24px;padding-right:24px}
+  nav,section,footer,.strip{padding-left:24px;padding-right:24px}
   nav.stuck{padding-left:24px;padding-right:24px}
   .nav-items{display:none}
   .nav-hamburger{display:flex}
-  .hero{padding:0 24px 80px}
-  .corner{display:none}
-  .h-bottom{flex-direction:column;align-items:flex-start;gap:32px}
-  .h-desc{max-width:100%;font-size:.92rem}
-  .h-btns{width:100%}
-  .h-btns .btn{flex:1;text-align:center;justify-content:center;padding:14px 16px;font-size:.8rem}
-  .feat-grid{grid-template-columns:1fr}
-  .team-grid{grid-template-columns:1fr 1fr}
+  .dfc-wrap{grid-template-columns:1fr;gap:52px}
+  .fids-grid{grid-template-columns:1fr 1fr}
+  .stats-g{grid-template-columns:1fr 1fr;gap:36px}
+  .stats-s{padding:60px 24px}
   footer{flex-direction:column;gap:28px;text-align:center}
   body{cursor:auto}
   .cursor-dot,.cursor-ring{display:none}
-  .scroll-h{display:none}
-  .demo-wrap{grid-template-columns:1fr;gap:40px}
   .lang-toggle{display:none}
-  #demo{padding-left:24px;padding-right:24px}
-  /* disable smooth scroll on mobile */
   #smooth-wrapper{position:static;overflow:visible}
   section{padding-top:80px;padding-bottom:80px}
 }
 @media(max-width:520px){
-  .h-title{font-size:clamp(3.2rem,14vw,5rem);line-height:.9}
+  .fids-grid{grid-template-columns:1fr}
+  .ctrs{grid-template-columns:repeat(3,1fr)}
+  .stats-g{grid-template-columns:1fr 1fr}
   section{padding-top:60px;padding-bottom:60px}
   .s-title{font-size:clamp(2.4rem,9vw,4rem)}
-  .h-btns{flex-direction:column}
-  .team-grid{grid-template-columns:1fr;gap:16px}
-  .team-card{padding:32px 20px}
 }
 </style>
 </head>
@@ -641,131 +518,75 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
 <div id="smooth-wrapper">
 <div id="smooth-content">
 
-<section class="hero" id="hero-section">
-  <div class="hero-orb"></div>
-  <div class="hero-orb"></div>
-  <div class="hero-orb"></div>
-  <div class="h-grid"></div>
-  <div class="scan"></div>
-  <div class="corner tl"></div><div class="corner tr"></div>
-  <div class="corner bl"></div><div class="corner br"></div>
-  <div class="hero-inner">
-    <div class="h-eyebrow">
-      <span class="cursor-blink"></span>
-      <span data-tr="DFC Türkiye Yarışması &mdash; 2026" data-en="DFC Turkey Competition &mdash; 2026">DFC T&uuml;rkiye Yar&#305;&#351;mas&#305; &mdash; 2026</span>
-    </div>
-    <div class="h-title">
-      <span class="tl-wrap"><span class="tl-inner glitch t-amber" data-g="NEXSTOCK">NEXSTOCK</span></span>
-      <span class="tl-wrap"><span class="tl-inner t-out" data-tr="ENVANTERİN" data-en="THE FUTURE">ENVANTER&#304;N</span></span>
-      <span class="tl-wrap"><span class="tl-inner t-dim" data-tr="GELECEĞİ." data-en="OF INVENTORY.">GELECE&#286;&#304;.</span></span>
-    </div>
-    <div class="h-bottom">
-      <div class="h-desc" data-tr="DFC FIDS metodolojisi ile geliştirilen <strong>akıllı barkod ve envanter</strong> yönetim sistemi. Gerçek sorunlara, gerçek çözümler." data-en="A <strong>smart barcode and inventory</strong> management system developed with the DFC FIDS methodology. Real solutions for real problems.">
-        DFC FIDS metodolojisi ile geli&#351;tirilen <strong>ak&#305;ll&#305; barkod ve envanter</strong> y&#246;netim sistemi.
-        Ger&#231;ek sorunlara, ger&#231;ek &#231;&#246;z&#252;mler.
+<section id="dfc">
+  <div class="dfc-wrap">
+    <div data-r="left">
+      <div class="s-eyebrow" data-tr="// 01 — DFC Nedir?" data-en="// 01 — What is DFC?">// 01 &mdash; DFC Nedir?</div>
+      <div class="s-title" data-tr="DEĞİŞİM<br>İÇİN<br><span style='color:var(--a)'>TASARIM</span>" data-en="DESIGN<br>FOR<br><span style='color:var(--a)'>CHANGE</span>">DE&#286;&#304;&#350;&#304;M<br>&#304;&#199;&#304;N<br><span style="color:var(--a)">TASARIM</span></div>
+      <div class="dfc-body" data-tr="Design for Change (DFC), 2009 yılında Kiran Bir Sethi tarafından kurulan dünyanın en büyük çocuk hareketidir. Bugün <strong>70'ten fazla ülkede</strong>, <strong>30.000+ okulda</strong> ve <strong>2 milyondan fazla çocukla</strong> hayata geçirilmektedir.<br><br>DFC Türkiye, 2023 yılında başladı. Amacı, <strong style='color:var(--a)'>&quot;YAPABİLİRİM&quot;</strong> zihniyetini tüm Türkiye'ye yaymak. 9-17 yaş arası öğrenciler FIDS modeli ile gerçek sorunlara çözümler geliştiriyor." data-en="Design for Change (DFC) is the world's largest children's movement, founded in 2009 by Kiran Bir Sethi. Today it is active in <strong>over 70 countries</strong>, <strong>30,000+ schools</strong> and with <strong>over 2 million children</strong>.<br><br>DFC Turkey started in 2023. Its goal is to spread the <strong style='color:var(--a)'>&quot;I CAN&quot;</strong> mindset across Turkey. Students aged 9-17 develop real solutions to real problems using the FIDS model.">
+        Design for Change (DFC), 2009 y&#305;l&#305;nda Kiran Bir Sethi taraf&#305;ndan kurulan d&#252;nyan&#305;n en b&#252;y&#252;k
+        &#231;ocuk hareketidir. Bug&#252;n <strong>70'ten fazla &#252;lkede</strong>, <strong>30.000+ okulda</strong>
+        ve <strong>2 milyondan fazla &#231;ocukla</strong> hayata ge&#231;irilmektedir.
+        <br><br>
+        DFC T&#252;rkiye, 2023 y&#305;l&#305;nda ba&#351;lad&#305;. Amac&#305;, <strong style="color:var(--a)">"YAPAB&#304;L&#304;R&#304;M"</strong>
+        zihniyetini t&#252;m T&#252;rkiye'ye yaymak. 9-17 ya&#351; aras&#305; &#246;&#287;renciler FIDS modeli ile ger&#231;ek
+        sorunlara &#231;&#246;z&#252;mler geli&#351;tiriyor.
       </div>
-      <div class="h-btns">
-        <a href="https://nexstock.tech" class="btn btn-a" id="mainBtn" data-tr="Uygulamayı Dene" data-en="Try the App">Uygulamay&#305; Dene <span class="btn-arr">&rarr;</span></a>
-        <a href="/hakkinda.html" class="btn btn-o" data-tr="Daha Fazla" data-en="Learn More">Daha Fazla</a>
+      <div class="ctrs" data-r="up">
+        <div class="ctr"><span class="c-n" data-c="70">0</span><span class="c-l" data-tr="+ Ülke" data-en="+ Countries">+ &#220;lke</span></div>
+        <div class="ctr"><span class="c-n" data-c="30">0</span><span class="c-l" data-tr="K+ Okul" data-en="K+ Schools">K+ Okul</span></div>
+        <div class="ctr"><span class="c-n" data-c="2">0</span><span class="c-l" data-tr="M+ Çocuk" data-en="M+ Children">M+ &#199;ocuk</span></div>
       </div>
     </div>
-  </div>
-  <div class="scroll-h">
-    <div class="scroll-track"></div>
-    <div class="scroll-txt">Scroll</div>
+    <div data-r="right">
+      <div class="dfc-card">
+        <div class="dfc-q" data-tr="&quot;Zamanımızın en zorlaycı problemlerine çözüm üretebilir, geçmişin sana dayattığı sınırlamalar yerine <em>kendi geleceğini inşa edebilirsin.</em>&quot;" data-en="&quot;You can solve the most challenging problems of our time, and instead of the limitations imposed by the past, <em>build your own future.</em>&quot;">"Zaman&#305;m&#305;z&#305;n en zorlay&#305;c&#305; problemlerine &#231;&#246;z&#252;m &#252;retebilir, ge&#231;mi&#351;in sana dayatt&#305;&#287;&#305; s&#305;n&#305;rlamalar yerine <em>kendi gelece&#287;ini in&#351;a edebilirsin.</em>"</div>
+        <div class="dfc-attr" data-tr="— Andreas Schleicher, OECD Eğitim Direktörü" data-en="— Andreas Schleicher, OECD Education Director">&mdash; Andreas Schleicher, OECD E&#287;itim Direkt&#246;r&#252;</div>
+      </div>
+    </div>
   </div>
 </section>
 
-<div class="ticker">
-  <div class="ticker-t">
-    <span class="ti">FEEL</span><span class="ti ts">&#10022;</span>
-    <span class="ti">IMAGINE</span><span class="ti ts">&#10022;</span>
-    <span class="ti">DO</span><span class="ti ts">&#10022;</span>
-    <span class="ti">SHARE</span><span class="ti ts">&#10022;</span>
-    <span class="ti">DESIGN FOR CHANGE</span><span class="ti ts">&#10022;</span>
-    <span class="ti">NEXSTOCK</span><span class="ti ts">&#10022;</span>
-    <span class="ti">FEEL</span><span class="ti ts">&#10022;</span>
-    <span class="ti">IMAGINE</span><span class="ti ts">&#10022;</span>
-    <span class="ti">DO</span><span class="ti ts">&#10022;</span>
-    <span class="ti">SHARE</span><span class="ti ts">&#10022;</span>
-    <span class="ti">DESIGN FOR CHANGE</span><span class="ti ts">&#10022;</span>
-    <span class="ti">NEXSTOCK</span><span class="ti ts">&#10022;</span>
+<section id="fids" class="fids-bg">
+  <div style="text-align:center" data-r="up">
+    <div class="s-eyebrow" style="justify-content:center" data-tr="// 02 — FIDS Modeli" data-en="// 02 — FIDS Model">// 02 &mdash; FIDS Modeli</div>
+    <div class="s-title" data-tr="4 ADIMDA <span style='color:var(--a)'>DEĞİŞİM</span>" data-en="CHANGE IN <span style='color:var(--a)'>4 STEPS</span>">4 ADIMDA <span style="color:var(--a)">DE&#286;&#304;&#350;&#304;M</span></div>
+  </div>
+  <div class="fids-grid">
+    <div class="f-card" data-r="up" style="transition-delay:.0s"><div class="f-bg-num">01</div><div class="f-letter">F</div><div class="f-word" data-tr="Feel — Hisset" data-en="Feel — Empathize">Feel &mdash; Hisset</div><div class="f-ttl" data-tr="Empati Kur" data-en="Build Empathy">Empati Kur</div><div class="f-body" data-tr="Bir sorunu çözmeye başlamadan önce yavaşla, gözlemle ve iyice anla. Varsayımlara değil, gözleme dayalı içgörülerle yaklaş." data-en="Slow down, observe and understand before solving a problem. Approach with observation-based insights, not assumptions.">Bir sorunu &#231;&#246;zmeye ba&#351;lamadan &#246;nce yava&#351;la, g&#246;zemle ve iyice anla. Varsay&#305;mlara de&#287;il, g&#246;zleme dayal&#305; i&#231;g&#246;r&#252;lerle yakla&#351;.</div><div class="f-tag" data-tr="EMPATİ BECERİSİ" data-en="EMPATHY SKILL">EMPAT&#304; BECER&#304;S&#304;</div></div>
+    <div class="f-card" data-r="up" style="transition-delay:.1s"><div class="f-bg-num">02</div><div class="f-letter">I</div><div class="f-word" data-tr="Imagine — Hayal Et" data-en="Imagine — Envision">Imagine &mdash; Hayal Et</div><div class="f-ttl" data-tr="Çözüm Tasarla" data-en="Design Solutions">&#199;&#246;z&#252;m Tasarla</div><div class="f-body" data-tr="Topluluğun yaratıcılığına ve ortak akla başvur. Durumu iyileştirmek için birlikte fikir üret." data-en="Tap into the community's creativity and collective wisdom. Brainstorm together to improve the situation.">Toplulu&#287;un yarat&#305;c&#305;l&#305;&#287;&#305;na ve ortak akla ba&#351;vur. Durumu iyile&#351;tirmek i&#231;in birlikte fikir &#252;ret.</div><div class="f-tag" data-tr="YARATıCı DÜŞÜNCE" data-en="CREATIVE THINKING">YARATICI D&#220;&#350;&#220;NCE</div></div>
+    <div class="f-card" data-r="up" style="transition-delay:.2s"><div class="f-bg-num">03</div><div class="f-letter">D</div><div class="f-word" data-tr="Do — Yap" data-en="Do — Act">Do &mdash; Yap</div><div class="f-ttl" data-tr="Harekete Geç" data-en="Take Action">Harekete Ge&#231;</div><div class="f-body" data-tr="Arzu edilen etkiye ulaşmak için pratiklik, yaratıcılık ve azimle çalış. Ayrıntılara odaklan, eyleme geç." data-en="Work with practicality, creativity and determination to achieve the desired impact. Focus on details, take action.">Arzu edilen etkiye ula&#351;mak i&#231;in pratiklik, yarat&#305;c&#305;l&#305;k ve azimle &#231;al&#305;&#351;. Ayr&#305;nt&#305;lara odaklan, eyleme ge&#231;.</div><div class="f-tag" data-tr="POTANSİYELİ ORTAYA ÇIKAR" data-en="UNLOCK POTENTIAL">POTANS&#304;YEL&#304; ORTAYA &#199;IKAR</div></div>
+    <div class="f-card" data-r="up" style="transition-delay:.3s"><div class="f-bg-num">04</div><div class="f-letter">S</div><div class="f-word" data-tr="Share — Paylaş" data-en="Share — Inspire">Share &mdash; Payla&#351;</div><div class="f-ttl" data-tr="İlham Ver" data-en="Inspire Others">&#304;lham Ver</div><div class="f-body" data-tr="&quot;YAPABİLİRİM&quot; bilincini yay. Başkalarıyla rekabet etmek yerine başkalarını tamamla ve birlikte yüksel." data-en="Spread the &quot;I CAN&quot; mindset. Instead of competing with others, complement them and rise together.">"YAPAB&#304;L&#304;R&#304;M" bilincini yay. Ba&#351;kalar&#305;yla rekabet etmek yerine ba&#351;kalar&#305;n&#305; tamamla ve birlikte y&#252;ksel.</div><div class="f-tag" data-tr="BİRLİKTE YÜKSELİŞ" data-en="RISE TOGETHER">B&#304;RL&#304;KTE Y&#220;KSEL&#304;&#350;</div></div>
+  </div>
+</section>
+
+<div class="strip">
+  <div class="strip-t">
+    <span class="si" data-tr="NexStock" data-en="NexStock">NexStock</span><span class="sd">&#9670;</span>
+    <span class="si" data-tr="Akıllı Envanter" data-en="Smart Inventory">Ak&#305;ll&#305; Envanter</span><span class="sd">&#9670;</span>
+    <span class="si" data-tr="Barkod Tarama" data-en="Barcode Scan">Barkod Tarama</span><span class="sd">&#9670;</span>
+    <span class="si" data-tr="SKT Takibi" data-en="Expiry Tracking">SKT Takibi</span><span class="sd">&#9670;</span>
+    <span class="si" data-tr="DFC Türkiye" data-en="DFC Turkey">DFC T&#252;rkiye</span><span class="sd">&#9670;</span>
+    <span class="si" data-tr="FIDS Modeli" data-en="FIDS Model">FIDS Modeli</span><span class="sd">&#9670;</span>
+    <span class="si">Open Food Facts</span><span class="sd">&#9670;</span>
+    <span class="si" data-tr="NexStock" data-en="NexStock">NexStock</span><span class="sd">&#9670;</span>
+    <span class="si" data-tr="Akıllı Envanter" data-en="Smart Inventory">Ak&#305;ll&#305; Envanter</span><span class="sd">&#9670;</span>
+    <span class="si" data-tr="Barkod Tarama" data-en="Barcode Scan">Barkod Tarama</span><span class="sd">&#9670;</span>
+    <span class="si" data-tr="SKT Takibi" data-en="Expiry Tracking">SKT Takibi</span><span class="sd">&#9670;</span>
+    <span class="si" data-tr="DFC Türkiye" data-en="DFC Turkey">DFC T&#252;rkiye</span><span class="sd">&#9670;</span>
+    <span class="si" data-tr="FIDS Modeli" data-en="FIDS Model">FIDS Modeli</span><span class="sd">&#9670;</span>
+    <span class="si">Open Food Facts</span><span class="sd">&#9670;</span>
   </div>
 </div>
 
-<section id="features">
-  <div class="feat-hdr" data-r="up">
-    <div>
-      <div class="s-eyebrow" data-tr="// Özellikler" data-en="// Features">// Özellikler</div>
-      <div class="s-title" data-tr="NEDEN<br><span style='color:var(--a)'>NEXSTOCK?</span>" data-en="WHY<br><span style='color:var(--a)'>NEXSTOCK?</span>">NEDEN<br><span style="color:var(--a)">NEXSTOCK?</span></div>
-    </div>
-    <a href="/ozellikler.html" class="btn btn-a" data-tr="Tüm Özellikler" data-en="All Features">Tüm Özellikler <span class="btn-arr">→</span></a>
+<div class="stats-s" data-r="scale">
+  <div class="stats-g">
+    <div><div class="stn" data-c="70">0</div><div class="stl" data-tr="Ülkede DFC" data-en="Countries with DFC">&#220;lkede DFC</div></div>
+    <div><div class="stn" data-c="2">0</div><div class="stl" data-tr="Milyon+ Katılımcı" data-en="Million+ Participants">Milyon+ Kat&#305;l&#305;mc&#305;</div></div>
+    <div><div class="stn" data-c="4">0</div><div class="stl" data-tr="FIDS Adımı" data-en="FIDS Steps">FIDS Ad&#305;m&#305;</div></div>
+    <div><div class="stn">&#8734;</div><div class="stl" data-tr="Değişim Potansiyeli" data-en="Change Potential">De&#287;i&#351;im Potansiyeli</div></div>
   </div>
-  <div class="feat-grid" style="grid-template-columns:repeat(3,1fr)">
-    <div class="fc" data-r="up" style="transition-delay:.0s"><div class="fc-glow"></div><div class="fc-num">01/09</div><span class="fc-icon">📷</span><div class="fc-name" data-tr="Kamera Tarama" data-en="Camera Scan">Kamera Tarama</div><div class="fc-desc" data-tr="Tarayıcı kamerası ile EAN-13 dahil tüm barkod formatlarını gerçek zamanlı okuma." data-en="Real-time reading of all barcode formats including EAN-13 via browser camera.">Taray&#305;c&#305; kameras&#305; ile EAN-13 dahil t&#252;m barkod formatlar&#305;n&#305; ger&#231;ek zamanl&#305; okuma.</div></div>
-    <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">07/09</div><span class="fc-icon">📦</span><div class="fc-name" data-tr="Parti Sistemi" data-en="Batch System">Parti Sistemi</div><div class="fc-desc" data-tr="Aynı ürünün farklı tarihli partilerini ayrı ayrı takip et, stok karışıklığını önle." data-en="Track different-dated batches of the same product separately, prevent stock confusion.">Ayn&#305; &#252;r&#252;n&#252;n farkl&#305; tarihli partilerini ayr&#305; ayr&#305; takip et, stok kar&#305;&#351;&#305;kl&#305;&#287;&#305;n&#305; &#246;nle.</div></div>
-    <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">08/09</div><span class="fc-icon">⚡</span><div class="fc-name" data-tr="FEFO Algoritması" data-en="FEFO Algorithm">FEFO Algoritmas&#305;</div><div class="fc-desc" data-tr="En yakın tarihli ürünü otomatik öne al. First Expiry First Out ile sıfır manuel kontrol." data-en="Automatically prioritize nearest-expiry products. Zero manual control with First Expiry First Out.">En yak&#305;n tarihli &#252;r&#252;n&#252; otomatik &#246;ne al. First Expiry First Out ile s&#305;f&#305;r manuel kontrol.</div></div>
-  </div>
-</section>
-
-<section id="demo">
-  <div data-r="up">
-    <div class="s-eyebrow" data-tr="// Demo" data-en="// Demo">// Demo</div>
-    <div class="s-title" data-tr="NASIL<br><span style='color:var(--a)'>ÇALIŞIR?</span>" data-en="HOW DOES<br><span style='color:var(--a)'>IT WORK?</span>">NASIL<br><span style="color:var(--a)">&#199;ALI&#350;IR?</span></div>
-  </div>
-  <div class="demo-wrap">
-    <div data-r="left">
-      <div class="demo-txt" data-tr="NexStock ile envanter yönetimi <strong>3 basit adımda</strong> tamamlanır. Barkodu tarat, bilgileri gör ve stokunu yönet." data-en="Inventory management with NexStock is done in <strong>3 simple steps</strong>. Scan the barcode, view info, and manage your stock.">NexStock ile envanter y&#246;netimi <strong>3 basit ad&#305;mda</strong> tamamlan&#305;r. Barkodu tarat, bilgileri g&#246;r ve stokunu y&#246;net.</div>
-      <ol class="demo-steps">
-        <li data-tr="Kamerayı barkodun üzerine tut" data-en="Point the camera at the barcode">Kameray&#305; barkodun &#252;zerine tut</li>
-        <li data-tr="Ürün bilgisi otomatik olarak getirilir" data-en="Product info is fetched automatically">&#220;r&#252;n bilgisi otomatik olarak getirilir</li>
-        <li data-tr="Stok miktarı, SKT ve detayları yönet" data-en="Manage stock quantity, expiry date &amp; details">Stok miktar&#305;, SKT ve detaylar&#305; y&#246;net</li>
-      </ol>
-    </div>
-    <div data-r="right">
-      <div class="demo-frame">
-        <div class="demo-scan"></div>
-        <div class="demo-corner dc-tl"></div><div class="demo-corner dc-tr"></div>
-        <div class="demo-corner dc-bl"></div><div class="demo-corner dc-br"></div>
-        <div class="demo-frame-placeholder" id="demoPlaceholder">
-          <div class="demo-play" onclick="loadDemo()">
-            <span class="demo-play-tri"></span>
-          </div>
-          <span class="demo-play-lbl" data-tr="Canlı Demo Başlat" data-en="Launch Live Demo">Canl&#305; Demo Ba&#351;lat</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="team">
-  <div data-r="up">
-    <div class="s-eyebrow" data-tr="// Ekip" data-en="// Team">// Ekip</div>
-    <div class="s-title" data-tr="ARKASINDA<br><span style='color:var(--a)'>KİMLER VAR?</span>" data-en="WHO IS<br><span style='color:var(--a)'>BEHIND IT?</span>">ARKASINDA<br><span style="color:var(--a)">K&#304;MLER VAR?</span></div>
-    <div class="team-grid">
-      <div class="team-card" data-r="up" style="transition-delay:.0s">
-        <div class="team-avatar">AT</div>
-        <div class="team-name">Abd&#252;lkadir Tural</div>
-        <div class="team-role" data-tr="Yazılım &amp; İletişim" data-en="Software &amp; Communication">Yaz&#305;l&#305;m &amp; &#304;leti&#351;im</div>
-      </div>
-      <div class="team-card" data-r="up" style="transition-delay:.1s">
-        <div class="team-avatar">AN</div>
-        <div class="team-name">Arda Numano&#287;lu</div>
-        <div class="team-role" data-tr="Yazılım &amp; Marketing" data-en="Software &amp; Marketing">Yaz&#305;l&#305;m &amp; Marketing</div>
-      </div>
-      <div class="team-card" data-r="up" style="transition-delay:.15s">
-        <div class="team-avatar">YB</div>
-        <div class="team-name">Yi&#287;it Ege Bulut</div>
-        <div class="team-role" data-tr="Yazıcı" data-en="Writer">Yaz&#305;c&#305;</div>
-      </div>
-      <div class="team-card" data-r="up" style="transition-delay:.2s">
-        <div class="team-avatar">YA</div>
-        <div class="team-name">Yusuf Ata Aksoy</div>
-        <div class="team-role">Debugger</div>
-      </div>
-    </div>
-  </div>
-</section>
+</div>
 
 <footer>
   <div class="fl">Nex<em>Stock</em></div>
@@ -881,7 +702,6 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
       var pp = Math.max(0, Math.min((prog - p.delay*.4)/.6, 1));
       if(pp<=0) continue;
       var a = pp * .6;
-
       lctx.beginPath();
       lctx.arc(p.x, p.y, p.r * pp, 0, Math.PI*2);
       lctx.fillStyle = 'rgba(165,216,255,'+a+')';
@@ -934,7 +754,6 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
         loader.classList.add('phase-out');
         window._stopLoaderCanvas && window._stopLoaderCanvas();
         document.getElementById('nav').classList.add('visible');
-        document.getElementById('hero-section').classList.add('visible');
         setTimeout(function(){ loader.style.display='none'; }, 1300);
       }, 400);
     }
@@ -1008,7 +827,7 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
     requestAnimationFrame(loop);
   })();
 
-  document.querySelectorAll('a,button,.fc,.team-card,.demo-play,.lang-btn').forEach(function(el){
+  document.querySelectorAll('a,button,.f-card,.ctr,.dfc-card,.lang-btn').forEach(function(el){
     el.addEventListener('mouseenter',function(){document.body.classList.add('cursor-hover');});
     el.addEventListener('mouseleave',function(){document.body.classList.remove('cursor-hover');});
   });
@@ -1028,16 +847,6 @@ document.querySelectorAll('.btn,.nav-demo').forEach(function(btn){
     btn.style.transform='translate('+x+'px,'+y+'px)';
   });
   btn.addEventListener('mouseleave',function(){btn.style.transform='';});
-});
-
-/* ═══ FEATURE CARD GLOW ══════════════════════════════════ */
-document.querySelectorAll('.fc').forEach(function(card){
-  var glow=card.querySelector('.fc-glow');
-  card.addEventListener('mousemove',function(e){
-    var r=card.getBoundingClientRect();
-    glow.style.left=(e.clientX-r.left)+'px';
-    glow.style.top=(e.clientY-r.top)+'px';
-  });
 });
 
 /* ═══ SCROLL REVEAL ══════════════════════════════════════ */
@@ -1065,33 +874,26 @@ function animCount(el){
   })(t0);
 }
 
-/* ═══ TEAM CARD TILT ══════════════════════════════════════ */
-document.querySelectorAll('.team-card').forEach(function(card){
+/* ═══ STATS COUNTER ══════════════════════════════════════ */
+(function(){
+  var sio=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting) en.target.querySelectorAll('[data-c]').forEach(animCount);
+    });
+  },{threshold:.2});
+  document.querySelectorAll('.stats-s,.ctrs').forEach(function(el){sio.observe(el);});
+})();
+
+/* ═══ FIDS CARD TILT ══════════════════════════════════════ */
+document.querySelectorAll('.f-card').forEach(function(card){
   card.addEventListener('mousemove',function(e){
     var r=card.getBoundingClientRect();
-    var x=((e.clientX-r.left)/r.width-.5)*8;
-    var y=((e.clientY-r.top)/r.height-.5)*8;
-    card.style.transform='perspective(800px) rotateY('+x+'deg) rotateX('+(-y)+'deg) translateY(-8px)';
+    var x=((e.clientX-r.left)/r.width-.5)*10;
+    var y=((e.clientY-r.top)/r.height-.5)*10;
+    card.style.transform='perspective(600px) rotateY('+x+'deg) rotateX('+(-y)+'deg) translateZ(6px)';
   });
   card.addEventListener('mouseleave',function(){card.style.transform='';});
 });
-
-/* ═══ DEMO LOADER ════════════════════════════════════════ */
-function loadDemo(){
-  var ph = document.getElementById('demoPlaceholder');
-  var frame = ph.parentElement;
-  ph.style.opacity='0';
-  setTimeout(function(){
-    ph.style.display='none';
-    var iframe = document.createElement('iframe');
-    iframe.src = 'https://nexstock.tech/tarama';
-    iframe.allow = 'camera;microphone';
-    iframe.style.opacity='0';
-    iframe.style.transition='opacity .6s';
-    frame.appendChild(iframe);
-    setTimeout(function(){iframe.style.opacity='1';},100);
-  },300);
-}
 
 /* ═══ LANGUAGE SYSTEM (TR/EN) ════════════════════════════ */
 var currentLang = 'tr';
@@ -1108,30 +910,12 @@ function setLang(lang){
       el.placeholder=val;
     } else {
       el.innerHTML = val;
-      if(arrow) el.appendChild(document.createTextNode(' ')), el.innerHTML += ' <span class="btn-arr">&rarr;</span>';
+      if(arrow) el.innerHTML += ' <span class="btn-arr">&rarr;</span>';
     }
   });
   document.documentElement.lang = lang;
-  document.title = lang === 'en' ? 'NexStock — Smart Inventory System' : 'NexStock — Akıllı Envanter Sistemi';
+  document.title = lang === 'en' ? 'NexStock — About' : 'NexStock — Hakkında';
 }
-
-/* ═══ PARALLAX ELEMENTS ══════════════════════════════════ */
-(function(){
-  var orbs = document.querySelectorAll('.hero-orb');
-  var corners = document.querySelectorAll('.corner');
-  window.addEventListener('mousemove', function(e){
-    var x = (e.clientX / window.innerWidth - .5) * 2;
-    var y = (e.clientY / window.innerHeight - .5) * 2;
-    orbs.forEach(function(orb, i){
-      var f = (i+1) * 8;
-      orb.style.transform = 'translate('+x*f+'px,'+y*f+'px)';
-    });
-    corners.forEach(function(c, i){
-      var f = (i+1) * 3;
-      c.style.transform = 'translate('+x*f+'px,'+y*f+'px)';
-    });
-  }, {passive:true});
-})();
 
 // Hamburger
 (function(){
