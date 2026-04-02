@@ -792,6 +792,22 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
 </div><!-- /smooth-wrapper -->
 
 <script>
+/* ═══ LOADER SKIP (subpage navigation) ════════════════════ */
+(function(){
+  var nt=(performance.getEntriesByType('navigation')[0]||{}).type;
+  var first=!sessionStorage.getItem('nexstock_loaded');
+  sessionStorage.setItem('nexstock_loaded','1');
+  if(!first && nt!=='reload'){
+    var ld=document.getElementById('loader');
+    if(ld){ld.style.display='none';}
+    var nv=document.getElementById('nav');
+    if(nv)nv.classList.add('visible');
+    var hs=document.getElementById('hero-section');
+    if(hs)hs.classList.add('visible');
+    window._skipLoader=true;
+  }
+})();
+
 /* ═══════════════════════════════════════════════════════════
    SMOOTH SCROLL ENGINE (Lenis-style inertia)
    ═══════════════════════════════════════════════════════════ */
@@ -845,6 +861,7 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
 
 /* ═══ LOADER CANVAS ═══════════════════════════════════════ */
 (function(){
+  if(window._skipLoader)return;
   var lc = document.getElementById('loader-canvas');
   var lctx = lc.getContext('2d');
   var W, H, CX, CY;
@@ -924,6 +941,7 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
 
 /* ═══ LOADER PROGRESS ════════════════════════════════════ */
 (function(){
+  if(window._skipLoader)return;
   var ldBar=document.getElementById('ld-bar');
   var ldPct=document.getElementById('ld-pct');
   var ldMsg=document.getElementById('ld-msg');
