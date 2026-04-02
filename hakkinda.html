@@ -425,7 +425,7 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
   color:var(--muted);text-decoration:none;transition:color .2s;
 }
 .nav-mobile a:hover{color:var(--a)}
-.nav-mobile .btn{font-size:1rem;letter-spacing:3px;padding:14px 36px}
+.nav-mobile .btn{font-size:1rem;letter-spacing:3px;padding:14px 36px;cursor:pointer}
 
 /* ═══ TOUCH DEVICE FIXES ═══ */
 @media(hover:none) and (pointer:coarse){
@@ -439,6 +439,8 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
   nav.stuck{padding-left:24px;padding-right:24px}
   .nav-items{display:none}
   .nav-hamburger{display:flex}
+  .nav-cta-wrap{display:none}
+  .nav-ig{display:none}
   .dfc-wrap{grid-template-columns:1fr;gap:52px}
   .fids-grid{grid-template-columns:1fr 1fr}
   .stats-g{grid-template-columns:1fr 1fr;gap:36px}
@@ -899,6 +901,7 @@ document.querySelectorAll('.f-card').forEach(function(card){
 var currentLang = 'tr';
 function setLang(lang){
   currentLang = lang;
+  localStorage.setItem('nexstock_lang', lang);
   document.querySelectorAll('.lang-btn').forEach(function(b){
     b.classList.toggle('active', b.dataset.lang === lang);
   });
