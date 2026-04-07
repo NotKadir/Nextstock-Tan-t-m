@@ -512,6 +512,10 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
   .nav-hamburger{display:flex}
   .nav-cta-wrap{display:none}
   .nav-ig{display:none}
+  .mobile-bar{display:flex}
+  body{padding-bottom:60px}
+  .feat-hdr{flex-direction:column;align-items:flex-start;gap:24px}
+  .h-eyebrow{padding-top:60px}
   .feat-grid{grid-template-columns:1fr}
   .parti-layout{grid-template-columns:1fr}
   .rol-grid{grid-template-columns:1fr 1fr}
@@ -534,6 +538,32 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
   section{padding-top:60px;padding-bottom:60px}
   .s-title{font-size:clamp(2.4rem,9vw,4rem)}
 }
+
+/* ═══ MOBILE BOTTOM BAR ═══ */
+.mobile-bar{
+  display:none;position:fixed;bottom:0;left:0;right:0;height:60px;z-index:480;
+  background:rgba(4,4,4,.95);backdrop-filter:blur(20px) saturate(1.2);
+  border-top:1px solid rgba(255,255,255,.07);
+  align-items:center;justify-content:space-between;padding:0 20px;gap:12px;
+}
+.mobile-bar-lang{display:flex;border:1px solid var(--border);height:34px;overflow:hidden}
+.mb-lang-btn{
+  padding:0 14px;height:100%;border:none;background:transparent;
+  font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:all .25s;
+}
+.mb-lang-btn.active{background:var(--a);color:#080808}
+.mobile-bar-cta{
+  display:flex;align-items:center;padding:0 20px;height:38px;
+  background:var(--a);color:#080808;
+  font-family:'Syne',sans-serif;font-size:.72rem;font-weight:800;
+  letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;white-space:nowrap;
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));
+  transition:background .25s;
+}
+.mobile-bar-cta:hover{background:#e5e5e5}
+.nav-mobile-lang{display:flex;border:1px solid rgba(255,255,255,.1);height:36px;overflow:hidden;margin-top:8px}
+.nav-mobile-lang .lang-btn{font-size:.7rem;padding:0 20px}
 </style>
 </head>
 <body>
@@ -1228,5 +1258,12 @@ function setLang(lang){
   });
 })();
 </script>
+<div class="mobile-bar" id="mobileBar">
+  <div class="mobile-bar-lang">
+    <button class="mb-lang-btn active" data-lang="tr" onclick="setLang('tr')">TR</button>
+    <button class="mb-lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
+  <a href="https://nexstock.tech" class="mobile-bar-cta" data-tr="Uygulamay&#305; A&#231;" data-en="Open App">Uygulamay&#305; A&#231; &rarr;</a>
+</div>
 </body>
 </html>
