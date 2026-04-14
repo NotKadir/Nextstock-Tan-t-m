@@ -459,6 +459,20 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
   section{padding-top:80px;padding-bottom:80px}
   #smooth-content{padding-top:64px}
 }
+  .fc{transition:background .35s,transform .3s cubic-bezier(.16,1,.3,1),padding .3s}
+  .fc.fc-open{
+    position:fixed!important;top:50%!important;left:50%!important;
+    transform:translate(-50%,-50%)!important;
+    width:82vw!important;max-width:340px;
+    padding:36px 24px!important;z-index:850!important;
+    box-shadow:0 0 80px rgba(0,0,0,.9);
+  }
+  .fc.fc-open .fc-desc{display:block!important;margin-top:12px}
+  .fc.fc-open .fc-name{font-size:1.5rem!important;margin-bottom:10px!important}
+  .fc.fc-open .fc-icon{font-size:2.2rem!important;margin-bottom:14px!important}
+  .fc-overlay{display:none;position:fixed;inset:0;z-index:840;
+    background:rgba(0,0,0,.75);backdrop-filter:blur(4px)}
+  .fc-overlay.on{display:block}
 @media(max-width:520px){
   .fids-grid{grid-template-columns:1fr}
   .ctrs{grid-template-columns:repeat(3,1fr)}
@@ -993,6 +1007,7 @@ function setLang(lang){
   });
 })();
 </script>
+<div class="fc-overlay" id="fcOverlay"></div>
 <div class="mobile-bar" id="mobileBar">
   <div class="mobile-bar-lang">
     <button class="mb-lang-btn active" data-lang="tr" onclick="setLang('tr')">TR</button>
@@ -1002,6 +1017,28 @@ function setLang(lang){
 </div>
 <script>
 (function(){var s=localStorage.getItem('nexstock_lang');if(s){document.querySelectorAll('.mb-lang-btn').forEach(function(b){b.classList.toggle('active',b.dataset.lang===s);});}})(  );
+<script>
+(function(){
+  if(window.innerWidth>900)return;
+  var ov=document.getElementById('fcOverlay');
+  if(!ov)return;
+  var active=null;
+  function close(){if(active){active.classList.remove('fc-open');active=null;}
+    ov.classList.remove('on');document.body.style.overflow='';
+  }
+  document.querySelectorAll('.fc').forEach(function(c){
+    c.addEventListener('click',function(){
+      if(active===c){close();return;}
+      if(active)active.classList.remove('fc-open');
+      c.classList.add('fc-open');
+      ov.classList.add('on');
+      document.body.style.overflow='hidden';
+      active=c;
+    });
+  });
+  ov.addEventListener('click',close);
+})();
+</script>
 </script>
 </body>
 </html>
