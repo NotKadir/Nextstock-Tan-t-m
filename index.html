@@ -151,7 +151,7 @@ body::after{
 
 /* ═══ NAV ═══ */
 nav{
-  position:fixed;top:0;left:0;right:0;z-index:500;padding:0 52px;
+  position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 52px;
   display:flex;justify-content:space-between;align-items:stretch;
   opacity:0;transform:translateY(-20px);
   background:rgba(6,6,6,.85);backdrop-filter:blur(24px) saturate(1.2);
@@ -565,7 +565,12 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
   .h-desc{max-width:100%;font-size:.92rem}
   .h-btns{width:100%}
   .h-btns .btn{flex:1;text-align:center;justify-content:center;padding:14px 16px;font-size:.8rem}
-  .feat-grid{grid-template-columns:repeat(2,1fr);background:var(--bg)}
+  .feat-grid{grid-template-columns:repeat(3,1fr);background:var(--bg)}
+  .fc{padding:20px 12px}
+  .fc-icon{font-size:1.8rem;margin-bottom:10px}
+  .fc-name{font-size:1.1rem;letter-spacing:1px;margin-bottom:6px}
+  .fc-desc{display:none}
+  .fc-num{font-size:.55rem;top:8px;right:8px}
   .team-grid{grid-template-columns:1fr 1fr}
   footer{flex-direction:column;gap:28px;text-align:center}
   body{cursor:auto}
@@ -574,9 +579,11 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
   .demo-wrap{grid-template-columns:1fr;gap:40px}
   .lang-toggle{display:none}
   #demo{padding-left:24px;padding-right:24px}
+  .demo-frame{aspect-ratio:9/16;max-width:320px;margin:0 auto}
   /* disable smooth scroll on mobile */
   #smooth-wrapper{position:static;overflow:visible}
   section{padding-top:80px;padding-bottom:80px}
+  #smooth-content{padding-top:64px}
 }
 @media(max-width:520px){
   .h-title{font-size:clamp(3.2rem,14vw,5rem);line-height:.9}
@@ -778,7 +785,7 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
     <div class="team-grid">
       <div class="team-card" data-r="up" style="transition-delay:.0s">
         <div class="team-avatar">AT</div>
-        <div class="team-name">Abd&#252;lkadir Tural</div>
+        <div class="team-name">Abdulkadir Tural</div>
         <div class="team-role" data-tr="Yazılım &amp; İletişim" data-en="Software &amp; Communication">Yaz&#305;l&#305;m &amp; &#304;leti&#351;im</div>
       </div>
       <div class="team-card" data-r="up" style="transition-delay:.1s">
@@ -1206,7 +1213,6 @@ function setLang(lang){
     });
   });
 })();
-</script>
 <div class="mobile-bar" id="mobileBar">
   <div class="mobile-bar-lang">
     <button class="mb-lang-btn active" data-lang="tr" onclick="setLang('tr')">TR</button>
@@ -1214,5 +1220,6 @@ function setLang(lang){
   </div>
   <a href="https://nexstock.tech" class="mobile-bar-cta" data-tr="Uygulamay&#305; A&#231;" data-en="Open App">Uygulamay&#305; A&#231; &rarr;</a>
 </div>
+</script>
 </body>
 </html>

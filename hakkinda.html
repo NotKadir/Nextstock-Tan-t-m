@@ -150,7 +150,7 @@ body::after{
 
 /* ═══ NAV ═══ */
 nav{
-  position:fixed;top:0;left:0;right:0;z-index:500;padding:0 52px;
+  position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 52px;
   display:flex;justify-content:space-between;align-items:stretch;
   opacity:0;transform:translateY(-20px);
   background:rgba(6,6,6,.85);backdrop-filter:blur(24px) saturate(1.2);
@@ -455,6 +455,7 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
   .lang-toggle{display:none}
   #smooth-wrapper{position:static;overflow:visible}
   section{padding-top:80px;padding-bottom:80px}
+  #smooth-content{padding-top:64px}
 }
 @media(max-width:520px){
   .fids-grid{grid-template-columns:1fr}
@@ -989,7 +990,6 @@ function setLang(lang){
     });
   });
 })();
-</script>
 <div class="mobile-bar" id="mobileBar">
   <div class="mobile-bar-lang">
     <button class="mb-lang-btn active" data-lang="tr" onclick="setLang('tr')">TR</button>
@@ -997,5 +997,6 @@ function setLang(lang){
   </div>
   <a href="https://nexstock.tech" class="mobile-bar-cta" data-tr="Uygulamay&#305; A&#231;" data-en="Open App">Uygulamay&#305; A&#231; &rarr;</a>
 </div>
+</script>
 </body>
 </html>

@@ -150,7 +150,7 @@ body::after{
 
 /* ═══ NAV ═══ */
 nav{
-  position:fixed;top:0;left:0;right:0;z-index:500;padding:0 52px;
+  position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 52px;
   display:flex;justify-content:space-between;align-items:stretch;
   opacity:0;transform:translateY(-20px);
   background:rgba(6,6,6,.85);backdrop-filter:blur(24px) saturate(1.2);
@@ -516,7 +516,12 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
   body{padding-bottom:60px}
   .feat-hdr{flex-direction:column;align-items:flex-start;gap:24px}
   .h-eyebrow{padding-top:60px}
-  .feat-grid{grid-template-columns:repeat(2,1fr);background:var(--bg)}
+  .feat-grid{grid-template-columns:repeat(3,1fr);background:var(--bg)}
+  .fc{padding:20px 12px}
+  .fc-icon{font-size:1.8rem;margin-bottom:10px}
+  .fc-name{font-size:1.1rem;letter-spacing:1px;margin-bottom:6px}
+  .fc-desc{font-size:.72rem;line-height:1.4}
+  .fc-num{font-size:.55rem;top:8px;right:8px}
   .parti-layout{grid-template-columns:1fr}
   .rol-grid{grid-template-columns:1fr 1fr}
   .stats-g{grid-template-columns:1fr 1fr;gap:36px}
@@ -531,6 +536,7 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
   #compare{padding-left:24px;padding-right:24px}
   #smooth-wrapper{position:static;overflow:visible}
   section{padding-top:80px;padding-bottom:80px}
+  #smooth-content{padding-top:64px}
 }
 @media(max-width:520px){
   .rol-grid{grid-template-columns:1fr}
@@ -1257,7 +1263,6 @@ function setLang(lang){
     });
   });
 })();
-</script>
 <div class="mobile-bar" id="mobileBar">
   <div class="mobile-bar-lang">
     <button class="mb-lang-btn active" data-lang="tr" onclick="setLang('tr')">TR</button>
@@ -1265,5 +1270,6 @@ function setLang(lang){
   </div>
   <a href="https://nexstock.tech" class="mobile-bar-cta" data-tr="Uygulamay&#305; A&#231;" data-en="Open App">Uygulamay&#305; A&#231; &rarr;</a>
 </div>
+</script>
 </body>
 </html>
