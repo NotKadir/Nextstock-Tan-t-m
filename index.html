@@ -6,7 +6,7 @@
 <title>NexStock — Akıllı Envanter Sistemi</title>
 <link rel="icon" type="image/png" href="/firarlogo.png">
 <link rel="apple-touch-icon" href="/firarlogo.png">
-<meta name="description" content="NexStock — Barkod tabanlı akıllı envanter yönetim sistemi. SKT takibi, parti sistemi, FEFO algoritması. DFC Türkiye 2026 — Hortor.">
+<meta name="description" content="NexStock — Barkod tabanlı akıllı envanter yönetim sistemi. SKT takibi, parti sistemi, FEFO algoritması.">
 <meta property="og:title" content="NexStock — Akıllı Envanter Sistemi">
 <meta property="og:description" content="Barkod tara, stokunu bil. SKT takibi, parti yönetimi, anlık uyarılar.">
 <meta property="og:image" content="https://nexstock.net/og-image.png">
@@ -238,6 +238,25 @@ nav.stuck{background:rgba(4,4,4,.97);border-bottom-color:var(--border)}
 .hero-logo-img{position:absolute;right:6%;top:50%;transform:translateY(-50%);width:clamp(180px,22vw,320px);opacity:.15;filter:drop-shadow(0 0 40px rgba(165,216,255,.3));pointer-events:none;z-index:0;animation:heroLogoIn 1.5s 0.5s cubic-bezier(.16,1,.3,1) forwards;opacity:0}
 .hero-logo-img img{width:100%;height:auto}
 @keyframes heroLogoIn{0%{opacity:0;transform:translateY(-50%) scale(.9)}100%{opacity:.2;transform:translateY(-50%) scale(1)}}
+
+/* ═══ SPLINE 3D PHONE ═══ */
+.hero-spline{
+  position:absolute;right:-8%;top:0;width:65%;height:100%;
+  pointer-events:none;opacity:0;z-index:0;
+  animation:splineIn 2s 1.2s cubic-bezier(.16,1,.3,1) forwards;
+  filter:drop-shadow(0 0 80px rgba(165,216,255,.25));
+}
+.hero-spline iframe{width:100%;height:100%;border:0;pointer-events:auto;background:transparent}
+.hero-spline::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,var(--bg) 0%,transparent 25%,transparent 75%,var(--bg) 100%);
+  pointer-events:none;
+}
+@keyframes splineIn{to{opacity:.95}}
+@media(max-width:900px){
+  .hero-spline{right:-20%;width:120%;opacity:.35!important;animation:splineInMobile 2s 1.2s cubic-bezier(.16,1,.3,1) forwards}
+  @keyframes splineInMobile{to{opacity:.35}}
+}
 
 .h-grid{
   position:absolute;inset:-100%;
@@ -622,7 +641,7 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
       <div class="ld-msg" id="ld-msg">INITIALIZING</div>
     </div>
   </div>
-  <div class="ld-tag">DFC T&Uuml;RKİYE 2026 &mdash; HORTOR</div>
+  <div class="ld-tag">NEXSTOCK &mdash; SMART INVENTORY SYSTEM</div>
 </div>
 
 <div class="cursor-dot" id="cDot"></div>
@@ -668,6 +687,9 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
 <div id="smooth-content">
 
 <section class="hero" id="hero-section">
+  <div class="hero-spline">
+    <iframe src="https://my.spline.design/iphone16profreemockup-S0DBKHuNtFJxRoVyxG7FtOTs/" loading="lazy" title="NexStock 3D Phone"></iframe>
+  </div>
   <div class="hero-orb"></div>
   <div class="hero-orb"></div>
   <div class="hero-orb"></div>
@@ -678,7 +700,7 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
   <div class="hero-inner">
     <div class="h-eyebrow">
       <span class="cursor-blink"></span>
-      <span data-tr="DFC Türkiye Yarışması &mdash; 2026" data-en="DFC Turkey Competition &mdash; 2026">DFC T&uuml;rkiye Yar&#305;&#351;mas&#305; &mdash; 2026</span>
+      <span data-tr="Ak&#305;ll&#305; Envanter Sistemi &mdash; v2.0" data-en="Smart Inventory System &mdash; v2.0">Ak&#305;ll&#305; Envanter Sistemi &mdash; v2.0</span>
     </div>
     <div class="h-title">
       <span class="tl-wrap"><span class="tl-inner glitch t-amber" data-g="NEXSTOCK">NEXSTOCK</span></span>
@@ -686,8 +708,8 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
       <span class="tl-wrap"><span class="tl-inner t-dim" data-tr="GELECEĞİ." data-en="OF INVENTORY.">GELECE&#286;&#304;.</span></span>
     </div>
     <div class="h-bottom">
-      <div class="h-desc" data-tr="DFC FIDS metodolojisi ile geliştirilen <strong>akıllı barkod ve envanter</strong> yönetim sistemi. Gerçek sorunlara, gerçek çözümler." data-en="A <strong>smart barcode and inventory</strong> management system developed with the DFC FIDS methodology. Real solutions for real problems.">
-        DFC FIDS metodolojisi ile geli&#351;tirilen <strong>ak&#305;ll&#305; barkod ve envanter</strong> y&#246;netim sistemi.
+      <div class="h-desc" data-tr="Yeni nesil <strong>akıllı barkod ve envanter</strong> yönetim sistemi. Gerçek sorunlara, gerçek çözümler." data-en="Next-generation <strong>smart barcode and inventory</strong> management system. Real solutions for real problems.">
+        Yeni nesil <strong>ak&#305;ll&#305; barkod ve envanter</strong> y&#246;netim sistemi.
         Ger&#231;ek sorunlara, ger&#231;ek &#231;&#246;z&#252;mler.
       </div>
       <div class="h-btns">
@@ -708,13 +730,13 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
     <span class="ti">IMAGINE</span><span class="ti ts">&#10022;</span>
     <span class="ti">DO</span><span class="ti ts">&#10022;</span>
     <span class="ti">SHARE</span><span class="ti ts">&#10022;</span>
-    <span class="ti">DESIGN FOR CHANGE</span><span class="ti ts">&#10022;</span>
+    <span class="ti">SMART INVENTORY</span><span class="ti ts">&#10022;</span>
     <span class="ti">NEXSTOCK</span><span class="ti ts">&#10022;</span>
     <span class="ti">FEEL</span><span class="ti ts">&#10022;</span>
     <span class="ti">IMAGINE</span><span class="ti ts">&#10022;</span>
     <span class="ti">DO</span><span class="ti ts">&#10022;</span>
     <span class="ti">SHARE</span><span class="ti ts">&#10022;</span>
-    <span class="ti">DESIGN FOR CHANGE</span><span class="ti ts">&#10022;</span>
+    <span class="ti">SMART INVENTORY</span><span class="ti ts">&#10022;</span>
     <span class="ti">NEXSTOCK</span><span class="ti ts">&#10022;</span>
   </div>
 </div>
@@ -728,9 +750,9 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
     <a href="/ozellikler.html" class="btn btn-a" data-tr="Tüm Özellikler" data-en="All Features">Tüm Özellikler <span class="btn-arr">→</span></a>
   </div>
   <div class="feat-grid">
-    <div class="fc" data-r="up" style="transition-delay:.0s"><div class="fc-glow"></div><div class="fc-num">01/09</div><span class="fc-icon">📷</span><div class="fc-name" data-tr="Kamera Tarama" data-en="Camera Scan">Kamera Tarama</div><div class="fc-desc" data-tr="Tarayıcı kamerası ile EAN-13 dahil tüm barkod formatlarını gerçek zamanlı okuma." data-en="Real-time reading of all barcode formats including EAN-13 via browser camera.">Taray&#305;c&#305; kameras&#305; ile EAN-13 dahil t&#252;m barkod formatlar&#305;n&#305; ger&#231;ek zamanl&#305; okuma.</div></div>
-    <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">07/09</div><span class="fc-icon">📦</span><div class="fc-name" data-tr="Parti Sistemi" data-en="Batch System">Parti Sistemi</div><div class="fc-desc" data-tr="Aynı ürünün farklı tarihli partilerini ayrı ayrı takip et, stok karışıklığını önle." data-en="Track different-dated batches of the same product separately, prevent stock confusion.">Ayn&#305; &#252;r&#252;n&#252;n farkl&#305; tarihli partilerini ayr&#305; ayr&#305; takip et, stok kar&#305;&#351;&#305;kl&#305;&#287;&#305;n&#305; &#246;nle.</div></div>
-    <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">08/09</div><span class="fc-icon">⚡</span><div class="fc-name" data-tr="FEFO Algoritması" data-en="FEFO Algorithm">FEFO Algoritmas&#305;</div><div class="fc-desc" data-tr="En yakın tarihli ürünü otomatik öne al. First Expiry First Out ile sıfır manuel kontrol." data-en="Automatically prioritize nearest-expiry products. Zero manual control with First Expiry First Out.">En yak&#305;n tarihli &#252;r&#252;n&#252; otomatik &#246;ne al. First Expiry First Out ile s&#305;f&#305;r manuel kontrol.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.0s"><div class="fc-glow"></div><div class="fc-num">01/09</div><span class="fc-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span><div class="fc-name" data-tr="Kamera Tarama" data-en="Camera Scan">Kamera Tarama</div><div class="fc-desc" data-tr="Tarayıcı kamerası ile EAN-13 dahil tüm barkod formatlarını gerçek zamanlı okuma." data-en="Real-time reading of all barcode formats including EAN-13 via browser camera.">Taray&#305;c&#305; kameras&#305; ile EAN-13 dahil t&#252;m barkod formatlar&#305;n&#305; ger&#231;ek zamanl&#305; okuma.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.08s"><div class="fc-glow"></div><div class="fc-num">07/09</div><span class="fc-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span><div class="fc-name" data-tr="Parti Sistemi" data-en="Batch System">Parti Sistemi</div><div class="fc-desc" data-tr="Aynı ürünün farklı tarihli partilerini ayrı ayrı takip et, stok karışıklığını önle." data-en="Track different-dated batches of the same product separately, prevent stock confusion.">Ayn&#305; &#252;r&#252;n&#252;n farkl&#305; tarihli partilerini ayr&#305; ayr&#305; takip et, stok kar&#305;&#351;&#305;kl&#305;&#287;&#305;n&#305; &#246;nle.</div></div>
+    <div class="fc" data-r="up" style="transition-delay:.16s"><div class="fc-glow"></div><div class="fc-num">08/09</div><span class="fc-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span><div class="fc-name" data-tr="FEFO Algoritması" data-en="FEFO Algorithm">FEFO Algoritmas&#305;</div><div class="fc-desc" data-tr="En yakın tarihli ürünü otomatik öne al. First Expiry First Out ile sıfır manuel kontrol." data-en="Automatically prioritize nearest-expiry products. Zero manual control with First Expiry First Out.">En yak&#305;n tarihli &#252;r&#252;n&#252; otomatik &#246;ne al. First Expiry First Out ile s&#305;f&#305;r manuel kontrol.</div></div>
   </div>
 </section>
 
@@ -795,9 +817,9 @@ footer{border-top:1px solid var(--border);padding:56px 52px;display:flex;justify
 
 <footer>
   <div class="fl">Nex<em>Stock</em></div>
-  <div class="fi" data-tr="DFC Türkiye Yarışması &mdash; 2026<br>FIDS Modeli ile Geliştirildi" data-en="DFC Turkey Competition &mdash; 2026<br>Developed with the FIDS Model">DFC T&#252;rkiye Yar&#305;&#351;mas&#305; &mdash; 2026<br>FIDS Modeli ile Geli&#351;tirildi</div>
+  <div class="fi" data-tr="NexStock Team &mdash; 2026<br>Ak&#305;ll&#305; Envanter Sistemi" data-en="NexStock Team &mdash; 2026<br>Smart Inventory System">NexStock Team &mdash; 2026<br>Ak&#305;ll&#305; Envanter Sistemi</div>
   <div class="flinks">
-    <a href="https://dfcturkiye.org" target="_blank" data-tr="DFC Türkiye" data-en="DFC Turkey">DFC T&#252;rkiye</a>
+    <a href="/ozellikler.html" data-tr="Özellikler" data-en="Features">&#214;zellikler</a>
     <a href="https://nexstock.tech" target="_blank" data-tr="Uygulama" data-en="App">Uygulama</a>
     <a href="https://www.instagram.com/nex.stock.dfc/" target="_blank">Instagram</a>
   </div>
